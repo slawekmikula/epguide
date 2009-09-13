@@ -1,0 +1,31 @@
++ refaktoring kodu - polaczenie parserow oraz kodow aplikacji uruchamiajacej
++ dodanie klas odpowiedzialnych za odczyt i zapis danych
+- wpparser - pobieranie listingu programu z formularza, a nie sciagane n*strona www
+- plik konfiguracji (xml)
+- poprawna obsluga nieistniejacych stron programów (log dzialania aplikacji)
+- wersja aplikacji dla win32
+- skrypty budujace nowe wersje na win32
+
+--------------------------------------------------------------------------------
+SZCZEGÓŁY:
+- uaktualnić model UML - EAP
+
+- parser_wp - odczyt listy programów za pomocą osobnego parsera do listy programów
+- parser_wp - odczyt programu na dany dzień dla określonego kanału
+- parser_wp - zwrócenie listy kanałów
+- parser_wp - zwrócenie programu na dany dzień
+- testy pobierania danych kanalow z wp.pl
+- testy pobierania danych programu z wp.pl
+- testy błędów - braku polaczenia z strona, braku kanalu, braku programu
+
+- parser_cp - cała implementacja - po zakończeniu parsera wp
+- parser_gazetapl - cała implementacja - po zakończeniu parsera wp
+
+- testy wyjścia danych txt
+- testy poprawności generowanych danych DTD przez xmltv
+
+- output_txt - zapis listy kanałów
+- output_txt - zapis programu
+
+- output_xmltv - zapis listy kanałów
+- output_xmltv - zapis programu

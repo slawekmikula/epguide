@@ -1,0 +1,52 @@
+=========================
+  EPGuide documentation
+=========================
+
+Overview
+========
+
+
+This is documentation for ``EPGuide`` software.
+
+	* first time heading
+
+	* second time heading
+
+
+Second order caption
+--------------------
+
+Usage
+=====
+
+This is caption about program usage
+
+
+XMLTV Software
+==============
+
+These are links for software, that uses XMLTV format data for the Program Guide
+data.
+
+	* ``http://www.onet.pl/`` - onet.pl
+
+
+WebTV integration
+=================
+
+This section defines usage of EPGuide with
+
+Automatic program downloading
+=============================
+
+This section defines methods for automatic retreival of EPGuide data.
+
+GNU/Linux
+---------
+
+Configuration of the Cron deamon
+
+Windows
+-------
+
+Configuration of whatever

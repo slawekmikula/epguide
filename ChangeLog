@@ -1,0 +1,17 @@
+2006-03-31 smikula  <zorba@silesianet.pl>
+
+	* common.py: poprawki w tworzeniu pliku XML dla dat przekraczajacych miesiąc
+
+2007-07-05 smikula <zorba@silesianet.pl>
+	
+	* common.py: w koncu poprawna zamiana & na &amp; oraz < i > na ich escape string
+
+2007-09-15 smikula <zorba@silesianet.pl>
+
+     * common.py: dodanie sekund (ustawionych na 00) do formatu czasu w zdarzeniach
+
+2007-12-14 saviq <michal@sawicz.net>
+	
+     * dodanie wsparcia dla danych ze strony http://www.cyfraplus.pl
+	 * poprawa wyjścia xml tak, by było zgodne z DTD XMLTV
+	 * poprawa wyjścia z wp.py

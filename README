@@ -1,0 +1,28 @@
+EpGuide
+
+O programie
+===========
+Program jest stosunkowo prostym parserem stron tv.wp.pl, ktory w wyniku daje
+plik formatu xmltv. Pozwala to na prostą integrację z aplikacjami wykorzystującymi
+ten format pliku do wyświetlania aktualnego programu telewizyjnego
+
+Instalacja
+==========
+Obecna wersja nie posiada procesu instalacji. Należy ręcznie przegrać wszystkie
+pliki *.py do dowolnego katalogu.
+
+
+Użycie
+======
+Uruchomienie polega na wywolaniu wp.py z odpowiednimi opcjami. 
+
+Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
+
+Poczatkowo nalezy uruchomić program z opcją -l, co wyświeli wszystkie
+programy telewizyjne obsługiwane przez stronę tv.wp.pl. Następnie wymagane
+indeksy programów należy umieścić w wywołaniu głównym programu.
+
+Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
+dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
+
+$ wp.py -c 1,2,5,17,18,233 -f xmltv -w > tv.xml
