@@ -2,6 +2,9 @@ from common import Config
 from epguide import EpGuide
 import sys
 
+# -l
+# -c 1,2,3 -d 2009-09-12 -f xmltv -o tv.xmltv
+
 def RunEpguide():
     """
     glowna petla aplikacji, odczytuje konfiguracje, uruchamia operacje

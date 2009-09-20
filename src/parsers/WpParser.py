@@ -1,3 +1,4 @@
+from sgmllib import SGMLParser
 
 
 class WpGetter(SGMLParser):
@@ -5,8 +6,8 @@ class WpGetter(SGMLParser):
         self.program_id = ""
         self.program_name = ""
         self.event_date = ""
-    
-    
+    def Get(self):
+        raise NotImplementedError
        
 
 class WpParser(object):
@@ -17,13 +18,13 @@ class WpParser(object):
         self.url_template = "http://tv.wp.pl/index_druk.html?T[date]=%s&T[station]=%s&T[time]=0"
    
     def Init(self): 
-        pass
+        raise NotImplementedError
     
     def Finish(self):
-        pass
+        raise NotImplementedError
     
     def GetChannelList(self):
-        pass
+        raise NotImplementedError
     
     def GetGuide(self, date, channel_id):
         """

@@ -1,4 +1,3 @@
-
 class EpGuide:
     """
     glowna klasa aplikacji
@@ -31,8 +30,7 @@ class EpGuide:
         channel_list = self.parser.GetChannelList()
         self.output.SaveChannelList(channel_list)
         self.parser.Finish()
-        self.output.Finish()
-        
+        self.output.Finish()        
     
     def GetGuide(self):
         """
@@ -54,4 +52,14 @@ class EpGuide:
         self.output.Finish()
         self.parser.Finish()
     
-    
+    def PrintHelp(self):
+        """
+        wyswietlenie pomocy
+        """
+        print self.cmdparser.Help()
+
+    def PrintLicence(self):
+        """
+        wyswietlenie licencji
+        """
+        raise NotImplementedError

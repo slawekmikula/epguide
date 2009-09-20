@@ -1,3 +1,4 @@
+import sys
 
 class TxtOutput(object):
     """
@@ -12,10 +13,10 @@ class TxtOutput(object):
         """
         inicjalizacja wyjscia
         """
-        if self.config.options.output is not None:
-            self.file = open(self.config.options.output)
+        if self.config.options.filename is not None:
+            self.file = open(self.config.options.filename)
         else:
-            self.file = stdout
+            self.file = sys.stdout
 
     def Finish(self):
         """
