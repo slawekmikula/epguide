@@ -1,4 +1,28 @@
-class EpGuide:
+licence = '''
+ EpGuide - Application, that can get You electronic TV guide in various formats
+ Copyright (C) 2009 Slawek Mikula <slawek.mikula@gmail.com>
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+'''
+
+authors = '''
+Slawek Mikula <slawek.mikula@gmail.com>
+
+'''
+
+class EpGuide(object):
     """
     glowna klasa aplikacji
     """
@@ -12,13 +36,13 @@ class EpGuide:
         glowna petla wykonywania zadan
         """
         if self.config.options.licence:
-            self.config.PrintLicence()
+            self.PrintLicence()
         elif self.config.options.list:
             self.GetChannelList()
         elif self.config.get_guide: 
             self.GetGuide()
         else:    
-            self.config.cmdparser.print_help()
+            self.PrintHelp()
 
     def GetChannelList(self):
         """
@@ -56,10 +80,10 @@ class EpGuide:
         """
         wyswietlenie pomocy
         """
-        print self.cmdparser.Help()
+        print self.config.cmdparser.print_help()
 
     def PrintLicence(self):
         """
         wyswietlenie licencji
         """
-        raise NotImplementedError
+        print licence

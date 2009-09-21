@@ -11,7 +11,7 @@ class AdditionalOptions(Option):
     """
     dodatkowe opcje dla parsera linii komend
     """
-    def CheckDate (option, opt, value):
+    def CheckDate (self, option, opt, value):
       try:
         return datetime.time.strptime(value, "%Y-%m-%d")
       except:
@@ -21,7 +21,7 @@ class AdditionalOptions(Option):
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["date"] = CheckDate
              
-class Config:
+class Config(object):
     """
     klasa konfiguracji aplikacji
     """
