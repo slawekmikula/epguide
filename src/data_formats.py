@@ -6,9 +6,10 @@ class Channel(object):
     """
     definicja kanalu
     """
-    def __init__(self, name = "", channel_id = ""):
+    def __init__(self, name = "", id = ""):
         self.name = name
-        self.channel_id = channel_id.replace(u'&',u'&amp;')
+        self.id = id
+        
 
 
 class Event(object):

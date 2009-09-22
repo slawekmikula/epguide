@@ -22,7 +22,7 @@ class TxtOutput(object):
         """
         zamkniecie wyjscia
         """
-        close(self.file)
+        self.file.close()
 
     def SaveChannelList(self, channel_list):
         """

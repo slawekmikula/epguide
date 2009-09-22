@@ -24,7 +24,6 @@ class WpChannelListGetter(SGMLParser):
         buf = urllib.urlopen (self.url).read()
         self.feed(buf)
         self.close()
-        #print self.channelList
         return self.channelList
 
     def close (self):
@@ -40,10 +39,11 @@ class WpChannelListGetter(SGMLParser):
     def end_select(self):
         if self.state[-1] == 'select':
             self.state.pop()
+            self.success = True
 
     # <option value="1">TVP 1
     def start_option(self, attributes):
-        if self.state[-1] == 'select':
+        if self.state[-1] == 'select' or self.state[-1] == 'option':
             for name, value in attributes:
                 if name == "value":
                     self.currentId = value
@@ -57,7 +57,7 @@ class WpChannelListGetter(SGMLParser):
     def handle_data(self, data):
         data = data.strip()
         if self.state[-1] == 'option':
-            self.channelList.append({'name': data, 'id': self.currentId})
+            self.channelList.append({'name': data.decode('iso-8859-2'), 'id': self.currentId})
 
 
 class WpProgrammeGetter(SGMLParser):
@@ -192,11 +192,13 @@ class WpParser(object):
         stationList = getter.GetStationList()
         channelList = []
 
-        if getter.success:
+        if getter.success:            
             for station in stationList:
-                channel = Channel(station['name'], station['id'])
-                channelList.add(channel)
+                if station['id'] != '---' and station['id'] != 0:
+                    channel = Channel(station['name'], station['id'])
+                    channelList.append(channel)
 
+        channelList.sort(lambda first, second: int(first.id) < second.id)
         return channelList
     
     def GetGuide(self, date, channel_id):
