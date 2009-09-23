@@ -29,7 +29,7 @@ class TxtOutput(object):
         zapisanie listy kanalow
         """
         for channel in channel_list:
-           self.file.write("%s - %s\n" % (channel.id.encode('utf-8'), channel.name.encode('utf-8')))
+           self.file.write("%s - %s\n" % (channel.id, channel.name.encode('utf-8')))
 
     def SaveGuide(self, day, channel, guide):
         """

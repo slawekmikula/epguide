@@ -9,8 +9,12 @@ class Channel(object):
     def __init__(self, name = "", id = ""):
         self.name = name
         self.id = id
-        
 
+    def __hash__(self):
+        return self.id
+
+    def __cmp__(self, other):
+        return self.id - other.id
 
 class Event(object):
     """

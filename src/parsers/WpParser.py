@@ -57,8 +57,14 @@ class WpChannelListGetter(SGMLParser):
     def handle_data(self, data):
         data = data.strip()
         if self.state[-1] == 'option':
-            self.channelList.append({'name': data.decode('iso-8859-2'), 'id': self.currentId})
-
+            if data == '&':
+                self.state.append('ampersand')
+                self.channelList[-1]['name'] += ' & '
+            else:
+                self.channelList.append({'name': data.decode('iso-8859-2'), 'id': self.currentId})
+        elif self.state[-1] == 'ampersand':
+            self.channelList[-1]['name'] += data.decode('iso-8859-2')
+            self.state.pop()
 
 class WpProgrammeGetter(SGMLParser):
     def __init__(self):
@@ -188,19 +194,28 @@ class WpParser(object):
         pass
     
     def GetChannelList(self):
+        """ pobiera liste kanalow """
         getter = WpChannelListGetter()
         stationList = getter.GetStationList()
         channelList = []
 
         if getter.success:            
             for station in stationList:
-                if station['id'] != '---' and station['id'] != 0:
-                    channel = Channel(station['name'], station['id'])
+                # usuwamy elementy kontrolne oraz 'Wszystkie kanały'
+                if station['id'] != '---' and int(station['id']) != 0:
+                    channel = Channel(station['name'], int(station['id']))
                     channelList.append(channel)
 
-        channelList.sort(lambda first, second: int(first.id) < second.id)
+        # usuwamy duplikaty
+        d = {}
+        for x in channelList:
+            d[x] = x
+        channelList = d.values()
+        channelList.sort(lambda first, second: first.id - second.id)
+        
         return channelList
-    
+
+
     def GetGuide(self, date, channel_id):
         """
         pobiera informacje z strony oraz parsuje dane, zwraca liste elementow
