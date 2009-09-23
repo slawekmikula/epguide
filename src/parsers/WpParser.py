@@ -201,20 +201,19 @@ class WpParser(object):
 
         if getter.success:            
             for station in stationList:
-                # usuwamy elementy kontrolne oraz 'Wszystkie kanały'
+                # usuwamy elementy kontrolne oraz 'Wszystkie kanaly'
                 if station['id'] != '---' and int(station['id']) != 0:
                     channel = Channel(station['name'], int(station['id']))
                     channelList.append(channel)
 
-        # usuwamy duplikaty
-        d = {}
-        for x in channelList:
-            d[x] = x
-        channelList = d.values()
-        channelList.sort(lambda first, second: first.id - second.id)
-        
-        return channelList
+        # usuwamy duplikaty i sortujemy liste
+        dict = {}
+        for channel in channelList:
+            dict[channel] = channel
+        channelList = dict.values()
+        channelList.sort()
 
+        return channelList
 
     def GetGuide(self, date, channel_id):
         """
