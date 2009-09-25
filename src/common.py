@@ -7,16 +7,17 @@ from copy import copy
 from parsers import WpParser, CpParser, GazetaParser
 from formatters import TxtOutput, XmltvOutput
 
+def CheckDate (dummy, opt, value):
+  try:
+    return datetime.time.strptime(value, '%Y-%m-%d')
+  except:
+    raise OptionValueError("option %s: invalid date value: %r" % (opt, value))
+
+
 class AdditionalOptions(Option):
     """
     dodatkowe opcje dla parsera linii komend
-    """
-    def CheckDate (self, option, opt, value):
-      try:
-        return datetime.time.strptime(value, "%Y-%m-%d")
-      except:
-        raise OptionValueError("option %s: invalid date value: %r" % (opt, value))
-    
+    """    
     TYPES = Option.TYPES + ("date",)
     TYPE_CHECKER = copy(Option.TYPE_CHECKER)
     TYPE_CHECKER["date"] = CheckDate
@@ -31,6 +32,7 @@ class Config(object):
         self.parser = None
         self.output = None
         self.get_guide = False
+        self.get_today = False
         self.usage=""" Application, that can get You electronic TV guide in various formats
                        %prog [options] """
 
@@ -45,7 +47,8 @@ class Config(object):
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
-                 
+        self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
+
     def ParseCommandLine(self, argv):
         """
         przetworzenie linii komend
@@ -70,6 +73,10 @@ class Config(object):
         if self.options.get_week == True:
             self.date_from = datetime.date.today()
             self.date_to = datetime.date.today() + datetime.timedelta(days=7)
+            self.get_guide = True
+        elif self.options.get_today == True:
+            self.date_from = datetime.date.today()
+            self.date_to = datetime.date.today() + datetime.timedelta(days=1)
             self.get_guide = True
         elif self.options.date is not None:
             self.date_from = self.options.date

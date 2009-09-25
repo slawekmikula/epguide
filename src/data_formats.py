@@ -20,17 +20,21 @@ class Event(object):
     """
     wydarzenie (program w telewizji), zawiera dane zakodowane w unicode
     """
-    def __init__(self):
-        self.title = u''
-        self.subtitle = u''
-        self.category = u''
-        self.desc = u''
-        self.date_start = None
-        self.time_start = None
-        self.date_end = None
-        self.time_end = None
+    def __init__(self, channel_id, title, subtitle, category, desc, time_start, time_end):
+        self.channel_id = channel_id
+        self.title = title
+        self.subtitle = subtitle
+        self.category = category
+        self.desc = desc
+        self.time_start = time_start
+        self.time_end = time_end
     
-    
+    def __hash__(self):
+        return self.channel_id + self.time_start
+
+    def __cmp__(self, other):
+        return (self.channel_id + self.time_start) - (other.channel_id + other.time_start)
+
 class ChannelParser(object):    
     """
     obiekt definiujacy pozwiazanie parsera z identyfikatorem kanalu. Wykorzystywane

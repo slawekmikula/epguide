@@ -1,3 +1,5 @@
+import datetime
+
 licence = '''
  EpGuide - Application, that can get You electronic TV guide in various formats
  Copyright (C) 2009 Slawek Mikula <slawek.mikula@gmail.com>
@@ -65,13 +67,12 @@ class EpGuide(object):
         self.output.Init()
         self.output.SaveGuideChannels(self.config.options.channel_list)
         
-        for iter in range((self.config.date_to - self.config.date_to).days):
-            day = self.config.date_from + datetime.timedelta(days=1)
-            
-            for channel in self.config.options.channel_list:
-                
+        for day in range((self.config.date_to - self.config.date_from).days):
+            for channel in self.config.options.channel_list:                
                 guide = self.parser.GetGuide(day, channel)
                 self.output.SaveGuide(day, channel, guide)
+                
+            #day = self.config.date_from + datetime.timedelta(days=1)
                 
         self.output.Finish()
         self.parser.Finish()
