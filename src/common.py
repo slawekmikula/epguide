@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import datetime
+import time, datetime
 from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 
@@ -9,7 +9,7 @@ from formatters import TxtOutput, XmltvOutput
 
 def CheckDate (dummy, opt, value):
   try:
-    return datetime.time.strptime(value, '%Y-%m-%d')
+    return datetime.datetime.fromtimestamp(time.mktime(time.strptime(value, '%Y-%m-%d')))
   except:
     raise OptionValueError("option %s: invalid date value: %r" % (opt, value))
 
@@ -55,6 +55,10 @@ class Config(object):
         """
         self.options, self.args = self.cmdparser.parse_args(argv)
 
+        # separacja listy kanalow
+        if self.options.channel_list:
+            self.options.channel_list = self.options.channel_list.split(',')
+
         # tworzenie parsera
         if self.options.parser == 'wp':
             self.parser = WpParser.WpParser()
@@ -80,7 +84,7 @@ class Config(object):
             self.get_guide = True
         elif self.options.date is not None:
             self.date_from = self.options.date
-            self.date_to = self.options.date
+            self.date_to = self.options.date + datetime.timedelta(days=1)
             self.get_guide = True
         
     def ReadConfigFile(self):

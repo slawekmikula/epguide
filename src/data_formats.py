@@ -20,8 +20,11 @@ class Event(object):
     """
     wydarzenie (program w telewizji), zawiera dane zakodowane w unicode
     """
-    def __init__(self, channel_id, title, subtitle, category, desc, time_start, time_end):
+    def __init__(self, channel_id, channel_name, title, subtitle, category,
+        desc, time_start, time_end):
+            
         self.channel_id = channel_id
+        self.channel_name = channel_name
         self.title = title
         self.subtitle = subtitle
         self.category = category

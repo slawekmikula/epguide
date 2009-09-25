@@ -1,13 +1,8 @@
-
 from sgmllib import SGMLParser
-
-import string
-import time
+import time, datetime
 import urllib
-import re
-import parser
 
-from data_formats import Channel
+from data_formats import Channel, Event
 
 class WpChannelListGetter(SGMLParser):
     def __init__(self):
@@ -72,113 +67,126 @@ class WpProgrammeGetter(SGMLParser):
 
         self.url = "http://tv.wp.pl/index_druk.html?T[date]=%s&T[station]=%s&T[time]=0"
         self.eventDict = []
+        self.prevEvent = None
+        self.currentEvent = None
 
         self.state = ['init']
-        self.currentId = None
         self.success = False
 
-    def GetEventList(self, date, channel_id):
+    def GetEventList(self, eventDate, channel_id):
+        self.currentDate = eventDate
+        self.currentChannelId = channel_id
+
+        self.url = self.url % (eventDate.strftime("%Y-%m-%d"), channel_id)
         buf = urllib.urlopen (self.url).read()
         self.feed(buf)
-        print self.eventDict
         self.close()
+        self.UpdatePreviousTimeEnd()
+        
         return self.eventDict
     
-    def close (s):
-        SGMLParser.close (s)
-        s.channel = s.channel.decode("iso-8859-2", "replace").strip()
-        s.chanid = re.sub("[^a-z0-9]", "", s.channel.lower()) + ".wp"
-        s.s_end ("HTML")
+    def close(self):
+        SGMLParser.close(self)
 
-    def get_attr (s, list, name):
+    def getAttr(self, list, name):
         for attr in list:
             if attr[0] == name:
                 return attr[1]
         return None
 
-    def s_start (s, state):
-        s.state.append (state)
+    def FormatEventDateTime(self):
+        self.currentEvent['time_start'] = "%s %s" % (self.currentEvent['date'].strftime("%Y-%m-%d"), self.currentEvent['time'])
+        self.currentEvent['time_start'] = time.strptime(self.currentEvent['time_start'], '%Y-%m-%d %H:%M')
+        self.currentEvent['time_start'] = datetime.datetime.fromtimestamp(time.mktime(self.currentEvent['time_start']))
+        
+        self.UpdatePreviousTimeEnd()
 
-    def s_end (s, state):
-        i = 2
-        while s.state.pop() != state:
-            i += 2
+    def UpdatePreviousTimeEnd(self):
+        
+        if self.prevEvent is not None:
+            self.prevEvent['time_end'] = self.currentEvent['time_start']
 
-    def s_switch (s, state):
-        s.state[-1] = state
+            # jesli przekraczamy kolejna dobe, robimy poprawke w dacie
+            if self.prevEvent['time_end'] < self.prevEvent['time_start']:
+                self.prevEvent['time_end'] = self.prevEvent['time_end'] + datetime.timedelta(days=1)
+                self.currentEvent['time_start'] = self.currentEvent['time_start'] + datetime.timedelta(days=1)
 
     # -------------------------------------
+    def start_table(self, attrs):
+        if self.state[-1] == "init" and self.getAttr(attrs, "class") == "drukowalne":
+            self.state.append('table')
 
-    def start_table(s, attrs):
-        if s.state[-1] == "HTML" and s.get_attr (attrs, "class") == "drukowalne":
-            s.s_start ("TABLE")
-            s.s_start ("NAME")
+    def end_table (self):
+        if self.state[-1] == 'table':
+            self.state.pop()
 
-    def end_table (s):
-        if "TABLE" in s.state:
-            s.s_end ("TABLE")
+    def start_tr(self, attrs):
+        if self.getAttr(attrs, "bgcolor") == '#D9E5FF':
+            self.state.append('dummy')
+        elif self.state[-1] == "table":
+            self.currentEvent = {'channel_id': self.currentChannelId, 'channel_name': "",
+                'date': self.currentDate, 'time': "", 'title': "", 'desc': ""}
+            self.state.append("program")
+            self.state.append("time")
 
-    def start_b (s, attrs):
-        if s.get_attr (attrs, "class") == "ng":
-            if s.state[-1] == "NAME":
-                s.s_start ("name")
-            elif s.state[-1] == "DATE":
-                s.s_start ("date")
-        elif s.state[-1] == "P_TIME":
-            s.s_start ("p_time")
-        elif s.state[-1] == "P_TITLE":
-            s.s_start ("p_title")
+    def end_tr (self):
+        if self.state[-1] == "program":
+            self.FormatEventDateTime()
+            self.eventDict.append(self.currentEvent)
+            self.prevEvent = self.currentEvent
+            self.state.pop()
+        elif self.state[-1] == 'dummy':
+            self.state.pop()
 
-    def end_b (s):
-        if "name" in s.state:
-            s.s_end ("name")
-            s.s_switch ("DATE")
-        elif "date" in s.state:
-            s.s_end ("date")
-            s.s_switch ("PROGRAMS")
-            s.programs = []
-        elif "p_time" in s.state:
-            s.s_end ("p_time")
-            s.s_switch ("P_TITLE")
-        elif "p_title" in s.state:
-            s.s_end ("p_title")
-            s.s_switch ("P_DESC")
+    def start_td(self, attrs):
+        if self.state[-1] != 'dummy':
+            if self.getAttr(attrs, 'colspan') == '2':
+                self.state.append('channel_name')
 
-    def start_span (s, attrs):
-        if s.get_attr (attrs, "class") == "SGinfo":
-            if s.state[-1] == "P_DESC":
-                s.s_start ("p_desc")
+    def end_td(self):
+        if self.state[-1] == 'channel_name':
+            self.state.pop()
 
-    def end_span (s):
-        if "p_desc" in s.state:
-            s.s_end ("p_desc")
+    def start_b (self, attrs):
+        if self.state[-1] == "time":
+            self.state.append("data_time")
+        elif self.state[-1] == "title":
+            self.state.append("data_title")
+        elif self.state[-1] == 'channel_name':
+            self.state.append("data_channel_name")
 
-    def start_tr (s, attrs):
-        if s.state[-1] == "PROGRAMS":
-            s.program = {'time': "", 'title': "", 'desc': ""}
-            s.s_start ("PROGRAM")
-            s.s_start ("P_TIME")
+    def end_b (self):
+        if self.state[-1] == "time":
+            self.state.pop()
+            self.state.append('title')
+        elif self.state[-1] == "title":
+            self.state.pop()
+            self.state.append('desc')
 
-    def end_tr (s):
-        if "PROGRAM" in s.state:
-            s.program['sub-title'] = ""
-            s.program['cat'] = []
-            s.programs.append (s.program)
-            s.s_end ("PROGRAM")
+    def start_span (self, attrs):
+        if self.getAttr(attrs, "class") == "SGinfo":
+            if self.state[-1] == "desc":
+                self.state.append("data_desc")
 
-    def handle_data (s, data):
+    def end_span (self):
+        if self.state[-1] == 'desc':
+            self.state.pop()
+
+    def handle_data (self, data):
         data = data.strip()
-        if s.state[-1] == "name":
-            s.channel = data
-        elif s.state[-1] == "date":
-            s.date = time.strptime (data[11:21], "%d.%m.%Y")
-        elif s.state[-1] == "p_time":
-            s.program['time'] = data
-        elif s.state[-1] == "p_title":
-            s.program['title'] = data
-        elif s.state[-1] == "p_desc":
-            s.success = True
-            s.program['desc'] += data + "\n"
+        if self.state[-1] == "data_time":
+            self.currentEvent['time'] = data.decode('iso-8859-2')
+            self.state.pop()
+        elif self.state[-1] == "data_title":
+            self.currentEvent['title'] = data.decode('iso-8859-2')
+            self.state.pop()            
+        elif self.state[-1] == "data_desc":
+            self.success = True
+            self.currentEvent['desc'] += data.decode('iso-8859-2') + "\n"
+            self.state.pop()
+        elif self.state[-1] == "data_channel_name":
+            self.currentEvent['channel_name'] = data.decode('iso-8859-2')
+            self.state.pop()
 
 
 
@@ -228,11 +236,10 @@ class WpParser(object):
 
         if getter.success:
             for event in eventDict:
-                eventClass = Event(event['channel_id'], event['title'], event['subtitle'],
-                    event['category'], event['description'],
-                    event['time_start'], event['time_end'])
+                eventClass = Event(event['channel_id'], event['channel_name'],
+                    event['title'], '', '', event['desc'], event['time_start'],
+                    event['time_end'])
                 eventClassList.append(eventClass)
 
         return eventClassList
         
-    

@@ -1,12 +1,12 @@
 1.0
 ---
-- wp - pobieranie listy kanałów
-- wp - pobieranie listy wydarzeń dla kanału i daty
-- txt - eksport do pliku tekstowego listy kanałów
-- txt - eksport do pliku tekstowego listy wydarzeń
++ wp - pobieranie listy kanałów
++ wp - pobieranie listy wydarzeń dla kanału i daty
++ txt - eksport do pliku tekstowego listy kanałów
++ txt - eksport do pliku tekstowego listy wydarzeń
 - xmltv - eksport do pliku xmltv listy kanałów
 - xmltv - eksport do pliku xmltv listy wydarzeń
-- common - operowanie na datach przy pobieraniu tygodniowym
++ common - operowanie na datach przy pobieraniu tygodniowym
 - testy
 
 1.1

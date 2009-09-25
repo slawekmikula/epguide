@@ -1,4 +1,4 @@
-import sys
+import sys, textwrap
 
 class TxtOutput(object):
     """
@@ -14,7 +14,7 @@ class TxtOutput(object):
         inicjalizacja wyjscia
         """
         if self.config.options.filename is not None:
-            self.file = open(self.config.options.filename)
+            self.file = open(self.config.options.filename, "w+")
         else:
             self.file = sys.stdout
 
@@ -29,16 +29,22 @@ class TxtOutput(object):
         zapisanie listy kanalow
         """
         for channel in channel_list:
-           self.file.write("%s - %s\n" % (channel.id, channel.name.encode('utf-8')))
+           self.file.write("%s - %s\n" % (channel.id, channel.name.encode('utf8')))
 
-    def SaveGuide(self, day, channel, guide):
+    def SaveGuide(self, day, guide):
         """
         zapisanie programu
         """
-        self.file.write("%s - %s\n" % (channel.name.encode('utf-8'), day))
+        if len(guide) == 0:
+            self.file.write("Brak programu dla tego dnia")
+            return
+        
+        self.file.write("\nProgram %s na dzien: %s\n" % (guide[0].channel_name.encode('utf8'), day.strftime("%Y-%m-%d")))
+        self.file.write("--------------------------------------------\n\n")
         for item in guide:
-            self.file.write("  %s %s   %s\n" % (item.date_start, item.time_start, item.title.encode('utf-8')))
-            self.file.write(textwrap.fill (item.desc, 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
+            self.file.write(" %s %s   %s\n" % (item.time_start.strftime("%H:%M"), item.time_end.strftime("%H:%M"),
+                item.title.encode('utf8')))
+            self.file.write(textwrap.fill (item.desc.encode('utf8'), 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
 
     def SaveGuideChannels(self, channelIds):
         pass

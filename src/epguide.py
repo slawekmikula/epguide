@@ -66,13 +66,15 @@ class EpGuide(object):
         self.parser.Init()
         self.output.Init()
         self.output.SaveGuideChannels(self.config.options.channel_list)
-        
-        for day in range((self.config.date_to - self.config.date_from).days):
-            for channel in self.config.options.channel_list:                
+
+        day = self.config.date_from
+        for iter in range((self.config.date_to - self.config.date_from).days):
+            
+            for channel in self.config.options.channel_list:
                 guide = self.parser.GetGuide(day, channel)
-                self.output.SaveGuide(day, channel, guide)
+                self.output.SaveGuide(day, guide)
                 
-            #day = self.config.date_from + datetime.timedelta(days=1)
+            day += datetime.timedelta(days=1)
                 
         self.output.Finish()
         self.parser.Finish()
