@@ -46,5 +46,5 @@ class TxtOutput(object):
                 item.title.encode('utf8')))
             self.file.write(textwrap.fill (item.desc.encode('utf8'), 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
 
-    def SaveGuideChannels(self, channelIds):
+    def SaveGuideChannels(self):
         pass

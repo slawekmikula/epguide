@@ -70,8 +70,8 @@ class Config(object):
         # tworzenie wyjscia
         if self.options.output == 'txt':
             self.output = TxtOutput.TxtOutput(self)
-        elif self.options.parser == 'xmltv':
-            self.output = XmltvOutput.XmltvOutput()
+        elif self.options.output == 'xmltv':
+            self.output = XmltvOutput.XmltvOutput(self)
         
         # daty poczatkowe i koncowe 
         if self.options.get_week == True:
