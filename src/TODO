@@ -7,12 +7,13 @@
 + xmltv - eksport do pliku xmltv listy kanałów
 + xmltv - eksport do pliku xmltv listy wydarzeń
 + common - operowanie na datach przy pobieraniu tygodniowym
-- parsowanie dodatkowych danych (aktorzy)
++ parsowanie dodatkowych danych (aktorzy)
 - testy
-
+- testy poprawności generowanych danych DTD przez xmltv
 
 1.1
 ---
+- plik konfiguracji (xml)
 - wersja windows (exe)
 - frontend do uruchamiania (python + pygtk)
 - eksport do formatu tvguide-s60 (xmltv + zip)

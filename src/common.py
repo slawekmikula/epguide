@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import time, datetime
+import time
+import datetime
 from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 

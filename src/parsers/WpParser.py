@@ -1,5 +1,6 @@
 from sgmllib import SGMLParser
-import time, datetime
+import time
+import datetime
 import urllib
 
 from data_formats import Channel, Event
@@ -169,7 +170,8 @@ class WpProgrammeGetter(SGMLParser):
                 self.state.append("data_desc")
 
     def end_span (self):
-        if self.state[-1] == 'desc':
+        if self.state[-1] == 'data_desc':
+            self.state.pop()
             self.state.pop()
 
     def handle_data (self, data):
@@ -183,7 +185,6 @@ class WpProgrammeGetter(SGMLParser):
         elif self.state[-1] == "data_desc":
             self.success = True
             self.currentEvent['desc'] += data.decode('iso-8859-2') + "\n"
-            self.state.pop()
         elif self.state[-1] == "data_channel_name":
             self.currentEvent['channel_name'] = data.decode('iso-8859-2')
             self.state.pop()

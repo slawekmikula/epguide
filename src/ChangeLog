@@ -15,3 +15,7 @@
      * dodanie wsparcia dla danych ze strony http://www.cyfraplus.pl
 	 * poprawa wyjścia xml tak, by było zgodne z DTD XMLTV
 	 * poprawa wyjścia z wp.py
+
+2009-09-26 smikula <slawek.mikula@gmail.com>
+     * refaktoring programu do wersji 1.0
+     * rozbicie na moduly, przepisanie kodu, modułowość

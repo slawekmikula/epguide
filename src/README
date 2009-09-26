@@ -1,0 +1,36 @@
+EpGuide
+
+O programie
+===========
+Program jest prostym parserem stron przedstawiających polskie programy telewizyjne.
+Obecnie bazuje na danych z stron tv.wp.pl lub serwisu informacyjnego Canal+.
+Program w wyniku swojej pracy dostarcza wyniku w postaci pliku tekstowego lub
+pliku w formacie xmltv. Pozwala to na prostą integrację z aplikacjami
+wykorzystującymi ten format pliku (XMLTV) do wyświetlania aktualnego programu
+telewizyjnego
+
+Instalacja
+==========
+Instalację można przeprowadzić na kilka sposobów.
+1. Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego
+   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py
+2. Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:
+   Należy w linii komend wybrać 'easy_install epguide'
+3. Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji
+   egg wykonać następujące polecenie w linii komend: 'easy_install epguide_x.x.egg'
+   gdzie x.x to numer wersji aplikacji epguide
+
+Użycie
+======
+Uruchomienie polega na wywolaniu epg_runner.py z odpowiednimi opcjami.
+
+Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
+
+Poczatkowo nalezy uruchomić program z opcją -l, co wyświeli wszystkie
+programy telewizyjne obsługiwane przez stronę tv.wp.pl. Następnie wymagane
+indeksy programów należy umieścić w wywołaniu głównym programu.
+
+Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
+dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
+
+$ wp.py -c 1,2,5,17,18,233 -f xmltv -w > tv.xml
