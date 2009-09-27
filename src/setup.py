@@ -4,24 +4,21 @@ __date__ ="$2009-09-26 20:50:59$"
 from setuptools import setup,find_packages
 
 setup (
-  name = 'python-dev-epguide',
-  version = '0.1',
+  name = 'epguide',
+  version = '1.0',
   packages = find_packages(),
 
-  # Declare your packages' dependencies here, for eg:
-  install_requires=['foo>=3'],
+  # Declare your packages' dependencies here, for eg: foo>=3
+  install_requires=[''],
 
   # Fill in these to make your Egg ready for upload to
   # PyPI
-  author = 'zorba',
-  author_email = '',
+  author = 'Slawek Mikula',
+  author_email = 'slawek.mikula@gmail.com',
 
-  summary = 'Just another Python package for the cheese shop',
-  url = '',
-  license = '',
-  long_description= 'Long description of the package',
-
-  # could also include long_description, download_url, classifiers, etc.
-
+  summary = 'Python Electronic TV Guide Downloader and XMLTV exporter',
+  url = 'code.google.com/p/epguide',
+  license = 'GNU GPLv2',
+  long_description= '',
   
 )
