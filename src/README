@@ -3,17 +3,22 @@ EpGuide
 O programie
 ===========
 Program jest prostym parserem stron przedstawiających polskie programy telewizyjne.
-Obecnie bazuje na danych z stron tv.wp.pl lub serwisu informacyjnego Canal+.
+Obecnie bazuje na danych z stron www dostarczycieli programów telewizyjnych.
 Program w wyniku swojej pracy dostarcza wyniku w postaci pliku tekstowego lub
 pliku w formacie xmltv. Pozwala to na prostą integrację z aplikacjami
 wykorzystującymi ten format pliku (XMLTV) do wyświetlania aktualnego programu
 telewizyjnego
 
+Licencja
+========
+Licencja znajduje się w pliku COPYING
+
 Instalacja
 ==========
 Instalację można przeprowadzić na kilka sposobów.
 1. Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego
-   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py
+   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py lub
+   poprzez przykładowy plik skryptowy run.sh
 2. Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:
    Należy w linii komend wybrać 'easy_install epguide'
 3. Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji
@@ -27,10 +32,20 @@ Uruchomienie polega na wywolaniu epg_runner.py z odpowiednimi opcjami.
 Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
 
 Poczatkowo nalezy uruchomić program z opcją -l, co wyświeli wszystkie
-programy telewizyjne obsługiwane przez stronę tv.wp.pl. Następnie wymagane
-indeksy programów należy umieścić w wywołaniu głównym programu.
+programy telewizyjne obsługiwane przez dostarczyciela kanału. Domyślnym
+dostarczycielem jest portal Wirtualna Polska (tv.wp.pl). Następnie wymagane
+indeksy programów należy umieścić w wywołaniu głównym programu. Program ma
+możliwość eksportowania listy programów do formatu txt lub XMLTV.
 
+== Wylistowanie dostępnych kanałów ==
+Uruchamiamy program z opcją -l. Domyślnie epguide wylistuje listę dostępnych
+kanałów wraz z ich identyfikatorami liczbowymi na standardowe wyjście
+
+$ epg_runner.py -l
+
+== Sciągnięcie listy programów ==
 Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
 dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
 
-$ wp.py -c 1,2,5,17,18,233 -f xmltv -w > tv.xml
+$ epg_runner.py -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml
+
