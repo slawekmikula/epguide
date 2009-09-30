@@ -6,8 +6,9 @@ from setuptools import setup,find_packages
 setup (
   name = 'epguide',
   version = '1.0',
-  packages = find_packages(),
-  package_data = {'': 'AUTHORS', '': 'COPYING', '': 'ChangeLog', '': 'README' },
+  packages = find_packages(exclude='contrib'),
+  package_data = {'epguide': ['AUTHORS', 'COPYING',
+    'ChangeLog', 'README', '*.txt']},
 
   # Declare your packages' dependencies here, for eg: foo>=3
   install_requires=[''],
