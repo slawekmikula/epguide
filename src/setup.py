@@ -7,6 +7,7 @@ setup (
   name = 'epguide',
   version = '1.0',
   packages = find_packages(),
+  package_data = {'': 'AUTHORS', '': 'COPYING', '': 'ChangeLog', '': 'README' },
 
   # Declare your packages' dependencies here, for eg: foo>=3
   install_requires=[''],
