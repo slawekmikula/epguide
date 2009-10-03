@@ -1,7 +1,9 @@
-EpGuide
+#summary readme
 
-O programie
-===========
+*EpGuide*
+
+== O programie ==
+
 Program jest prostym parserem stron przedstawiających polskie programy telewizyjne.
 Obecnie bazuje na danych z stron www dostarczycieli programów telewizyjnych.
 Program w wyniku swojej pracy dostarcza wyniku w postaci pliku tekstowego lub
@@ -9,24 +11,16 @@ pliku w formacie xmltv. Pozwala to na prostą integrację z aplikacjami
 wykorzystującymi ten format pliku (XMLTV) do wyświetlania aktualnego programu
 telewizyjnego
 
-Licencja
-========
+== Licencja ==
 Licencja znajduje się w pliku COPYING
 
-Instalacja
-==========
+== Instalacja ==
 Instalację można przeprowadzić na kilka sposobów.
-1. Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego
-   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py lub
-   poprzez przykładowy plik skryptowy run.sh
-2. Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:
-   Należy w linii komend wybrać 'easy_install epguide'
-3. Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji
-   egg wykonać następujące polecenie w linii komend: 'easy_install epguide_x.x.egg'
-   gdzie x.x to numer wersji aplikacji epguide
+  # Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py lub poprzez przykładowy plik skryptowy run.sh
+  # Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:  Należy w linii komend wybrać 'easy_install epguide'
+  # Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji egg wykonać następujące polecenie w linii komend: 'easy_install epguide_x.x.egg' gdzie x.x to numer wersji aplikacji epguide
 
-Użycie
-======
+== Użycie ==
 Uruchomienie polega na wywolaniu epg_runner.py z odpowiednimi opcjami.
 
 Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
@@ -41,11 +35,10 @@ możliwość eksportowania listy programów do formatu txt lub XMLTV.
 Uruchamiamy program z opcją -l. Domyślnie epguide wylistuje listę dostępnych
 kanałów wraz z ich identyfikatorami liczbowymi na standardowe wyjście
 
-$ epg_runner.py -l
+$ epguide.py -l
 
 == Sciągnięcie listy programów ==
 Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
 dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
 
-$ epg_runner.py -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml
-
+$ epguide.py -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml
