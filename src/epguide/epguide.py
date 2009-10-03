@@ -65,7 +65,7 @@ class EpGuide(object):
         """
 
         if self.config.options.channel_list is None or len(self.config.options.channel_list) == 0:
-            print "Brak wybranej listy kanałów - opcja -c !"
+            print "Brak wybranej listy kanalow - opcja -c !"
             sys.exit()
 
         self.parser.Init()

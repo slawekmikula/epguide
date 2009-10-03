@@ -5,7 +5,7 @@ import datetime
 from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 
-from parsers import WpParser, CpParser, GazetaParser
+from parsers import WpParser
 from formatters import TxtOutput, XmltvOutput
 
 def CheckDate (dummy, opt, value):
@@ -41,7 +41,7 @@ class Config(object):
         self.cmdparser = OptionParser(usage=self.usage, option_class=AdditionalOptions)
         self.cmdparser.add_option ("-d", type="date", dest="date", help="date you want the program from (format: YYYY-MM-DD)")
         self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format")
-        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","cplus","gazeta"], default="wp", help="channel parser source")
+        self.cmdparser.add_option ("-p", dest="parser", choices=["wp"], default="wp", help="channel parser source")
         self.cmdparser.add_option ("-l", dest="list", action="store_true", default=False, help="list all channels and their numbers")
         self.cmdparser.add_option ("-o", dest="filename",  help="store results to file (default to stdout)")
         self.cmdparser.add_option ("-c", dest="channel_list",  help="input channel list (numbers comma separated)")
@@ -63,10 +63,6 @@ class Config(object):
         # tworzenie parsera
         if self.options.parser == 'wp':
             self.parser = WpParser.WpParser()
-        elif self.options.parser == 'cplus':
-            self.parser = CpParser.CpParser()
-        elif self.options.parser == 'gazeta':
-            self.parser = GazetaParser.GazetaParser()
 
         # tworzenie wyjscia
         if self.options.output == 'txt':
