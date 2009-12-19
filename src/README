@@ -16,12 +16,17 @@ Licencja znajduje się w pliku COPYING
 
 == Instalacja ==
 Instalację można przeprowadzić na kilka sposobów.
-  # Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego   katalogu. Aplikację uruchamia się poprzez wybranie pliku epg_runner.py lub poprzez przykładowy plik skryptowy run.sh
-  # Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:  Należy w linii komend wybrać 'easy_install epguide'
-  # Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji egg wykonać następujące polecenie w linii komend: 'easy_install epguide_x.x.egg' gdzie x.x to numer wersji aplikacji epguide
+  1 Aplikacja sciągnęta w formie pliku zip - należy pliki rozpakować do dowolnego
+    katalogu. Aplikację uruchamia się poprzez uruchomienie pliku epguide_run
+  2 Skorzystanie z archiwum modułów pythona pypi. Instalacja wygląda następująco:
+    Należy w linii komend wybrać 'easy_install epguide'
+  3 Zainstalowanie z lokalnego pliku egg: Należy po sciągnięciu plika instalacji
+    egg wykonać następujące polecenie w linii komend: 
+    'easy_install epguide_x.x.egg' gdzie x.x to numer wersji aplikacji epguide
 
 == Użycie ==
-Uruchomienie polega na wywolaniu epg_runner.py z odpowiednimi opcjami.
+Uruchomienie polega na wywolaniu epguide (w przypadku instalacji 2 lub 3) 
+lub za pomocą pomocniczego skryptu epguide_run z odpowiednimi opcjami.
 
 Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
 
@@ -35,10 +40,10 @@ możliwość eksportowania listy programów do formatu txt lub XMLTV.
 Uruchamiamy program z opcją -l. Domyślnie epguide wylistuje listę dostępnych
 kanałów wraz z ich identyfikatorami liczbowymi na standardowe wyjście
 
-$ epguide.py -l
+$ epguide -l
 
 == Sciągnięcie listy programów ==
 Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
 dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
 
-$ epguide.py -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml
+$ epguide -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml

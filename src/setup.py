@@ -5,10 +5,10 @@ from setuptools import setup,find_packages
 
 setup (
     name = 'epguide',
-    version = '1.0',
+    version = '1.1',
     packages = find_packages(exclude=['bin','test']),
     package_data = {'': ['AUTHORS', 'LICENSE',
-    'CHANGES', 'README']},
+    'CHANGES', 'README', 'epguide_run']},
 
     # Declare your packages' dependencies here, for eg: foo>=3
     install_requires=[''],
