@@ -70,6 +70,7 @@ class WpProgrammeGetter(SGMLParser):
         self.eventDict = []
         self.prevEvent = None
         self.currentEvent = None
+        self.bad_row = False
 
         self.state = ['init']
         self.success = False
@@ -104,13 +105,18 @@ class WpProgrammeGetter(SGMLParser):
 
     def UpdatePreviousTimeEnd(self):
         
-        if self.prevEvent is not None:
+        if self.prevEvent is not None and self.currentEvent is not None:
             self.prevEvent['time_end'] = self.currentEvent['time_start']
 
             # jesli przekraczamy kolejna dobe, robimy poprawke w dacie
             if self.prevEvent['time_end'] < self.prevEvent['time_start']:
                 self.prevEvent['time_end'] = self.prevEvent['time_end'] + datetime.timedelta(days=1)
                 self.currentEvent['time_start'] = self.currentEvent['time_start'] + datetime.timedelta(days=1)
+        
+        # przypadek, gdy jestesmy na koncu listy
+        if self.prevEvent is not None and self.currentEvent is None:
+            self.prevEvent['time_end'] = self.prevEvent['time_start']
+
 
     # -------------------------------------
     def start_table(self, attrs):
@@ -130,22 +136,32 @@ class WpProgrammeGetter(SGMLParser):
             self.state.append("program")
             self.state.append("time")
 
-    def end_tr (self):
-        if self.state[-1] == "program":
-            self.FormatEventDateTime()
-            self.eventDict.append(self.currentEvent)
-            self.prevEvent = self.currentEvent
+    def end_tr (self):       
+        if self.state[-1] == "program" and self.bad_row == False:
+            if self.currentEvent is not None:
+                self.FormatEventDateTime()
+                self.eventDict.append(self.currentEvent)
+                self.prevEvent = self.currentEvent
             self.state.pop()
         elif self.state[-1] == 'dummy':
+            self.state.pop()
+        elif self.state[-1] == "program" and self.bad_row == True:
+            self.bad_row = False
             self.state.pop()
 
     def start_td(self, attrs):
         if self.state[-1] != 'dummy':
             if self.getAttr(attrs, 'colspan') == '2':
                 self.state.append('channel_name')
+            elif self.getAttr(attrs, "class") != "drukowalne":
+                self.state.append('bad_row')
+                self.currentEvent = None
+                self.bad_row = True
 
     def end_td(self):
         if self.state[-1] == 'channel_name':
+            self.state.pop()
+        elif self.state[-1] == 'bad_row':
             self.state.pop()
 
     def start_b (self, attrs):
@@ -175,6 +191,9 @@ class WpProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def handle_data (self, data):
+        if self.currentEvent is None:
+            return
+
         data = data.strip()
         if self.state[-1] == "data_time":
             self.currentEvent['time'] = data.decode('iso-8859-2')
