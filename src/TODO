@@ -11,14 +11,14 @@
 - testy
 - testy poprawności generowanych danych DTD przez xmltv
 
-1.x
+2.x
 ---
 - plik konfiguracji (xml)
 - wersja windows (exe)
 - frontend do uruchamiania (python + pygtk)
 - eksport do formatu tvguide-s60 (xmltv + zip)
 
-2.x
+3.x
 ---
 - canal+ - obsługa listy kanałów
 - canal+ - obsługa listy wydarzeń

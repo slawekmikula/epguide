@@ -19,3 +19,12 @@
 2009-09-26 smikula <slawek.mikula@gmail.com>
      * refaktoring programu do wersji 1.0
      * rozbicie na moduly, przepisanie kodu, modułowość
+
+2009-12-19 smikula <slawek.mikula@gmail.com>
+     * wersja 1.1
+     * dodanie skryptu startującego epguide_run
+     * uaktualnienie dokumentacji
+
+2010-01-02 smikula <slawek.mikula@gmail.com>
+     * wersja 1.2
+     * poprawa błędu #1
