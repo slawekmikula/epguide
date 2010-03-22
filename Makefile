@@ -1,4 +1,4 @@
-VERSION=1.1
+VERSION=1.3
 PKG_NAME=epguide
 
 egg:
@@ -9,3 +9,6 @@ pypi:
 
 dist:
 	tar -czf ${PKG_NAME}-${VERSION}.tar.gz src/*
+
+clean:
+	rm -rf *.pyc
