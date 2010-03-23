@@ -79,6 +79,7 @@ class WpNgProgrammeGetter(SGMLParser):
     def GetEventList(self, eventDate, channel_id):
         self.currentDate = eventDate
         self.currentChannelId = channel_id
+        self.currentChannelName = '' # wypelnione przy parsowaniu
 
         self.url = self.url % (eventDate.strftime("%Y-%m-%d"), channel_id)
         buf = urllib.urlopen (self.url).read()
@@ -129,6 +130,8 @@ class WpNgProgrammeGetter(SGMLParser):
             self.currentEvent = {'channel_id': self.currentChannelId, 'channel_name': "",
                 'date': self.currentDate, 'time': "", 'title': "", 'desc': ""}
             self.state.append('program')
+        elif self.state[-1] == "content" and self.getAttr(attrs, "class") == "com":
+            self.state.append('channel_name_div')
         elif self.state[-1] == "content" and self.getAttr(attrs, "class") != "program":
             self.state.append('dummy')
         elif self.state[-1] == "program" and self.getAttr(attrs, "class") == "programIn clra":
@@ -150,6 +153,8 @@ class WpNgProgrammeGetter(SGMLParser):
             self.state.pop()
         elif self.state[-1] == 'content':
             self.state.pop()
+        elif self.state[-1] == 'channel_name_div':
+            self.state.pop()          
         elif self.state[-1] == 'dummy':
             self.state.pop()
         elif self.state[-1] == 'program clra':
@@ -165,6 +170,13 @@ class WpNgProgrammeGetter(SGMLParser):
         elif self.state[-1] == 'programR':
             self.state.pop()
 
+    def start_h1(self, attrs):
+        if self.state[-1] == 'channel_name_div':
+            self.state.append('channel_name')
+
+    def end_h1(self):
+        if self.state[-1] == 'channel_name':
+            self.state.pop()
 
     def start_strong(self, attrs):
         if self.state[-1] == 'programL':
@@ -203,6 +215,9 @@ class WpNgProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def handle_data (self, data):
+        if self.state[-1] == "channel_name":
+            self.currentChannelName = data.decode('iso-8859-2')
+        
         if self.currentEvent is None:
             return
 
@@ -211,11 +226,11 @@ class WpNgProgrammeGetter(SGMLParser):
             self.currentEvent['time'] = data.decode('iso-8859-2')
         elif self.state[-1] == "title" or self.state[-1] == "title_a" :
             self.currentEvent['title'] += data.decode('iso-8859-2')
+            self.currentEvent['channel_name'] = self.currentChannelName
         elif self.state[-1] == 'description' or self.state[-1] == 'crew':
             self.success = True
             if data.decode('iso-8859-2') != 'czytaj dalej':
-                self.currentEvent['desc'] += data.decode('iso-8859-2') + "\n"
-
+                self.currentEvent['desc'] += data.decode('iso-8859-2') + "\n"            
 
 class WpNgParser(object):
     """

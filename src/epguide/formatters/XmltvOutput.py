@@ -72,7 +72,8 @@ class XmltvOutput(object):
                        self.FormatString(item.desc),
                        self.FormatString(item.category)))
 
-            self.channel_list.add(Channel(item.channel_name, int(item.channel_id)))
+            if item.channel_name != '':
+                self.channel_list.add(Channel(item.channel_name, int(item.channel_id)))
          
     def SaveGuideChannels(self):
         for channel in self.channel_list:

@@ -91,6 +91,7 @@ class TelemanProgrammeGetter(SGMLParser):
     def GetEventList(self, eventDate, channel_id):
         self.currentDate = eventDate
         self.currentChannelId = channel_id
+        self.currentChannelName = '' # wypelnione przy parsowaniu
 
         dateDiff = eventDate - datetime.date.today()
         self.url = self.url % (channel_id, dateDiff.days)
@@ -135,7 +136,6 @@ class TelemanProgrammeGetter(SGMLParser):
     # -------------------------------------
     def start_table(self, attrs):
         if self.state[-1] == "init" and self.getAttr(attrs, "id") == "programmes":
-            print "start"
             self.state.append('start')
 
     def end_table (self):
@@ -173,7 +173,7 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def start_span(self, attrs):
-        if self.state[-1] == "program" and self.getAttr(attrs, "class") == "categ categ-xxx":
+        if self.state[-1] == "description" and self.getAttr(attrs, "class") == "categ categ-xxx":
             self.state.append('category')
 
     def end_span(self):
@@ -199,12 +199,35 @@ class TelemanProgrammeGetter(SGMLParser):
     def start_div(self, attrs):
         if self.state[-1] == 'start_hour' and self.getAttr(attrs, "class") == "running":
             self.state.append('dummy')
+        elif self.state[-1] == 'init' and self.getAttr(attrs, "id") == "station" and self.getAttr(attrs, "class") == "content":
+            self.state.append('channel_name_div')
 
     def end_div(self):
         if self.state[-1] == 'dummy':
             self.state.pop()
+        elif self.state[-1] == 'channel_name_div':
+            self.state.pop()
+
+    def start_h1(self, attrs):
+        if self.state[-1] == 'channel_name_div':
+            self.state.append('channel_name')
+
+    def end_h1(self):
+        if self.state[-1] == 'channel_name':
+            self.state.pop()
+
+    def start_img(self, attrs):
+        if self.state[-1] == 'channel_name':
+            self.state.append('channel_name_img')
+
+    def end_img(self):
+        if self.state[-1] == 'channel_name_img':
+            self.state.pop()
 
     def handle_data (self, data):
+        if self.state[-1] == "channel_name_img" and self.state[-2] == 'channel_name':
+            self.currentChannelName = data.decode('utf-8').strip()
+            
         if self.currentEvent is None:
             return
 
@@ -218,6 +241,7 @@ class TelemanProgrammeGetter(SGMLParser):
         elif self.state[-1] == 'content':
             self.success = True
             self.currentEvent['desc'] += data.decode('utf-8') + "\n"
+            self.currentEvent['channel_name'] = self.currentChannelName
 
 
 class TelemanParser(object):
