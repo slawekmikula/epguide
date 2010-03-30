@@ -33,3 +33,7 @@
      * wersja 1.3
      * obsługa beta.tv.wp.pl
      * obsługa teleman.pl
+
+2010-03-30 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4
+    * zmiana strony tv.wp.pl na nowy layout - domyślny parser to wpng

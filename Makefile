@@ -1,4 +1,4 @@
-VERSION=1.3
+VERSION=1.4
 PKG_NAME=epguide
 
 egg:
@@ -7,7 +7,7 @@ egg:
 pypi:
 	python ./src/setup.py register
 
-dist:
+dist: clean
 	tar -czf ${PKG_NAME}-${VERSION}.tar.gz src/*
 
 clean:

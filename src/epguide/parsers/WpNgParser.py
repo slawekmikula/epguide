@@ -9,7 +9,7 @@ class WpNgChannelListGetter(SGMLParser):
     def __init__(self):
         SGMLParser.__init__ (self)
 
-        self.url = "http://beta.tv.wp.pl/index.html"
+        self.url = "http://tv.wp.pl/index.html"
         self.channelList = []
 
         self.state = ['init']
@@ -67,7 +67,7 @@ class WpNgProgrammeGetter(SGMLParser):
         SGMLParser.__init__ (self)
 
 
-        self.url = "http://beta.tv.wp.pl/date,%s,name,TVP-2,stid,%s,program.html"
+        self.url = "http://tv.wp.pl/program.html?name=TVP-1&stid=%s&date=%s&time="
         self.eventDict = []
         self.prevEvent = None
         self.currentEvent = None
@@ -81,7 +81,7 @@ class WpNgProgrammeGetter(SGMLParser):
         self.currentChannelId = channel_id
         self.currentChannelName = '' # wypelnione przy parsowaniu
 
-        self.url = self.url % (eventDate.strftime("%Y-%m-%d"), channel_id)
+        self.url = self.url % (channel_id, eventDate.strftime("%Y-%m-%d"))
         buf = urllib.urlopen (self.url).read()
         self.feed(buf)
         self.close()

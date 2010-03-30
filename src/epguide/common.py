@@ -41,7 +41,7 @@ class Config(object):
         self.cmdparser = OptionParser(usage=self.usage, option_class=AdditionalOptions)
         self.cmdparser.add_option ("-d", type="date", dest="date", help="date you want the program from (format: YYYY-MM-DD)")
         self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format")
-        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","wpng","teleman"], default="wp", help="channel parser source")
+        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","wpng","teleman"], default="wpng", help="channel parser source")
         self.cmdparser.add_option ("-l", dest="list", action="store_true", default=False, help="list all channels and their numbers")
         self.cmdparser.add_option ("-o", dest="filename",  help="store results to file (default to stdout)")
         self.cmdparser.add_option ("-c", dest="channel_list",  help="input channel list (numbers comma separated)")
