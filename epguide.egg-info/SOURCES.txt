@@ -1,5 +1,0 @@
-epguide.egg-info/PKG-INFO
-epguide.egg-info/SOURCES.txt
-epguide.egg-info/dependency_links.txt
-epguide.egg-info/entry_points.txt
-epguide.egg-info/top_level.txt

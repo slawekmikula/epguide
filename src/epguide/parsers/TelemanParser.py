@@ -2,6 +2,7 @@ from sgmllib import SGMLParser
 import time
 import datetime
 import urllib
+import re
 
 from epguide.data_formats import Channel, Event
 
@@ -173,7 +174,7 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def start_span(self, attrs):
-        if self.state[-1] == "description" and self.getAttr(attrs, "class") == "categ categ-xxx":
+        if self.state[-1] == "description" and re.search('categ categ-...', self.getAttr(attrs, "class")):
             self.state.append('category')
 
     def end_span(self):

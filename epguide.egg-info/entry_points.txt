@@ -1,4 +1,0 @@
-
-  [console_scripts]
-  epguide = epguide.epg_runner:RunEpguide
-  

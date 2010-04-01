@@ -37,3 +37,7 @@
 2010-03-30 smikula <slawek.mikula@gmail.com>
     * wersja 1.4
     * zmiana strony tv.wp.pl na nowy layout - domyślny parser to wpng
+
+2010-04-01 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4.1
+    * poprawka (rurus9) - poprawne parsowanie wszystkich kategorii dla teleman
