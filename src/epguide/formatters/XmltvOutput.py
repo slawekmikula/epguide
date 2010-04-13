@@ -1,9 +1,10 @@
+import time
 import sys, string
 
 from epguide.data_formats import Channel, Event
 
 event_format="""
-<programme start="%s" stop="%s" channel="%s">
+<programme start="%s %s" stop="%s %s" channel="%s">
   <title>%s</title>
   <sub-title>%s</sub-title>
   <desc>%s</desc>
@@ -22,6 +23,15 @@ class XmltvOutput(object):
         self.file = None
         self.config = config
         self.channel_list = set()
+
+        # strefa czasowa aktualna
+        self.tz = time.timezone /60 /60
+        if self.tz > 0:
+            sign = "-" # zmieniamy znak bo to roznica DO UTC (a nie od)
+        else:
+            sign = "+"
+        self.tz = "%s0%s00" % (sign, abs(self.tz))
+
     
     def Init(self):
         """
@@ -64,8 +74,10 @@ class XmltvOutput(object):
 
         for item in guide:
             self.file.write(event_format  % (
-                       item.time_start.strftime("%Y%m%d%H%M%S +0100"),
-                       item.time_end.strftime("%Y%m%d%H%M%S +0100"),
+                       item.time_start.strftime("%Y%m%d%H%M%S"),
+                       self.tz,
+                       item.time_end.strftime("%Y%m%d%H%M%S"),
+                       self.tz,
                        item.channel_id,
                        self.FormatString(item.title),
                        self.FormatString(item.subtitle),

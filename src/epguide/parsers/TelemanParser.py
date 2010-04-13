@@ -226,9 +226,13 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def handle_data (self, data):
+        # nazwa kanalu
         if self.state[-1] == "channel_name_img" and self.state[-2] == 'channel_name':
             self.currentChannelName = data.decode('utf-8').strip()
-            
+        # dla kanalow bez obrazka logo kanalu
+        elif self.state[-1] == "channel_name" and data != "":
+            self.currentChannelName = data.decode('utf-8').strip()
+
         if self.currentEvent is None:
             return
 
