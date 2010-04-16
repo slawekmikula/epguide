@@ -41,3 +41,8 @@
 2010-04-01 smikula <slawek.mikula@gmail.com>
     * wersja 1.4.1
     * poprawka (rurus9) - poprawne parsowanie wszystkich kategorii dla teleman
+
+2010-04-16 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4.2
+    * teleman - lista kanałów dla stron bez logo stacji telewizyjnej
+    * xmltv - zapis poprawny strefy czasowej w pliku XMLTV
