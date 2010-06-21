@@ -25,7 +25,11 @@ class XmltvOutput(object):
         self.channel_list = set()
 
         # strefa czasowa aktualna
-        self.tz = time.timezone /60 /60
+        if time.localtime(time.time()).tm_isdst and time.daylight:
+            self.tz = time.altzone /60 /60
+        else:
+            self.tz = time.timezone /60 /60
+
         if self.tz > 0:
             sign = "-" # zmieniamy znak bo to roznica DO UTC (a nie od)
         else:
