@@ -48,6 +48,7 @@ class Config(object):
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
+        self.cmdparser.add_option ("--verbose", dest="verbose", action="store_true", default=False, help="verbose logging")
         self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
 
     def ParseCommandLine(self, argv):
