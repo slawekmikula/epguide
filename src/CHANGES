@@ -50,3 +50,6 @@
 2010-06-21 smikula <slawek.mikula@gmail.com>
     * wersja 1.4.3
     * xmltv - poprawka zapisu strefy czasowej
+
+2010-06-22 smikula <slawek.mikula@gmail.com>
+    * dodanie logowania operacji --verbose
