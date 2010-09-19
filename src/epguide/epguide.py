@@ -74,7 +74,7 @@ class EpGuide(object):
         self.log.info("Zapisuję liste kanałów")
         self.output.SaveChannelList(channel_list)
 
-        log.info("Parser zamknięcie")
+        self.log.info("Parser zamknięcie")
         self.parser.Finish()
 
         self.log.info("Wyjście zamknięcie")
