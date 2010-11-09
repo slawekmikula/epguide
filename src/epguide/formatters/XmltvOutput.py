@@ -4,7 +4,7 @@ import sys, string
 from epguide.data_formats import Channel, Event
 
 event_format="""
-<programme start="%s %s" stop="%s %s" channel="%s">
+<programme start="%s %s" %schannel="%s">
   <title>%s</title>
   <sub-title>%s</sub-title>
   <desc>%s</desc>
@@ -80,8 +80,10 @@ class XmltvOutput(object):
             self.file.write(event_format  % (
                        item.time_start.strftime("%Y%m%d%H%M%S"),
                        self.tz,
-                       item.time_end.strftime("%Y%m%d%H%M%S"),
-                       self.tz,
+                       item.time_end and \
+                            'stop="%s %s" ' % \
+                                (item.time_end.strftime("%Y%m%d%H%M%S"),
+                                 self.tz) or '',
                        item.channel_id,
                        self.FormatString(item.title),
                        self.FormatString(item.subtitle),

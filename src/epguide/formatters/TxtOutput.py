@@ -42,7 +42,7 @@ class TxtOutput(object):
         self.file.write("\nProgram %s na dzien: %s\n" % (guide[0].channel_name.encode('utf8'), day.strftime("%Y-%m-%d")))
         self.file.write("--------------------------------------------\n\n")
         for item in guide:
-            self.file.write(" %s %s   %s\n" % (item.time_start.strftime("%H:%M"), item.time_end.strftime("%H:%M"),
+            self.file.write(" %s %s   %s\n" % (item.time_start.strftime("%H:%M"), item.time_end and item.time_end.strftime("%H:%M") or '',
                 item.title.encode('utf8')))
             self.file.write(textwrap.fill (item.desc.encode('utf8'), 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
 
