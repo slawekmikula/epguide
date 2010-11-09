@@ -11,10 +11,10 @@ class Channel(object):
         self.id = id
 
     def __hash__(self):
-        return self.id
+        return hash(self.id)
 
     def __cmp__(self, other):
-        return self.id - other.id
+        return cmp(self.id, other.id)
 
 class Event(object):
     """
