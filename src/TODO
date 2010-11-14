@@ -8,8 +8,11 @@
 + xmltv - eksport do pliku xmltv listy wydarzeń
 + common - operowanie na datach przy pobieraniu tygodniowym
 + parsowanie dodatkowych danych (aktorzy)
-- testy
-- testy poprawności generowanych danych DTD przez xmltv
+
+1.5.0
+-----
++ canal+ - obsługa listy kanałów
++ canal+ - obsługa listy wydarzeń
 
 2.x
 ---
@@ -17,11 +20,11 @@
 - wersja windows (exe)
 - frontend do uruchamiania (python + pygtk)
 - eksport do formatu tvguide-s60 (xmltv + zip)
+- testy
+- testy poprawności generowanych danych DTD przez xmltv
 
 3.x
 ---
-- canal+ - obsługa listy kanałów
-- canal+ - obsługa listy wydarzeń
 - frontend do uruchamiania (swing + java + jython)
 
 x.x

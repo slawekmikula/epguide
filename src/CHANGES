@@ -53,3 +53,7 @@
 
 2010-06-22 smikula <slawek.mikula@gmail.com>
     * dodanie logowania operacji --verbose
+
+2010-11-10 msawicz <michal@sawicz.net>
+    * dodanie parsera canal+
+    * możliwość identyfikowania kanałów znakami ASCII
