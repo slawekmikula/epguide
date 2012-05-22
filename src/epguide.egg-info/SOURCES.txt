@@ -17,9 +17,7 @@ epguide.egg-info/top_level.txt
 epguide/formatters/TxtOutput.py
 epguide/formatters/XmltvOutput.py
 epguide/formatters/__init__.py
-epguide/parsers/CpParser.py
 epguide/parsers/TelemanParser.py
-epguide/parsers/WpNgParser.py
 epguide/parsers/WpParser.py
 epguide/parsers/__init__.py
 epguide/parsers/roman.py

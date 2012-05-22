@@ -5,14 +5,14 @@ import datetime
 from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 
-from parsers import WpParser, WpNgParser, TelemanParser, CpParser
+from parsers import WpParser, TelemanParser 
 from formatters import TxtOutput, XmltvOutput
 
 def CheckDate (dummy, opt, value):
-  try:
-    return datetime.datetime.fromtimestamp(time.mktime(time.strptime(value, '%Y-%m-%d')))
-  except:
-    raise OptionValueError("option %s: invalid date value: %r" % (opt, value))
+    try:
+        return datetime.datetime.fromtimestamp(time.mktime(time.strptime(value, '%Y-%m-%d')))
+    except:
+        raise OptionValueError("option %s: invalid date value: %r" % (opt, value))
 
 
 class AdditionalOptions(Option):
@@ -44,7 +44,7 @@ class Config(object):
         self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format eg. xmltv")
         self.cmdparser.add_option ("-l", dest="list", action="store_true", default=False, help="list all channels and their numbers")
         self.cmdparser.add_option ("-o", dest="filename",  help="store results to file (default to stdout)")
-        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","wpng","teleman","cp"], default="wpng", help="channel parser source from wp, wpng, teleman, cp")
+        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","teleman"], default="wp", help="channel parser source from wp, teleman")
         self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
@@ -65,12 +65,8 @@ class Config(object):
         # tworzenie parsera
         if self.options.parser == 'wp':
             self.parser = WpParser.WpParser()
-        elif self.options.parser == 'wpng':
-            self.parser = WpNgParser.WpNgParser()
         elif self.options.parser == 'teleman':
             self.parser = TelemanParser.TelemanParser()
-        elif self.options.parser == 'cp':
-            self.parser = CpParser.CpParser()
 
         # tworzenie wyjscia
         if self.options.output == 'txt':

@@ -1,11 +1,11 @@
 Metadata-Version: 1.0
 Name: epguide
-Version: 1.5.0
+Version: 1.6.0
 Summary: Python Electronic TV Guide Downloader and XMLTV exporter
 Home-page: http://code.google.com/p/epguide
 Author: Slawek Mikula
 Author-email: slawek.mikula@gmail.com
-License: UNKNOWN
+License: GNU GPL 
 Download-URL: http://code.google.com/p/epguide
 Description: UNKNOWN
 Keywords: xmltv,channels,tv guide

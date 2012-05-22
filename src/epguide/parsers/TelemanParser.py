@@ -10,12 +10,11 @@ class TelemanChannelListGetter(SGMLParser):
     def __init__(self):
         SGMLParser.__init__ (self)
 
-        #http://www.teleman.pl/station.html?id=1&day=1
-        self.url = "http://www.teleman.pl/station.html?id=1&day=1"
+        self.url = "http://www.teleman.pl/program-tv/stacje"
         self.channelList = []
 
         self.state = ['init']
-        self.currentId = None
+        self.currentHref = None
         self.success = False
 
     def GetStationList(self):
@@ -27,60 +26,48 @@ class TelemanChannelListGetter(SGMLParser):
     def close (self):
         SGMLParser.close (self)
 
-    def start_form(self, attrs):
+    def start_div(self, attrs):
         if self.state[-1] == 'init':
             for name, value in attrs:
-                if name == "action" and value == '/station.html':
-                    self.state.append("form")
+                if name == "id" and value == 'stations_index':
+                    self.state.append("div")
 
-    def end_form(self):
-        if self.state[-1] == 'form':
+    def end_div(self):
+        if self.state[-1] == 'div':
             self.state.pop()
             self.success = True
 
 
-    # <select onchange="document.searchFormT.stid.value=this.value;" name="stationId" id="stationId">
-    def start_select(self, attributes):
-        if self.state[-1] == 'form':
-            for name, value in attributes:
-                if name == "name" and value == 'id':
-                    self.state.append("select")
+    def start_li(self, attributes):
+        if self.state[-1] == 'div':
+            self.state.append("li")
 
-    def end_select(self):
-        if self.state[-1] == 'select':
+    def end_li(self):
+        if self.state[-1] == 'li':
             self.state.pop()
 
     # <option value="1" id="TVP-1">TVP 1</option>
-    def start_option(self, attributes):
-        if self.state[-1] == 'select' or self.state[-1] == 'option':
-            for name, value in attributes:
-                if name == "value" and value != "":
-                    self.currentId = value
-                    self.state.append("option")
+    def start_a(self, attrs):
+        if self.state[-1] == 'li':
+            self.state.append("a")
+            for name, value in attrs:
+                if name == "href":
+                    self.currentHref = value.split("/")[-1]
 
-
-    def end_option(self):
-        if self.state[-1] == 'option':
+    def end_a(self):
+        if self.state[-1] == 'a':
             self.state.pop()
 
     def handle_data(self, data):
         data = data.strip()
-        if self.state[-1] == 'option':
-            if data == '&':
-                self.state.append('ampersand')
-                self.channelList[-1]['name'] += ' & '
-            else:
-                self.channelList.append({'name': data.decode('iso-8859-2'), 'id': self.currentId})
-        elif self.state[-1] == 'ampersand':
-            self.channelList[-1]['name'] += data.decode('iso-8859-2')
-            self.state.pop()
+        if self.state[-1] == 'a':
+            self.channelList.append({'name': data.decode('iso-8859-2'), 'id': self.currentHref})
 
 class TelemanProgrammeGetter(SGMLParser):
     def __init__(self):
         SGMLParser.__init__ (self)
 
-        #http://www.teleman.pl/station.html?id=1&day=1
-        self.url = "http://www.teleman.pl/station.html?id=%s&day=%s"
+        self.url = "http://www.teleman.pl/program-tv/stacje/%s?day=%s&hour=-1"
         self.eventDict = []
         self.prevEvent = None
         self.currentEvent = None
@@ -133,10 +120,9 @@ class TelemanProgrammeGetter(SGMLParser):
         if self.prevEvent is not None and self.currentEvent is None:
             self.prevEvent['time_end'] = self.prevEvent['time_start']
 
-
     # -------------------------------------
     def start_table(self, attrs):
-        if self.state[-1] == "init" and self.getAttr(attrs, "id") == "programmes":
+        if self.state[-1] == "init" and self.getAttr(attrs, "id") == "station_listing":
             self.state.append('start')
 
     def end_table (self):
@@ -173,14 +159,6 @@ class TelemanProgrammeGetter(SGMLParser):
         if self.state[-1] == 'description':
             self.state.pop()
 
-    def start_span(self, attrs):
-        if self.state[-1] == "description" and re.search('categ categ-...', self.getAttr(attrs, "class")):
-            self.state.append('category')
-
-    def end_span(self):
-        if self.state[-1] == 'category':
-            self.state.pop()
-
     def start_a(self, attrs):
         if self.state[-1] == 'description':
             self.state.append('title')
@@ -190,7 +168,7 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def start_p(self, attrs):
-        if self.state[-1] == 'description':
+        if self.state[-1] == 'description' and self.getAttr(attrs, "class") == "excerpt":
             self.state.append('content')
 
     def end_p(self):
@@ -198,15 +176,15 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def start_div(self, attrs):
-        if self.state[-1] == 'start_hour' and self.getAttr(attrs, "class") == "running":
-            self.state.append('dummy')
-        elif self.state[-1] == 'init' and self.getAttr(attrs, "id") == "station" and self.getAttr(attrs, "class") == "content":
+        if self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station_title":
             self.state.append('channel_name_div')
+        elif self.state[-1] == 'program' and self.getAttr(attrs, "class") == "genre":
+            self.state.append('category')
 
     def end_div(self):
-        if self.state[-1] == 'dummy':
+        if self.state[-1] == 'channel_name_div':
             self.state.pop()
-        elif self.state[-1] == 'channel_name_div':
+        elif self.state[-1] == 'category':
             self.state.pop()
 
     def start_h1(self, attrs):
@@ -270,10 +248,8 @@ class TelemanParser(object):
 
         if getter.success:
             for station in stationList:
-                # usuwamy elementy kontrolne oraz 'Wszystkie kanaly'
-                if station['id'] != '---' and int(station['id']) != 0:
-                    channel = Channel(station['name'], int(station['id']))
-                    channelList.append(channel)
+                channel = Channel(station['name'], station['id'])
+                channelList.append(channel)
 
         # usuwamy duplikaty i sortujemy liste
         dict = {}
