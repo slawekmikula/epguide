@@ -1,11 +1,11 @@
-__author__="zorba"
-__date__ ="$2010-01-02 18:25:59$"
+__author__="smikula"
+__date__ ="$2012-05-31 18:30:00$"
 
 from setuptools import setup,find_packages
 
 setup (
     name = 'epguide',
-    version = '1.5.0',
+    version = '1.6.0',
     packages = find_packages(exclude=['bin','test']),
     package_data = {'': ['AUTHORS', 'LICENSE',
     'CHANGES', 'README', 'epguide_run']},

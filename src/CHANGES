@@ -57,3 +57,8 @@
 2010-11-10 msawicz <michal@sawicz.net>
     * dodanie parsera canal+
     * możliwość identyfikowania kanałów znakami ASCII
+    
+2012-05-31 smikula <slawek.mikula@gmail.com>
+	* wersja 1.6.0
+	* usunięcie starego parsera wp.pl oraz canal+
+	* modyfikacja parsera teleman do najnowszej wersji strony
