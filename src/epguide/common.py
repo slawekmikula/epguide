@@ -5,7 +5,7 @@ import datetime
 from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 
-from parsers import WpParser, TelemanParser 
+from parsers import TelemanParser 
 from formatters import TxtOutput, XmltvOutput
 
 def CheckDate (dummy, opt, value):
@@ -39,12 +39,12 @@ class Config(object):
 
         
         self.cmdparser = OptionParser(usage=self.usage, option_class=AdditionalOptions)
-        self.cmdparser.add_option ("-c", dest="channel_list",  help="input channel list (numbers comma separated) eg. 1,2,3")
+        self.cmdparser.add_option ("-l", dest="list", action="store_true", default=False, help="list all channels and their numbers")        
+        self.cmdparser.add_option ("-c", dest="channel_list",  help="input channel list (index from -l command) comma separated")
         self.cmdparser.add_option ("-d", type="date", dest="date", help="date you want the program from (format: YYYY-MM-DD)")
-        self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format eg. xmltv")
-        self.cmdparser.add_option ("-l", dest="list", action="store_true", default=False, help="list all channels and their numbers")
+        self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format xmltv or txt")
         self.cmdparser.add_option ("-o", dest="filename",  help="store results to file (default to stdout)")
-        self.cmdparser.add_option ("-p", dest="parser", choices=["wp","teleman"], default="wp", help="channel parser source from wp, teleman")
+        self.cmdparser.add_option ("-p", dest="parser", choices=["teleman"], default="teleman", help="channel parser source from: teleman")
         self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
@@ -63,9 +63,7 @@ class Config(object):
             self.options.channel_list = self.options.channel_list.split(',')
 
         # tworzenie parsera
-        if self.options.parser == 'wp':
-            self.parser = WpParser.WpParser()
-        elif self.options.parser == 'teleman':
+        if self.options.parser == 'teleman':
             self.parser = TelemanParser.TelemanParser()
 
         # tworzenie wyjscia
@@ -76,12 +74,12 @@ class Config(object):
         
         # daty poczatkowe i koncowe 
         if self.options.get_week == True:
-            self.date_from = datetime.date.today()
-            self.date_to = datetime.date.today() + datetime.timedelta(days=7)
+            self.date_from = datetime.datetime.today()
+            self.date_to = datetime.datetime.today() + datetime.timedelta(days=7)
             self.get_guide = True
         elif self.options.get_today == True:
-            self.date_from = datetime.date.today()
-            self.date_to = datetime.date.today() + datetime.timedelta(days=1)
+            self.date_from = datetime.datetime.today()
+            self.date_to = datetime.datetime.today() + datetime.timedelta(days=1)
             self.get_guide = True
         elif self.options.date is not None:
             self.date_from = self.options.date

@@ -62,3 +62,10 @@
 	* wersja 1.6.0
 	* usunięcie starego parsera wp.pl oraz canal+
 	* modyfikacja parsera teleman do najnowszej wersji strony
+
+2012-10-31 smikula <slawek.mikula@gmail.com>
+	* wersja 1.7.0
+	* usunięcie parsera wp.pl (całkowita zmiana layoutu strony)
+	* domyślny parser to teleman
+	* wprowadzenie poprawek parsowania teleman (thx jacek)
+	* poprawka parsowania daty (#15)

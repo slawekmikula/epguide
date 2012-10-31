@@ -32,7 +32,7 @@ Wywolanie z opcją --help wyswietli wszystkie dostepne opcje
 
 Poczatkowo nalezy uruchomić program z opcją -l, co wyświeli wszystkie
 programy telewizyjne obsługiwane przez dostarczyciela kanału. Domyślnym
-dostarczycielem jest portal Wirtualna Polska (tv.wp.pl). Następnie wymagane
+dostarczycielem jest strona teleman.pl. Następnie wymagane
 indeksy programów należy umieścić w wywołaniu głównym programu. Program ma
 możliwość eksportowania listy programów do formatu txt lub XMLTV.
 
@@ -44,6 +44,6 @@ $ epguide -l
 
 == Sciągnięcie listy programów ==
 Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
-dla stacji TVP1 TVP2 TVP3_regionalna TVN Polsat TV4:
+dla stacji o odpowiednich indeksach (otrzymanych przez opcje -l):
 
 $ epguide -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml

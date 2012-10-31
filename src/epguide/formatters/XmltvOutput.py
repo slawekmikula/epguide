@@ -67,7 +67,7 @@ class XmltvOutput(object):
         zapisanie listy kanalow
         """
         for channel in channel_list:
-            self.file.write(channel_format % (channel.id, channel.name.encode('utf-8')))
+            self.file.write(channel_format % (channel.id, self.FormatString(channel.name)))
     
     def SaveGuide(self, day, guide):
         """

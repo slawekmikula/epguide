@@ -2,7 +2,6 @@ from sgmllib import SGMLParser
 import time
 import datetime
 import urllib
-import re
 
 from epguide.data_formats import Channel, Event
 
@@ -81,7 +80,7 @@ class TelemanProgrammeGetter(SGMLParser):
         self.currentChannelId = channel_id
         self.currentChannelName = '' # wypelnione przy parsowaniu
 
-        dateDiff = eventDate - datetime.date.today()
+        dateDiff = eventDate - datetime.datetime.today()
         self.url = self.url % (channel_id, dateDiff.days)
         buf = urllib.urlopen (self.url).read()
         self.feed(buf)
@@ -121,21 +120,21 @@ class TelemanProgrammeGetter(SGMLParser):
             self.prevEvent['time_end'] = self.prevEvent['time_start']
 
     # -------------------------------------
-    def start_table(self, attrs):
-        if self.state[-1] == "init" and self.getAttr(attrs, "id") == "station_listing":
+    def start_ul(self, attrs):
+        if self.state[-1] == "init" and self.getAttr(attrs, "id") == "station-listing":
             self.state.append('start')
 
-    def end_table (self):
+    def end_ul (self):
         if self.state[-1] == 'start':
             self.state.pop()
 
-    def start_tr(self, attrs):
+    def start_li(self, attrs):
         if self.state[-1] == 'start':
             self.state.append('program')
             self.currentEvent = {'channel_id': self.currentChannelId, 'channel_name': "",
                 'date': self.currentDate, 'time': "", 'title': "", 'desc': "", 'category': ""}
 
-    def end_tr(self):
+    def end_li(self):
         if self.state[-1] == 'program':
             if self.currentEvent is not None:
                 self.FormatEventDateTime()
@@ -143,20 +142,22 @@ class TelemanProgrammeGetter(SGMLParser):
                 self.prevEvent = self.currentEvent
             self.state.pop()
 
-    def start_th(self, attrs):
-        if self.state[-1] == 'program':
+    def start_em(self, attrs):
+        if self.state[-1] == 'program' and not self.currentEvent.get('time'):
             self.state.append('start_hour')
 
-    def end_th(self):
+    def end_em(self):
         if self.state[-1] == 'start_hour':
             self.state.pop()
 
-    def start_td(self, attrs):
-        if self.state[-1] == 'program':
+    def start_div(self, attrs):
+        if self.state[-1] == 'program' and self.getAttr(attrs, "class") == "detail":
             self.state.append('description')
+        elif self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station_title":
+            self.state.append('channel_name_div')
 
-    def end_td(self):
-        if self.state[-1] == 'description':
+    def end_div(self):
+        if self.state[-1] in ('description', 'channel_name_div'):
             self.state.pop()
 
     def start_a(self, attrs):
@@ -168,23 +169,14 @@ class TelemanProgrammeGetter(SGMLParser):
             self.state.pop()
 
     def start_p(self, attrs):
-        if self.state[-1] == 'description' and self.getAttr(attrs, "class") == "excerpt":
-            self.state.append('content')
+        if self.state[-1] == 'description':
+            if self.getAttr(attrs, "class") == "genre":
+                self.state.append('category')
+            else:
+                self.state.append('content')
 
     def end_p(self):
-        if self.state[-1] == 'content':
-            self.state.pop()
-
-    def start_div(self, attrs):
-        if self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station_title":
-            self.state.append('channel_name_div')
-        elif self.state[-1] == 'program' and self.getAttr(attrs, "class") == "genre":
-            self.state.append('category')
-
-    def end_div(self):
-        if self.state[-1] == 'channel_name_div':
-            self.state.pop()
-        elif self.state[-1] == 'category':
+        if self.state[-1] in ('content', 'category'):
             self.state.pop()
 
     def start_h1(self, attrs):
