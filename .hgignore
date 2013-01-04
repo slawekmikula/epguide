@@ -1,1 +1,7 @@
 glob:*/*.pyc
+glob:*~
+.git
+src/build
+src/dist
+.settings
+

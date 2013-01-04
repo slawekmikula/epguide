@@ -69,3 +69,7 @@
 	* domyślny parser to teleman
 	* wprowadzenie poprawek parsowania teleman (thx jacek)
 	* poprawka parsowania daty (#15)
+
+2013-01-04 damian.golda <damian.golda@gmail.com>
+    * wersja 1.7.1
+	

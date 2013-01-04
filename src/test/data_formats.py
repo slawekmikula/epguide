@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import unittest
 
-from data_formats import Channel
-from data_formats import Event
+from epguide.data_formats import Channel
+from epguide.data_formats import Event
+import datetime
 
 class  Data_formatsTestCase(unittest.TestCase):
     def setUp(self):

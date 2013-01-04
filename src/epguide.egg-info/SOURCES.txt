@@ -14,6 +14,7 @@ epguide.egg-info/SOURCES.txt
 epguide.egg-info/dependency_links.txt
 epguide.egg-info/entry_points.txt
 epguide.egg-info/top_level.txt
+epguide/formatters/FileOutput.py
 epguide/formatters/TxtOutput.py
 epguide/formatters/XmltvOutput.py
 epguide/formatters/__init__.py

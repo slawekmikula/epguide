@@ -51,13 +51,13 @@ class EpGuide(object):
         if self.config.options.licence:
             self.PrintLicence()
         elif self.config.options.list:
-            self.GetChannelList()
+            self.get_channels()
         elif self.config.get_guide: 
-            self.GetGuide()
+            self.get_guide()
         else:    
             self.PrintHelp()
 
-    def GetChannelList(self):
+    def get_channels(self):
         """
         pobiera liste kanalow
         """
@@ -69,8 +69,8 @@ class EpGuide(object):
         self.output.Init()
 
         self.log.info("Pobieram listę kanałów")
-        channel_list = self.parser.GetChannelList()
-
+        channel_list = self.parser.get_channels()
+        
         self.log.info("Zapisuję liste kanałów")
         self.output.SaveChannelList(channel_list)
 
@@ -80,7 +80,7 @@ class EpGuide(object):
         self.log.info("Wyjście zamknięcie")
         self.output.Finish()        
     
-    def GetGuide(self):
+    def get_guide(self):
         """
         pobiera dane programu telewizyjnego
         """        
@@ -94,11 +94,11 @@ class EpGuide(object):
         self.output.Init()
         
         day = self.config.date_from
-        for iter in range((self.config.date_to - self.config.date_from).days):
+        for d in range((self.config.date_to - self.config.date_from).days):
             self.log.info("Pobieranie programu dla dnia: %s" % (day))
             for channel in self.config.options.channel_list:
                 self.log.info("Pobieranie programu dla kanału numer: %s" % (channel))
-                guide = self.parser.GetGuide(day, channel)
+                guide = self.parser.get_guide(day, channel)
                 self.log.info("Zapisywanie programu")
                 self.output.SaveGuide(day, guide)
                 

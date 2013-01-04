@@ -6,7 +6,7 @@ from optparse import OptionParser, Option, OptionValueError
 from copy import copy
 
 from parsers import TelemanParser 
-from formatters import TxtOutput, XmltvOutput
+from formatters import TxtOutput, XmltvOutput, FileOutput
 
 def CheckDate (dummy, opt, value):
     try:
@@ -50,6 +50,8 @@ class Config(object):
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
         self.cmdparser.add_option ("--verbose", dest="verbose", action="store_true", default=False, help="verbose logging")
+        self.cmdparser.add_option ("--split-title", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
+        self.cmdparser.add_option ("--debug-http", dest="debug_http", action="store_true", default=False, help="enable logs for http connection")
 
 
     def ParseCommandLine(self, argv):
@@ -63,14 +65,14 @@ class Config(object):
             self.options.channel_list = self.options.channel_list.split(',')
 
         # tworzenie parsera
-        if self.options.parser == 'teleman':
-            self.parser = TelemanParser.TelemanParser()
+        if self.options.parser == 'teleman':             
+            self.parser = TelemanParser.TelemanParser(self.options.split_title, self.options.debug_http)
 
         # tworzenie wyjscia
         if self.options.output == 'txt':
-            self.output = TxtOutput.TxtOutput(self)
+            self.output = FileOutput.FileOutput(self.options.filename, TxtOutput.TxtOutput())
         elif self.options.output == 'xmltv':
-            self.output = XmltvOutput.XmltvOutput(self)
+            self.output = FileOutput.FileOutput(self.options.filename, XmltvOutput.XmltvOutput())
         
         # daty poczatkowe i koncowe 
         if self.options.get_week == True:

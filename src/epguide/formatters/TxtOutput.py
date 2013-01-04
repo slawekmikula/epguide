@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, textwrap
 
 class TxtOutput(object):
@@ -5,31 +6,21 @@ class TxtOutput(object):
     klasa wyjscia w formacie tekstowym
     """
 
-    def __init__(self, config):
+    def __init__(self):
         self.file = None
-        self.config = config
 
-    def Init(self):
-        """
-        inicjalizacja wyjscia
-        """
-        if self.config.options.filename is not None:
-            self.file = open(self.config.options.filename, "w+")
-        else:
-            self.file = sys.stdout
-
+    def Init(self, file):
+        self.file = file
+    
     def Finish(self):
-        """
-        zamkniecie wyjscia
-        """
-        self.file.close()
+        pass
 
     def SaveChannelList(self, channel_list):
         """
         zapisanie listy kanalow
         """
         for channel in channel_list:
-           self.file.write("%s - %s\n" % (channel.id, channel.name.encode('utf8')))
+            self.file.write("%s - %s\n" % (channel.id, channel.name.encode('utf8')))
 
     def SaveGuide(self, day, guide):
         """
