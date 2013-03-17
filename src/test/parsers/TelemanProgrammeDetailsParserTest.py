@@ -29,7 +29,16 @@ Kierownictwo powierza zadanie złapania bandyty agentowi Melvinowi Purvisowi (Ch
 jak zabił groźnego gangstera Pretty Boya Floyda (Channing Tatum). Rozpoczyna się pościg... \
 Adaptacja książki Bryana Burrougha opowiada o ostatnim okresie życia legendarnego złoczyńcy."
         original_title = u"(Public Enemies)"
-        expected = EventDetails(description, original_title)
+        year = u"2009"
+        country = u"USA"
+        genre = u"FILM GANGSTERSKI"
+        imdb_url = u"http://www.imdb.com/Title?Public+Enemies+%282009%29"
+        imdb_rank = u"7.0/10"
+        filmweb_url = u"http://www.filmweb.pl/film/Wrogowie+publiczni-2009-467091"
+        filmweb_rank = u"7.2/10"
+        photo_url = u"http://media.teleman.pl/photos/470x265/Wrogowie-Publiczni.jpeg"
+        pg = u"od 16 lat"
+        expected = EventDetails(description, original_title, year, country, genre, imdb_url, imdb_rank, filmweb_url, filmweb_rank, photo_url, pg)
         print("description  :"+str(description))
         print("description  :"+description.encode('utf-8'))
         print("description  :"+str(details.description))

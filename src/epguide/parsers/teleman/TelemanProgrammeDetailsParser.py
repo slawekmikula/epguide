@@ -161,5 +161,6 @@ class TelemanProgrammeDetailsParser(object):
 #        awards = self.get_texts(tree, "//div[@id='show-main-info']/span")
 #        print("awards:"+awards)
         
-        return EventDetails(description, original_title)
+        return EventDetails(description, original_title, year, country, genre, imdb_url, imdb_rank, filmweb_url, filmweb_rank, \
+                            photo_url, pg)
     
