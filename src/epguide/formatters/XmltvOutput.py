@@ -84,7 +84,7 @@ class XmltvOutput(object):
             episode_num_element = self._optional_element(self.episode_num_format, item.episode_num)
             title_element = self._element(self.title_format, item.title)
             subtitle_element = self._optional_element(self.subtitle_format, item.subtitle)
-            desc_element = self._optional_element(self.desc_format, item.desc)
+            desc_element = self._optional_element(self.desc_format, item.get_description())
             main_category_element = self._optional_element(self.main_category_format, item.main_category)
             category_element = self._element(self.category_format, item.category)
 

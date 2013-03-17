@@ -1,21 +1,18 @@
 # -*- coding: utf-8 -*-
+from epguide.parsers import TelemanParser
 import unittest
 
-from epguide.data_formats import Channel
-from epguide.data_formats import Event
-import datetime
-from epguide.parsers import TelemanParser
-import StringIO
 
-class  TelemanParserTestCase(unittest.TestCase):
+class  TelemanChannelListParserTest(unittest.TestCase):
     def setUp(self):
+        self.maxDiff = None
         pass
 
     def tearDown(self):
         pass
 
     def testChannel(self):
-        p = TelemanParser.TelemanParser()
+        p = TelemanParser.TelemanParser(1, 1)
         p.Init()
         channels = p.get_channels()
         actual_channels = [str(c) for c in channels]

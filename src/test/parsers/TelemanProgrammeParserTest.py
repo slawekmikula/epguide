@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from epguide.parsers.TelemanParser import TelemanProgrammeGetter
+from epguide.parsers.teleman import TelemanProgrammeParser
 import datetime
 import unittest
+import codecs
 
-
-class  TelemanProgrammeGetterTest(unittest.TestCase):
+class  TelemanProgrammeParserTest(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None 
         pass
@@ -13,8 +13,8 @@ class  TelemanProgrammeGetterTest(unittest.TestCase):
         pass
 
     def testChannelSplitTitle(self):
-        p = TelemanProgrammeGetter(True)
-        f = open("TVP-1.html", "r")
+        p = TelemanProgrammeParser.TelemanProgrammeParser(split_title=True)
+        f = codecs.open("TVP-1.html", "r", "UTF-8")
         buf = f.read()
         eventDate = datetime.datetime(2013, 1, 1)
         channel_id = "TVP-1"
@@ -55,8 +55,8 @@ class  TelemanProgrammeGetterTest(unittest.TestCase):
         self.assertEqual(events, expected)
 
     def testChannelNoSplitTitle(self):
-        p = TelemanProgrammeGetter(False)
-        f = open("TVP-1.html", "r")
+        p = TelemanProgrammeParser.TelemanProgrammeParser(False)
+        f = codecs.open("TVP-1.html", "r", "UTF-8")
         buf = f.read()
         eventDate = datetime.datetime(2013, 1, 1)
         channel_id = "TVP-1"

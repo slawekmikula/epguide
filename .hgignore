@@ -5,3 +5,5 @@ src/build
 src/dist
 .settings
 
+syntax: glob
+src/.epguide
