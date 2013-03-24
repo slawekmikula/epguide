@@ -27,19 +27,26 @@ class HttpHelper(object):
         
     def get(self, url, force_cache = False):
         if(force_cache):
-            content = self.cache.get(url)
-            if(content):
-                return content
+            cached_value = self.cache.get(url)
+            if cached_value:
+                try:
+                    info, content = cached_value.split('\r\n\r\n', 1)
+                    if(content):
+                        return content.decode("UTF-8")
+                    else:
+                        return self.get(url, False)
+                except (IndexError, ValueError):
+                    return self.get(url, False)
             else:
                 return self.get(url, False)
         else:
             resp, content = self.http.request(url, headers={'user-agent':self.user_agent})
-            print "content:"
-            print content
-            print "response:"
-            print resp
-            print "fromcache:" + str(resp.fromcache)
-            print "status:" + str(resp.status)
+#            print "content:"
+#            print content
+#            print "response:"
+#            print resp
+#            print "fromcache:" + str(resp.fromcache)
+#            print "status:" + str(resp.status)
 
         c = content.decode("UTF-8")
         return c

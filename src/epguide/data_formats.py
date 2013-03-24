@@ -55,6 +55,16 @@ class Event(object):
     def set_details(self, details):
         self.details = details
         
+    def get_title(self):
+        if(self.details is None):
+            return self.title
+        elif(self.details.pg is None):
+            return self.title
+        elif(self.details.pg.min_age >= 16):
+            return str(self.details.pg.min_age)+" "+self.title
+        else:
+            return self.title
+                
     def get_description(self):
         if(self.details is None):
             d = self.desc
@@ -79,30 +89,45 @@ class Event(object):
     def get_pg(self):
         if(self.details is None):
             d = None
+        elif(self.details.pg is None):
+            d = None
         else:
-            d = self.details.pg
+            d = str(self.details.pg.min_age)
         return d
 
 class EventDetails(object):
     """
     szczegóły wydarzenia (program w telewizji), zawiera dane zakodowane w unicode
     """
-    def __init__(self, description, original_title, year, country, genre, imdb_url, imdb_rank, filmweb_url, filmweb_rank,
-        photo_url, pg):
+    def __init__(self, description, original_title, year, country, genre, imdb, filmweb, photo_url, pg):
         self.description = description
         self.original_title = original_title
         self.year = year
         self.country = country
         self.genre = genre
-        self.imdb_url = imdb_url
-        self.imdb_rank = imdb_rank
-        self.filmweb_url = filmweb_url
-        self.filmweb_rank = filmweb_rank
+        self.imdb = imdb
+        self.filmweb = filmweb
         self.photo_url = photo_url
         self.pg = pg
             
 
     def __str__(self):
         return "EventDetails(description:'" + self.description + "',original_title:'" + self.original_title + "',year:'" + self.year + \
-            "',country:'" + self.country + "',genre:'" + self.genre + "',imdb_url:'" + self.imdb_url + "',imdb_rank:'" + self.imdb_rank + \
-             "',filmweb_url:'" + self.filmweb_url + "', filmweb_rank:'" + self.filmweb_rank + "',photo_url:'" + self.photo_url + "',pg:'" + self.pg + "')" 
+            "',country:'" + self.country + "',genre:'" + self.genre + "',imdb:'" + str(self.imdb) + \
+             "',filmweb:'" + str(self.filmweb) + "',photo_url:'" + self.photo_url + "',pg:'" + str(self.pg) + "')" 
+
+class Imdb(object):
+    def __init__(self, url, rank):
+        self.url = url
+        self.rank = rank
+        
+    def __str__(self):
+        return "Imdb(url:'" + self.url + "',rank:'" + self.rank + ")" 
+
+class ParentalRating(object):
+    def __init__(self, desc, min_age):
+        self.desc = desc
+        self.min_age = min_age
+        
+    def __str__(self):
+        return "ParentalRating(desc:'" + self.desc+ "',min_age:" + str(self.min_age) + ")" 

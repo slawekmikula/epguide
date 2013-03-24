@@ -33,7 +33,8 @@ class  Httplib2TestCase(unittest.TestCase):
         print "status:" + str(resp.status)
         safe = httplib2.safename(url)
         print "safe:" + safe
-        cached = cache.get(url)
+        cached_value = cache.get(url)
+        info, cached = cached_value.split('\r\n\r\n', 1)
         print "===="
         print content
         print "===="

@@ -7,3 +7,5 @@ src/dist
 
 syntax: glob
 src/.epguide
+src/tv_grab_file.xmltv
+src/test/.epguide

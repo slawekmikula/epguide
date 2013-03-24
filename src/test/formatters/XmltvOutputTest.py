@@ -7,7 +7,7 @@ import datetime
 from epguide.formatters import XmltvOutput
 import StringIO
 
-class  TxtOutputTestCase(unittest.TestCase):
+class  XmltvOutputTestCase(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -25,6 +25,8 @@ class  TxtOutputTestCase(unittest.TestCase):
         output.SaveChannelList(channel_list)
         output.Finish()
         expected="""
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE tv SYSTEM "xmltv.dtd">
 <tv generator-info-name="epguide generator">
   <channel id="TVP-1"><display-name lang="pl">TVP 1</display-name></channel>
   <channel id="TVP-2"><display-name lang="pl">TVP 2</display-name></channel>

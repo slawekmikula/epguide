@@ -65,7 +65,7 @@ class Config(object):
             self.options.channel_list = self.options.channel_list.split(',')
 
         # tworzenie parsera
-        if self.options.parser == 'teleman':             
+        if self.options.parser == 'teleman':
             self.parser = TelemanParser.TelemanParser(self.options.split_title, self.options.debug_http)
 
         # tworzenie wyjscia

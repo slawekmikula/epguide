@@ -11,6 +11,9 @@ class XmltvOutput(object):
     """
     
     
+    header = """<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE tv SYSTEM "xmltv.dtd">
+<tv generator-info-name="epguide generator">\n"""
 #<!ELEMENT programme (title+, sub-title*, desc*, credits?, date?,
 #                     category*, language?, orig-language?, length?,
 #                     icon*, url*, country*, episode-num*, video?, audio?,
@@ -77,7 +80,7 @@ class XmltvOutput(object):
         inicjalizacja wyjscia
         """
         self.file = file
-        self.file.write('<tv generator-info-name="epguide generator">\n')
+        self.file.write(self.header)
     
     def Finish(self):
         """
@@ -89,6 +92,11 @@ class XmltvOutput(object):
         formatTxt = string.replace(txt, u"&", u"&amp;")
         formatTxt = string.replace(formatTxt, u"<", u"")
         formatTxt = string.replace(formatTxt, u">", u"")
+        formatTxt = formatTxt.encode('utf-8')
+        return formatTxt
+
+    def _cdata_string(self, txt):
+        formatTxt = u"<![CDATA["+txt+u"]]>"
         formatTxt = formatTxt.encode('utf-8')
         return formatTxt
 
@@ -105,6 +113,12 @@ class XmltvOutput(object):
         else:
             return ''
 
+    def _optional_element_cdata(self, elementFormat, elementValue):
+        if elementValue:
+            return elementFormat % (self._cdata_string(elementValue))
+        else:
+            return ''
+
     def _element(self, elementFormat, elementValue):
         return elementFormat % (self._format_string(elementValue))
 
@@ -117,9 +131,9 @@ class XmltvOutput(object):
 
         for item in guide:
             episode_num_element = self._optional_element(self.episode_num_format, item.episode_num)
-            title_element = self._element(self.title_format, item.title)
+            title_element = self._element(self.title_format, item.get_title())
             subtitle_element = self._optional_element(self.subtitle_format, item.subtitle)
-            desc_element = self._optional_element(self.desc_format, item.get_description())
+            desc_element = self._optional_element_cdata(self.desc_format, item.get_description())
             main_category_element = self._optional_element(self.main_category_format, item.main_category)
             category_element = self._element(self.category_format, item.category)
             year_element = self._optional_element(self.year_format, item.get_year())
