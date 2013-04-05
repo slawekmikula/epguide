@@ -43,17 +43,14 @@ class TelemanParser(object):
         """ pobiera liste kanalow ze strony teleman.pl """
         url = self.url_provider.channel_list_url()
         content = self.http_helper.get(url)
-        getter = TelemanChannelListParser()
+        getter = TelemanChannelListParser.TelemanChannelListParser()
         channelList = getter.get_channels(content)
         return channelList
-        
-#        return self.get_channels_from_file(urllib.urlopen(url))
         
     def get_channels_from_file(self, f):
         """ pobiera liste kanalow z podanego pliku html """
         buf = f.read()
-        print "get_channels xxx"
-        getter = TelemanChannelListParser()
+        getter = TelemanChannelListParser.TelemanChannelListParser()
         channelList = getter.get_channels(buf)
         return channelList
 
