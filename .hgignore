@@ -1,0 +1,11 @@
+glob:*/*.pyc
+glob:*~
+.git
+src/build
+src/dist
+.settings
+
+syntax: glob
+src/.epguide
+src/tv_grab_file.xmltv
+src/test/.epguide

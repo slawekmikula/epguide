@@ -1,0 +1,75 @@
+2006-03-31 smikula  <zorba@silesianet.pl>
+
+	* common.py: poprawki w tworzeniu pliku XML dla dat przekraczajacych miesiąc
+
+2007-07-05 smikula <zorba@silesianet.pl>
+	
+	* common.py: w koncu poprawna zamiana & na &amp; oraz < i > na ich escape string
+
+2007-09-15 smikula <zorba@silesianet.pl>
+
+     * common.py: dodanie sekund (ustawionych na 00) do formatu czasu w zdarzeniach
+
+2007-12-14 saviq <michal@sawicz.net>
+	
+     * dodanie wsparcia dla danych ze strony http://www.cyfraplus.pl
+	 * poprawa wyjścia xml tak, by było zgodne z DTD XMLTV
+	 * poprawa wyjścia z wp.py
+
+2009-09-26 smikula <slawek.mikula@gmail.com>
+     * refaktoring programu do wersji 1.0
+     * rozbicie na moduly, przepisanie kodu, modułowość
+
+2009-12-19 smikula <slawek.mikula@gmail.com>
+     * wersja 1.1
+     * dodanie skryptu startującego epguide_run
+     * uaktualnienie dokumentacji
+
+2010-01-02 smikula <slawek.mikula@gmail.com>
+     * wersja 1.2
+     * poprawa błędu #1
+
+2010-03-24 smikula <slawek.mikula@gmail.com>
+     * wersja 1.3
+     * obsługa beta.tv.wp.pl
+     * obsługa teleman.pl
+
+2010-03-30 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4
+    * zmiana strony tv.wp.pl na nowy layout - domyślny parser to wpng
+
+2010-04-01 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4.1
+    * poprawka (rurus9) - poprawne parsowanie wszystkich kategorii dla teleman
+
+2010-04-16 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4.2
+    * teleman - lista kanałów dla stron bez logo stacji telewizyjnej
+    * xmltv - zapis poprawny strefy czasowej w pliku XMLTV
+
+2010-06-21 smikula <slawek.mikula@gmail.com>
+    * wersja 1.4.3
+    * xmltv - poprawka zapisu strefy czasowej
+
+2010-06-22 smikula <slawek.mikula@gmail.com>
+    * dodanie logowania operacji --verbose
+
+2010-11-10 msawicz <michal@sawicz.net>
+    * dodanie parsera canal+
+    * możliwość identyfikowania kanałów znakami ASCII
+    
+2012-05-31 smikula <slawek.mikula@gmail.com>
+	* wersja 1.6.0
+	* usunięcie starego parsera wp.pl oraz canal+
+	* modyfikacja parsera teleman do najnowszej wersji strony
+
+2012-10-31 smikula <slawek.mikula@gmail.com>
+	* wersja 1.7.0
+	* usunięcie parsera wp.pl (całkowita zmiana layoutu strony)
+	* domyślny parser to teleman
+	* wprowadzenie poprawek parsowania teleman (thx jacek)
+	* poprawka parsowania daty (#15)
+
+2013-01-04 damian.golda <damian.golda@gmail.com>
+    * wersja 1.7.1
+	

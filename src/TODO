@@ -1,0 +1,34 @@
+1.0
+---
++ wp - pobieranie listy kanałów
++ wp - pobieranie listy wydarzeń dla kanału i daty
++ txt - eksport do pliku tekstowego listy kanałów
++ txt - eksport do pliku tekstowego listy wydarzeń
++ xmltv - eksport do pliku xmltv listy kanałów
++ xmltv - eksport do pliku xmltv listy wydarzeń
++ common - operowanie na datach przy pobieraniu tygodniowym
++ parsowanie dodatkowych danych (aktorzy)
+
+1.5.0
+-----
++ canal+ - obsługa listy kanałów
++ canal+ - obsługa listy wydarzeń
+
+2.x
+---
+- plik konfiguracji (xml)
+- wersja windows (exe)
+- frontend do uruchamiania (python + pygtk)
+- eksport do formatu tvguide-s60 (xmltv + zip)
+- testy
+- testy poprawności generowanych danych DTD przez xmltv
+
+3.x
+---
+- frontend do uruchamiania (swing + java + jython)
+
+x.x
+---
+- gazetapl - obsługa listy kanałów
+- gazetapl - obsługa listy wydarzeń
+- rozpoznawanie/zapisywanie typów wydarzenia
