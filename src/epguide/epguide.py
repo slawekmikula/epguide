@@ -40,7 +40,7 @@ class EpGuide(object):
         self.log = logging.getLogger("epguide")
 
         if self.config.options.verbose:
-            self.log.setLevel(logging.INFO)
+            self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.CRITICAL)
         

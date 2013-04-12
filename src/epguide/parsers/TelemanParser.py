@@ -3,8 +3,6 @@ from epguide.parsers.teleman import TelemanChannelListParser, \
     TelemanProgrammeParser, HttpHelper, TelemanProgrammeDetailsParser
 import datetime
 
-
-
 class TelemanUrlProvider(object):
     def channel_list_url(self):
         return "http://www.teleman.pl/program-tv/stacje"
@@ -15,7 +13,6 @@ class TelemanUrlProvider(object):
         eventMidnight = datetime.datetime(eventDate.year, eventDate.month, eventDate.day)
         todayMidnight = datetime.datetime(today.year, today.month, today.day)
         dateDiff = eventMidnight - todayMidnight
-        #print " eventMidnight: " + str(eventMidnight) + " todayMidnight:" + str(todayMidnight) + " dateDiff" + str(dateDiff)
         url = url % (channel_id, dateDiff.days)
         return url
     
@@ -60,14 +57,12 @@ class TelemanParser(object):
         klasy Event
         """
         url = self.url_provider.guide_url(eventDate, channel_id)
-        #print " url: " + url
         f = self.http_helper.get(url)
         return self.get_guide_from_file(eventDate, channel_id, f)
 
     def get_guide_from_file(self, eventDate, channel_id, f):
-        buf = f  # .read()
         getter = TelemanProgrammeParser.TelemanProgrammeParser(self.split_title)
-        events = getter.get_events(eventDate, channel_id, buf)
+        events = getter.get_events(eventDate, channel_id, f)
         for event in events:
             if event.main_category == "Movie/Drama":
                 details = self.get_details(event.url)
@@ -76,13 +71,11 @@ class TelemanParser(object):
 
     def get_details(self, relative_url):
         url = self.url_provider.details_url(relative_url)
-        #print " url: " + url
         f = self.http_helper.get(url, force_cache=True)
         return self.get_details_from_file(f)
     
     def get_details_from_file(self, f):
-        buf = f  # .read()
         getter = TelemanProgrammeDetailsParser.TelemanProgrammeDetailsParser("dummy")
-        details = getter.get_details(buf)
+        details = getter.get_details(f)
         return details
     

@@ -72,4 +72,8 @@
 
 2013-01-04 damian.golda <damian.golda@gmail.com>
     * wersja 1.7.1
+
+2013-04-12 smikula <slawek.mikula@gmail.com>
+    * dodanie logowania za pomocą logging zamiast printów (#20)
+    * poprawienie parsowania kanałów, w których nie ma treści wydarzeń (nSport) (#21)
 	
