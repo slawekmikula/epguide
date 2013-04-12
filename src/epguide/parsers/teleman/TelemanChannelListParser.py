@@ -17,14 +17,12 @@ class TelemanChannelListParser(SGMLParser):
         SGMLParser.__init__ (self)
 
         self.channels_data = []
-
         self.state = ['init']
         self.current_href = None
         self.success = False
 
     def get_channels(self, buf):
         station_list = self._get_channels_data(buf)
-#        if self.success:
         channel_list = [Channel(station['name'], station['id']) for station in station_list]
 
         # usuwamy duplikaty i sortujemy liste

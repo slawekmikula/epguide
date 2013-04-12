@@ -5,16 +5,15 @@ from setuptools import setup, find_packages
 
 setup (
     name = 'epguide',
-    version = '1.7.1',
+    version = '1.7.2',
     packages = find_packages(exclude=['bin','test']),
     package_data = {'': ['AUTHORS', 'LICENSE',
     'CHANGES', 'README', 'epguide_run']},
 
     # Declare your packages' dependencies here, for eg: foo>=3
-    install_requires=[''],
+    install_requires=['lxml>=2.3.5'],
 
-    # Fill in these to make your Egg ready for upload to
-    # PyPI
+    # Fill in these to make your Egg ready for upload to PyPI
     author = 'Slawek Mikula',
     author_email = 'slawek.mikula@gmail.com',
 

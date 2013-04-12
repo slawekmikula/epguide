@@ -4,8 +4,7 @@ from sgmllib import SGMLParser
 import datetime
 import re
 import time
-
-
+import logging
 
 class TelemanProgrammeParser(SGMLParser):
     def __init__(self, split_title):
@@ -20,6 +19,7 @@ class TelemanProgrammeParser(SGMLParser):
         self.category_classes_to_main_category = {'cat-roz':"Leisure hobbies", 'cat-ser':"Show/Game show", 'cat-fil':"Movie/Drama", 'cat-xxx':"News/Current affairs", 'cat-dzi':"Children's/Youth programmes", "cat-spo":"Sports"}
         self.state = ['init']
         self.success = False
+        self.log = logging.getLogger("epguide")
 
     def get_events(self, event_date, channel_id, buf):
         """
@@ -42,25 +42,25 @@ class TelemanProgrammeParser(SGMLParser):
     
     def create_event(self, event):
         title = event['title']
-        # print "  title: '" + title + "'"
+        self.log.debug("  title: '" + title + "'")
         if self.split_title:
             episode_match = self.episode_regexp.match(title)
             if episode_match is None:
-                # print "  #odc not found"
+                self.log.debug("  #episode not found")
                 episode_num = ''
             else:
-                # print "  #title: '" + episode_match.group('title') + "'"
-                # print "  #odc: '" + episode_match.group('odc') + "'"
+                self.log.debug("  #title: '" + episode_match.group('title') + "'")
+                self.log.debug("  #episode: '" + episode_match.group('odc') + "'")
                 title = episode_match.group('title').strip()
                 episode_num = episode_match.group('odc').strip()
     
             subtitle_match = self.subtitle_regexp.match(title)
             if subtitle_match is None:
-                # print "  #subtitle not found"
+                self.log.debug("  #subtitle not found")
                 subtitle = ''
             else:
-                # print "  #title: '" + subtitle_match.group('title') + "'"
-                # print "  #subtitle: '" + subtitle_match.group('subtitle') + "'"
+                self.log.debug("  #title: '" + subtitle_match.group('title') + "'")
+                self.log.debug("  #subtitle: '" + subtitle_match.group('subtitle') + "'")
                 title = subtitle_match.group('title').strip()
                 subtitle = subtitle_match.group('subtitle').strip()
         else:
@@ -73,7 +73,9 @@ class TelemanProgrammeParser(SGMLParser):
         main_category = event['main_category']
         category = event['category']
         url = event['url']
-        print "event: " + channel_id + " " + str(time_start) + " " + str(time_end) + " " + title + " " + subtitle + " " + episode_num + " " + main_category + " " + category+ " "+url
+        self.log.debug("event: " + channel_id + " " + str(time_start) 
+            + " " + str(time_end) + " " + title + " " + subtitle 
+            + " " + episode_num + " " + main_category + " " + category+ " " + url)
         eventClass = Event(
                            channel_id,
                            event['channel_name'],
@@ -133,7 +135,7 @@ class TelemanProgrammeParser(SGMLParser):
             class_attrs = self.getAttr(attrs, "class").split()
             main_category_class = next((c for c in class_attrs if c.startswith("cat-")), None)
             main_category = self.category_classes_to_main_category.get(main_category_class, "")
-            print "main_category_class:" + main_category_class + " main_category:" + main_category
+            self.log.debug("main_category_class:" + main_category_class + " main_category:" + main_category)
             self.current_event = {'channel_id': self.current_channel_id, 'channel_name': "",
                 'date': self.current_date, 'time': "", 'title': "", 'desc': "", 'main_category': main_category, 'category': ""}
 
@@ -218,6 +220,7 @@ class TelemanProgrammeParser(SGMLParser):
             self.current_event['channel_name'] = self.current_channel_name
         elif self.state[-1] == "category":
             self.current_event['category'] += data
+            self.success = True
         elif self.state[-1] == 'content':
             self.success = True
             self.current_event['desc'] += data + "\n"
