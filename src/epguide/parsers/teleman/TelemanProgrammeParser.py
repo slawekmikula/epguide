@@ -19,7 +19,7 @@ class TelemanProgrammeParser(SGMLParser):
         self.category_classes_to_main_category = {'cat-roz':"Leisure hobbies", 'cat-ser':"Show/Game show", 'cat-fil':"Movie/Drama", 'cat-xxx':"News/Current affairs", 'cat-dzi':"Children's/Youth programmes", "cat-spo":"Sports"}
         self.state = ['init']
         self.success = False
-        self.log = logging.getLogger("epguide")
+        self.log = logging.getLogger("TelemanProgrammeParser")
 
     def get_events(self, event_date, channel_id, buf):
         """
@@ -29,6 +29,7 @@ class TelemanProgrammeParser(SGMLParser):
         self.current_date = event_date
         self.current_channel_id = channel_id
         self.current_channel_name = ''  # wypelnione przy parsowaniu
+        self.current_channel_icon_url = ''  # wypelnione przy parsowaniu
         self.feed(buf)
         self.close()
         self._update_previous_time_end()
@@ -79,6 +80,7 @@ class TelemanProgrammeParser(SGMLParser):
         eventClass = Event(
                            channel_id,
                            event['channel_name'],
+                           event['channel_icon_url'],
                            title,
                            subtitle,
                            main_category,
@@ -158,7 +160,7 @@ class TelemanProgrammeParser(SGMLParser):
     def start_div(self, attrs):
         if self.state[-1] == 'program' and self.getAttr(attrs, "class") == "detail":
             self.state.append('description')
-        elif self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station_title":
+        elif self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station-title":
             self.state.append('channel_name_div')
 
     def end_div(self):
@@ -194,12 +196,13 @@ class TelemanProgrammeParser(SGMLParser):
             self.state.pop()
 
     def start_img(self, attrs):
-        if self.state[-1] == 'channel_name':
-            self.state.append('channel_name_img')
+        if self.state[-1] == 'channel_name_div':
+#            self.state.append('channel_name_img')
+            self.current_channel_icon_url = self.getAttr(attrs, u"src")
 
-    def end_img(self):
-        if self.state[-1] == 'channel_name_img':
-            self.state.pop()
+#    def end_img(self):
+#        if self.state[-1] == 'channel_name_img':
+#            self.state.pop()
 
     def handle_data (self, data):
         # nazwa kanalu
@@ -218,6 +221,7 @@ class TelemanProgrammeParser(SGMLParser):
         elif self.state[-1] == "title":
             self.current_event['title'] += data
             self.current_event['channel_name'] = self.current_channel_name
+            self.current_event['channel_icon_url'] = self.current_channel_icon_url
         elif self.state[-1] == "category":
             self.current_event['category'] += data
             self.success = True

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import sys, string
-
+import logging
 from epguide.data_formats import Channel, Event
 
 
@@ -56,11 +56,14 @@ class XmltvOutput(object):
 #  </programme>
     event_end_format = """  </programme>\n"""
     
-    channel_format = """  <channel id="%s"><display-name lang="pl">%s</display-name></channel>\n"""
+    channel_format = """  <channel id="%s"><display-name lang="pl">%s</display-name>%s</channel>\n"""
+
+    icon_format = """<icon src="%s"/>"""
     
     def __init__(self):
         self.file = None
         self.channel_list = set()
+        self.log = logging.getLogger("XmltvOutput")
 
         # strefa czasowa aktualna
         if time.localtime(time.time()).tm_isdst and time.daylight:
@@ -100,12 +103,16 @@ class XmltvOutput(object):
         formatTxt = formatTxt.encode('utf-8')
         return formatTxt
 
+
+    def _channel_element(self, channel):
+        return self.channel_format % (channel.id, self._format_string(channel.name), self._optional_element(self.icon_format, channel.icon_url))
+
     def SaveChannelList(self, channel_list):
         """
         zapisanie listy kanalow
         """
         for channel in channel_list:
-            self.file.write(self.channel_format % (channel.id, self._format_string(channel.name)))
+            self.file.write(self._channel_element(channel))
     
     def _optional_element(self, elementFormat, elementValue):
         if elementValue:
@@ -163,8 +170,8 @@ class XmltvOutput(object):
             self.file.write(element)
 
             if item.channel_name != '':
-                self.channel_list.add(Channel(item.channel_name, item.channel_id))
+                self.channel_list.add(Channel(item.channel_name, item.channel_id, item.channel_icon_url))
          
     def SaveGuideChannels(self):
         for channel in self.channel_list:
-            self.file.write(self.channel_format % (channel.id, self._format_string(channel.name)))
+            self.file.write(self._channel_element(channel))

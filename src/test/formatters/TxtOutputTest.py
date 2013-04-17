@@ -32,8 +32,8 @@ TVP-2 - TVP 2
 
 
     def testEvent(self):
-        event = Event(123, 'testchan', 'simple event', 'subtitle for an event',
-            'movie', 'this is description for an event',
+        event = Event(123, 'testchan', '<icon src="http://media.teleman.pl/logos/m/tvp-1.png"/>', 'simple event', 'subtitle for an event',
+            'Movie/Drama', 'movie', 'this is description for an event',
             datetime.date.today(),
             datetime.date.today() + datetime.timedelta(days=1))
 

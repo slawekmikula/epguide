@@ -4,10 +4,12 @@ from lxml import etree
 import StringIO
 from _pyio import BytesIO
 import re
+import logging
 
 class TelemanProgrammeDetailsParser(object):
     def __init__(self, dummy):
         self.build_text_list = etree.XPath("//text()")
+        self.log = logging.getLogger("TelemanProgrammeDetailsParser")
     
     def get_texts(self, tree, path):
         description_elements = tree.xpath(path, smart_strings=False)
