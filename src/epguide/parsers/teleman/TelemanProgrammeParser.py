@@ -160,7 +160,7 @@ class TelemanProgrammeParser(SGMLParser):
     def start_div(self, attrs):
         if self.state[-1] == 'program' and self.getAttr(attrs, "class") == "detail":
             self.state.append('description')
-        elif self.state[-1] == 'init' and self.getAttr(attrs, "class") == "station-title":
+        elif self.state[-1] == 'init' and (self.getAttr(attrs, "class") == "station-title" or self.getAttr(attrs, "class") == "stationTitle") :
             self.state.append('channel_name_div')
 
     def end_div(self):

@@ -169,6 +169,7 @@ class XmltvOutput(object):
                 self.event_end_format
             self.file.write(element)
 
+            self.log.debug("item channel: id: %s name: %s icon_url: %s", item.channel_id, item.channel_name, item.channel_icon_url)
             if item.channel_name != '':
                 self.channel_list.add(Channel(item.channel_name, item.channel_id, item.channel_icon_url))
          
