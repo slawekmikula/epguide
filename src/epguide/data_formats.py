@@ -57,21 +57,49 @@ class Event(object):
     def set_details(self, details):
         self.details = details
         
-    def get_title(self):
+    def get_title(self, add_original_title_to_title, add_year_to_title, add_age_rating_to_title):
+        result = self.title
+        result = self._add_original_title_and_year(result, add_original_title_to_title, add_year_to_title)
+        result = self._add_age_rating(result, add_age_rating_to_title)
+        return result
+        
+    def _add_original_title_and_year(self, base_title, add_original_title_to_title, add_year_to_title):
         if(self.details is None):
-            return self.title
-        elif(self.details.pg is None):
-            return self.title
-        elif(self.details.pg.min_age >= 16):
-            return str(self.details.pg.min_age)+" "+self.title
+            return base_title
+        elif(self.details.original_title is None):
+            return self._add_year(base_title, add_year_to_title)
+        elif(add_original_title_to_title):
+            return self._add_year(self.details.original_title, add_year_to_title) +" - "+ base_title
         else:
-            return self.title
+            return base_title
                 
+    def _add_year(self, base_title, add_year_to_title):
+        if(self.details is None):
+            return base_title
+        elif(self.details.year is None):
+            return base_title
+        elif(add_year_to_title):
+            return base_title + " ("+self.details.year+")"
+        else:
+            return base_title
+                
+    def _add_age_rating(self, base_title, add_age_rating_to_title):
+        if(self.details is None):
+            return base_title
+        elif(self.details.pg is None):
+            return base_title
+        elif(self.details.pg.min_age >= add_age_rating_to_title):
+            return base_title + " [od " + str(self.details.pg.min_age)+ " lat]"
+        else:
+            return base_title
+
     def get_description(self):
         if(self.details is None):
             d = self.desc
         else:
-            d = self.desc + u"\nOpis:\n" + self.details.description + u"\nTytul oryginalny:" + self.details.original_title
+            d = self.desc + u"\nOpis:\n" + self.details.description 
+            if self.details.original_title: 
+                d = d + u"\nTytul oryginalny:" + self.details.original_title                
         return d
 
     def get_year(self):

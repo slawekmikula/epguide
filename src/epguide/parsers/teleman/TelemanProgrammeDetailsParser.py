@@ -63,6 +63,11 @@ class TelemanProgrammeDetailsParser(object):
 # <h2 class="orig-title">(Arthur et la guerre des deux mondes)</h2>
 #
         original_title = self.get_texts(tree, "id('show-overview')/h2")  # //h2[@class='orig-title']
+        if original_title.startswith('(') and original_title.endswith(')'):
+            original_title = original_title[1:-1]
+        if len(original_title.strip()) == 0:
+            original_title = None
+
 #        print("original title:" + original_title)
 # Rok
 #---

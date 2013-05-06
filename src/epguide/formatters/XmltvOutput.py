@@ -60,7 +60,10 @@ class XmltvOutput(object):
 
     icon_format = """<icon src="%s"/>"""
     
-    def __init__(self):
+    def __init__(self, add_original_title_to_title, add_year_to_title, add_age_rating_to_title):
+        self.add_original_title_to_title = add_original_title_to_title
+        self.add_year_to_title = add_year_to_title
+        self.add_age_rating_to_title = add_age_rating_to_title
         self.file = None
         self.channel_list = set()
         self.log = logging.getLogger("XmltvOutput")
@@ -138,7 +141,7 @@ class XmltvOutput(object):
 
         for item in guide:
             episode_num_element = self._optional_element(self.episode_num_format, item.episode_num)
-            title_element = self._element(self.title_format, item.get_title())
+            title_element = self._element(self.title_format, item.get_title(self.add_original_title_to_title, self.add_year_to_title, self.add_age_rating_to_title))
             subtitle_element = self._optional_element(self.subtitle_format, item.subtitle)
             desc_element = self._optional_element_cdata(self.desc_format, item.get_description())
             main_category_element = self._optional_element(self.main_category_format, item.main_category)
