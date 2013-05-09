@@ -51,6 +51,9 @@ class Config(object):
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
         self.cmdparser.add_option ("--verbose", dest="verbose", action="store_true", default=False, help="verbose logging")
         self.cmdparser.add_option ("--split-title", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
+        self.cmdparser.add_option ("--add-original-title-to-title", action="store_true", dest="add_original_title_to_title", default=False, help="add original title to title")
+        self.cmdparser.add_option ("--add-year-to-title", action="store_true",dest="add_year_to_title", default=False, help="add year to title")
+        self.cmdparser.add_option ("--add-age-rating-to-title", type="int", dest="add_age_rating_to_title", default=100, help="add info about age rating to title (if age rating greater or equal than given)")
         self.cmdparser.add_option ("--debug-http", dest="debug_http", action="store_true", default=False, help="enable logs for http connection")
 
 
@@ -72,7 +75,7 @@ class Config(object):
         if self.options.output == 'txt':
             self.output = FileOutput.FileOutput(self.options.filename, TxtOutput.TxtOutput())
         elif self.options.output == 'xmltv':
-            self.output = FileOutput.FileOutput(self.options.filename, XmltvOutput.XmltvOutput())
+            self.output = FileOutput.FileOutput(self.options.filename, XmltvOutput.XmltvOutput(self.options.add_original_title_to_title, self.options.add_year_to_title, self.options.add_age_rating_to_title))
         
         # daty poczatkowe i koncowe 
         if self.options.get_week == True:
