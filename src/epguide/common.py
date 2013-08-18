@@ -34,6 +34,7 @@ class Config(object):
         self.output = None
         self.get_guide = False
         self.get_today = False
+        self.get_days = 0
         self.usage=""" Application, that can get You electronic TV guide in various formats
                        %prog [options] """
 
@@ -47,6 +48,7 @@ class Config(object):
         self.cmdparser.add_option ("-p", dest="parser", choices=["teleman"], default="teleman", help="channel parser source from: teleman")
         self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
+        self.cmdparser.add_option ("--days", dest="get_days", help="get guide for provided days from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
         self.cmdparser.add_option ("--verbose", dest="verbose", action="store_true", default=False, help="verbose logging")
@@ -90,6 +92,11 @@ class Config(object):
             self.date_from = self.options.date
             self.date_to = self.options.date + datetime.timedelta(days=1)
             self.get_guide = True
+        elif self.options.get_days is not None:
+            self.date_from = datetime.datetime.today()
+            self.date_to = datetime.datetime.today() + datetime.timedelta(days=int(self.options.get_days))
+            self.get_guide = True
+            
         
     def ReadConfigFile(self):
         """

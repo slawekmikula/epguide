@@ -46,4 +46,4 @@ $ epguide -l
 Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
 dla stacji o odpowiednich indeksach (otrzymanych przez opcje -l):
 
-$ epguide -c 1,2,5,17,18,233 -f xmltv -w -o tv.xml
+$ epguide -c TVP-1,TVP-2 -f xmltv -w -o tv.xml

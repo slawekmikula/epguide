@@ -77,3 +77,11 @@
     * dodanie logowania za pomocą logging zamiast printów (#20)
     * poprawienie parsowania kanałów, w których nie ma treści wydarzeń (nSport) (#21)
 	
+2013-08-18 damian.golda <damian.golda@gmail.com>
+	* dodanie url z kodem obrazka dla kanału (#23)
+	* dodanie konfigurowalności podawania dopuszczalnego wieku dla programu (#24)
+	* tytuł oryginalny + rok produkcji w tytule (#25)
+	
+2013-08-18 smikula <slawek.mikula@gmail.com>
+	* dodanie opcji pobierania większej liczby dni - opcja --days (#27)
+	* wersja 1.7.2
