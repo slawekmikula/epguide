@@ -36,10 +36,12 @@ class EpGuide(object):
         self.config = config
         self.parser, self.output = self.config.ProvideExec()
 
-        logging.basicConfig()
+        if self.config.options.logfile:
+            logging.basicConfig(filename=self.config.options.logfile,level=logging.DEBUG)
+        else:
+            logging.basicConfig()
         self.log = logging.getLogger("epguide")
-
-        if self.config.options.verbose:
+        if self.config.options.verbose or self.config.options.logfile:
             self.log.setLevel(logging.DEBUG)
         else:
             self.log.setLevel(logging.CRITICAL)

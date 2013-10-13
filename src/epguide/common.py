@@ -50,6 +50,7 @@ class Config(object):
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--days", dest="get_days", help="get guide for provided days from today")
         self.cmdparser.add_option ("--config", dest="use_config", help="use provided config")
+        self.cmdparser.add_option ("--logfile", dest="logfile", help="log to specified file")
         self.cmdparser.add_option ("--licence", dest="licence", action="store_true", default=False, help="print licence")
         self.cmdparser.add_option ("--verbose", dest="verbose", action="store_true", default=False, help="verbose logging")
         self.cmdparser.add_option ("--split-title", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
