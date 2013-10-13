@@ -1,4 +1,4 @@
-VERSION=1.7.2
+VERSION=1.8.0-Alpha1
 PKG_NAME=epguide
 
 egg:
@@ -19,4 +19,5 @@ clean:
 	find . -depth -name *.pyc -type f -delete
 	rm -rf ./src/build
 	rm -rf ./src/dist
+	rm -rf ./dist
 

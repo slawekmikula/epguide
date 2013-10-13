@@ -1,4 +1,4 @@
+[console_scripts]
+tv_grab_pl_epguide = epguide.tv_grab_pl_epguide:RunTvGrabPlEpguide
+epguide = epguide.epg_runner:RunEpguide
 
-  [console_scripts]
-  epguide = epguide.epg_runner:RunEpguide
-  

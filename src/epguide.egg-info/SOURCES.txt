@@ -9,6 +9,8 @@ epguide/common.py
 epguide/data_formats.py
 epguide/epg_runner.py
 epguide/epguide.py
+epguide/tv_grab_pl_epguide.py
+epguide/util.py
 epguide.egg-info/PKG-INFO
 epguide.egg-info/SOURCES.txt
 epguide.egg-info/dependency_links.txt
@@ -24,6 +26,7 @@ epguide/parsers/__init__.py
 epguide/parsers/roman.py
 epguide/parsers/teleman/HttpHelper.py
 epguide/parsers/teleman/TelemanChannelListParser.py
+epguide/parsers/teleman/TelemanData.py
 epguide/parsers/teleman/TelemanProgrammeDetailsParser.py
 epguide/parsers/teleman/TelemanProgrammeParser.py
 epguide/parsers/teleman/__init__.py
