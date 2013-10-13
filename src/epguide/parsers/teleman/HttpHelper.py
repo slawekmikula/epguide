@@ -17,7 +17,7 @@ class HttpHelper(object):
 
     def __init__(self, enable_debug):
         self.log = logging.getLogger("epguide")
-        cache_dir = os.getcwd() + "/.epguide"
+        cache_dir = os.path.normpath(os.path.expanduser("~/.epguide/cache"))
         self.log.debug("Cache dir: " + cache_dir)
         self.cache = FileCache(cache_dir)
         self.http = Http(cache = self.cache)
