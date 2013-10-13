@@ -23,7 +23,7 @@ class TelemanChannelListParser(SGMLParser):
 
     def get_channels(self, buf):
         station_list = self._get_channels_data(buf)
-        channel_list = [Channel(station['name'], station['id']) for station in station_list]
+        channel_list = [Channel(station['id'], station['name']) for station in station_list]
 
         # usuwamy duplikaty i sortujemy liste
         channel_set = {}

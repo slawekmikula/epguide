@@ -25,9 +25,9 @@ class TelemanParser(object):
     """
     parser pobierajacy dane ze strony teleman.pl
     """
-    def __init__(self, split_title, debug_http):
+    def __init__(self, parser_options, debug_http):
         self.url_provider = TelemanUrlProvider()
-        self.split_title = split_title
+        self.parser_options = parser_options
         self.http_helper = HttpHelper.HttpHelper(debug_http)
 
     def Init(self):
@@ -61,10 +61,10 @@ class TelemanParser(object):
         return self.get_guide_from_file(eventDate, channel_id, f)
 
     def get_guide_from_file(self, eventDate, channel_id, f):
-        getter = TelemanProgrammeParser.TelemanProgrammeParser(self.split_title)
+        getter = TelemanProgrammeParser.TelemanProgrammeParser(self.parser_options)
         events = getter.get_events(eventDate, channel_id, f)
         for event in events:
-            if event.main_category == "Movie/Drama":
+            if event.main_category == "Movie/Drama": #or event.main_category == "Show/Game show":
                 details = self.get_details(event.url)
                 event.set_details(details)
         return events

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from epguide.data_formats import Channel
-from epguide.data_formats import Event
+from epguide.data_formats import Event, Imdb, ParentalRating, ParserOptions, Channel
 import datetime
 from epguide.formatters import TxtOutput
 import StringIO
+from epguide.parsers.teleman.TelemanData import TelemanEventDetails, TelemanEvent
 
 class  TxtOutputTestCase(unittest.TestCase):
     def setUp(self):
@@ -15,8 +15,8 @@ class  TxtOutputTestCase(unittest.TestCase):
         pass
 
     def testChannel(self):
-        channel = Channel('TVP 1', "TVP-1")
-        otherChannel = Channel('TVP 2', "TVP-2")
+        channel = Channel('TVP-1', "TVP 1")
+        otherChannel = Channel('TVP-2', "TVP 2")
 
         f = StringIO.StringIO()
         output = TxtOutput.TxtOutput()
@@ -24,7 +24,7 @@ class  TxtOutputTestCase(unittest.TestCase):
         channel_list = [channel, otherChannel]
         output.SaveChannelList(channel_list)
         output.Finish()
-        expected="""
+        expected = """
 TVP-1 - TVP 1
 TVP-2 - TVP 2
 """.lstrip()
@@ -32,10 +32,11 @@ TVP-2 - TVP 2
 
 
     def testEvent(self):
-        event = Event(123, 'testchan', '<icon src="http://media.teleman.pl/logos/m/tvp-1.png"/>', 'simple event', 'subtitle for an event',
-            'Movie/Drama', 'movie', 'this is description for an event',
-            datetime.date.today(),
-            datetime.date.today() + datetime.timedelta(days=1))
+        channel = Channel(123, 'testchan', 'http://media.teleman.pl/logos/m/tvp-1.png')
+        parserOptions = ParserOptions()
+        event = TelemanEvent(parserOptions, channel, 'simple event', 'Movie/Drama', 'movie',
+                             'this is description for an event', datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1),
+                             None)
 
         f = StringIO.StringIO()
         output = TxtOutput.TxtOutput()
@@ -44,14 +45,17 @@ TVP-2 - TVP 2
         day = datetime.datetime(2012, 12, 31)
         output.SaveGuide(day, guide)
         output.Finish()
-        expected="""
-Program testchan na dzien: 2012-12-31
+        expected = u"""
+Program testchan na dzień: 2012-12-31
 --------------------------------------------
 
- 00:00 00:00   simple event
+ 00:00 00:00 simple event |  |  | Movie/Drama
              this is description for an event
 """
-        self.assertEqual(f.getvalue(), expected)
+        actual = f.getvalue()
+        print("actual: " + actual)
+        print("expected: " + expected)
+        self.assertEqual(actual, expected)
 
 if __name__ == '__main__':
     unittest.main()

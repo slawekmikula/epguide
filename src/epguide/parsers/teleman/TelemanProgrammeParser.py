@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
-from epguide.data_formats import Event
+from epguide.data_formats import Event, Channel
 from sgmllib import SGMLParser
 import datetime
 import re
 import time
 import logging
+from epguide.parsers.teleman.TelemanData import TelemanEvent
 
 class TelemanProgrammeParser(SGMLParser):
-    def __init__(self, split_title):
+    def __init__(self, parser_options):
         SGMLParser.__init__ (self)
-        self.split_title = split_title
+        self.parser_options = parser_options
         self.event_dict = []
         self.prev_event = None
         self.current_event = None
         self.bad_row = False
-        self.episode_regexp = re.compile(r'(?P<title>.+)\((?P<odc>.+)\)')
-        self.subtitle_regexp = re.compile(r'(?P<title>.+):(?P<subtitle>.+)')
         self.category_classes_to_main_category = {'cat-roz':"Leisure hobbies", 'cat-ser':"Show/Game show", 'cat-fil':"Movie/Drama", 'cat-xxx':"News/Current affairs", 'cat-dzi':"Children's/Youth programmes", "cat-spo":"Sports"}
         self.state = ['init']
         self.success = False
@@ -44,30 +43,6 @@ class TelemanProgrammeParser(SGMLParser):
     def create_event(self, event):
         title = event['title']
         self.log.debug("  title: '" + title + "'")
-        if self.split_title:
-            episode_match = self.episode_regexp.match(title)
-            if episode_match is None:
-                self.log.debug("  #episode not found")
-                episode_num = ''
-            else:
-                self.log.debug("  #title: '" + episode_match.group('title') + "'")
-                self.log.debug("  #episode: '" + episode_match.group('odc') + "'")
-                title = episode_match.group('title').strip()
-                episode_num = episode_match.group('odc').strip()
-    
-            subtitle_match = self.subtitle_regexp.match(title)
-            if subtitle_match is None:
-                self.log.debug("  #subtitle not found")
-                subtitle = ''
-            else:
-                self.log.debug("  #title: '" + subtitle_match.group('title') + "'")
-                self.log.debug("  #subtitle: '" + subtitle_match.group('subtitle') + "'")
-                title = subtitle_match.group('title').strip()
-                subtitle = subtitle_match.group('subtitle').strip()
-        else:
-                subtitle = ''
-                episode_num = ''
-            
         time_start = event['time_start']
         time_end = event['time_end']
         channel_id = event['channel_id']
@@ -75,20 +50,20 @@ class TelemanProgrammeParser(SGMLParser):
         category = event['category']
         url = event['url']
         self.log.debug("event: " + channel_id + " " + str(time_start) 
-            + " " + str(time_end) + " " + title + " " + subtitle 
-            + " " + episode_num + " " + main_category + " " + category+ " " + url)
-        eventClass = Event(
-                           channel_id,
+            + " " + str(time_end) + " " + title
+            + " " + " " + main_category + " " + category+ " " + url)
+        channel = Channel(channel_id,
                            event['channel_name'],
-                           event['channel_icon_url'],
+                           event['channel_icon_url'])
+        eventClass = TelemanEvent(
+                           self.parser_options,
+                           channel,
                            title,
-                           subtitle,
                            main_category,
                            category,
                            event['desc'],
                            time_start,
                            time_end,
-                           episode_num,
                            url)
         return eventClass
 

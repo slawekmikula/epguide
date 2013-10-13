@@ -53,6 +53,7 @@ class XmltvOutput(object):
 #    <star-rating>
 #      <value>3/3</value>
 #    </star-rating>
+    star_rating_format = """    <star-rating><value>%s</value></star-rating>\n"""
 #  </programme>
     event_end_format = """  </programme>\n"""
     
@@ -60,10 +61,7 @@ class XmltvOutput(object):
 
     icon_format = """<icon src="%s"/>"""
     
-    def __init__(self, add_original_title_to_title, add_year_to_title, add_age_rating_to_title):
-        self.add_original_title_to_title = add_original_title_to_title
-        self.add_year_to_title = add_year_to_title
-        self.add_age_rating_to_title = add_age_rating_to_title
+    def __init__(self):
         self.file = None
         self.channel_list = set()
         self.log = logging.getLogger("XmltvOutput")
@@ -140,15 +138,16 @@ class XmltvOutput(object):
             return
 
         for item in guide:
-            episode_num_element = self._optional_element(self.episode_num_format, item.episode_num)
-            title_element = self._element(self.title_format, item.get_title(self.add_original_title_to_title, self.add_year_to_title, self.add_age_rating_to_title))
-            subtitle_element = self._optional_element(self.subtitle_format, item.subtitle)
+            episode_num_element = self._optional_element(self.episode_num_format, item.get_episode_num())
+            title_element = self._element(self.title_format, item.get_title())
+            subtitle_element = self._optional_element(self.subtitle_format, item.get_subtitle())
             desc_element = self._optional_element_cdata(self.desc_format, item.get_description())
             main_category_element = self._optional_element(self.main_category_format, item.main_category)
             category_element = self._element(self.category_format, item.category)
             year_element = self._optional_element(self.year_format, item.get_year())
             country_element = self._optional_element(self.country_format, item.get_country())
             pg_element = self._optional_element(self.pg_format, item.get_pg())
+            star_rating_element = self._optional_element(self.star_rating_format, item.get_star_rating())
 
             element_start = self.event_start_format % (
                        item.time_start.strftime("%Y%m%d%H%M%S"),
@@ -157,7 +156,7 @@ class XmltvOutput(object):
                             'stop="%s %s" ' % \
                                 (item.time_end.strftime("%Y%m%d%H%M%S"),
                                  self.tz) or '',
-                       item.channel_id)
+                       item.get_channel_id())
             
             element = element_start + \
                 title_element + \
@@ -169,12 +168,13 @@ class XmltvOutput(object):
                 country_element + \
                 episode_num_element + \
                 pg_element + \
+                star_rating_element + \
                 self.event_end_format
             self.file.write(element)
 
-            self.log.debug("item channel: id: %s name: %s icon_url: %s", item.channel_id, item.channel_name, item.channel_icon_url)
-            if item.channel_name != '':
-                self.channel_list.add(Channel(item.channel_name, item.channel_id, item.channel_icon_url))
+            self.log.debug("item channel: id: %s name: %s icon_url: %s", item.get_channel_id(), item.get_channel_name(), item.get_channel_icon_url())
+            if item.get_channel_name != '':
+                self.channel_list.add(item.channel)
          
     def SaveGuideChannels(self):
         for channel in self.channel_list:

@@ -71,13 +71,13 @@ class Config(object):
 
         # tworzenie parsera
         if self.options.parser == 'teleman':
-            self.parser = TelemanParser.TelemanParser(self.options.split_title, self.options.debug_http)
+            self.parser = TelemanParser.TelemanParser(self.options, self.options.debug_http)
 
         # tworzenie wyjscia
         if self.options.output == 'txt':
             self.output = FileOutput.FileOutput(self.options.filename, TxtOutput.TxtOutput())
         elif self.options.output == 'xmltv':
-            self.output = FileOutput.FileOutput(self.options.filename, XmltvOutput.XmltvOutput(self.options.add_original_title_to_title, self.options.add_year_to_title, self.options.add_age_rating_to_title))
+            self.output = FileOutput.FileOutput(self.options.filename, XmltvOutput.XmltvOutput())
         
         # daty poczatkowe i koncowe 
         if self.options.get_week == True:

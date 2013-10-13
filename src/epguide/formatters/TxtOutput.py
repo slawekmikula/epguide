@@ -30,12 +30,12 @@ class TxtOutput(object):
             self.file.write("Brak programu dla tego dnia")
             return
         
-        self.file.write("\nProgram %s na dzien: %s\n" % (guide[0].channel_name.encode('utf8'), day.strftime("%Y-%m-%d")))
+        self.file.write(u"\nProgram %s na dzień: %s\n" % (guide[0].get_channel_name().encode('utf8'), day.strftime("%Y-%m-%d")))
         self.file.write("--------------------------------------------\n\n")
         for item in guide:
-            self.file.write(" %s %s   %s\n" % (item.time_start.strftime("%H:%M"), item.time_end and item.time_end.strftime("%H:%M") or '',
-                item.title.encode('utf8')))
-            self.file.write(textwrap.fill (item.desc.encode('utf8'), 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
+            self.file.write(" %s %s %s | %s | %s | %s\n" % (item.time_start.strftime("%H:%M"), item.time_end and item.time_end.strftime("%H:%M") or '',
+                item.get_title().encode('utf8'), item.get_episode_num() or '', (item.get_subtitle() or '').encode('utf8'), item.main_category))
+            self.file.write(textwrap.fill (item.get_description().encode('utf8'), 79, initial_indent=13*" ", subsequent_indent=13*" ") + "\n")
 
     def SaveGuideChannels(self):
         pass
