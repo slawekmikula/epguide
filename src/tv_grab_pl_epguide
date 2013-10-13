@@ -1,0 +1,8 @@
+#!/usr/bin/python
+
+from epguide import RunTvGrabPlEpguide
+
+
+if __name__ == '__main__':
+    RunTvGrabPlEpguide()
+    
