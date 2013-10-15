@@ -70,14 +70,14 @@
 	* wprowadzenie poprawek parsowania teleman (thx jacek)
 	* poprawka parsowania daty (#15)
 
-2013-01-04 damian.golda <damian.golda@gmail.com>
+2013-01-04 Damian Gołda <damian.golda@gmail.com>
     * wersja 1.7.1
 
 2013-04-12 smikula <slawek.mikula@gmail.com>
     * dodanie logowania za pomocą logging zamiast printów (#20)
     * poprawienie parsowania kanałów, w których nie ma treści wydarzeń (nSport) (#21)
 	
-2013-08-18 damian.golda <damian.golda@gmail.com>
+2013-08-18 Damian Gołda <damian.golda@gmail.com>
 	* dodanie url z kodem obrazka dla kanału (#23)
 	* dodanie konfigurowalności podawania dopuszczalnego wieku dla programu (#24)
 	* tytuł oryginalny + rok produkcji w tytule (#25)
@@ -85,3 +85,11 @@
 2013-08-18 smikula <slawek.mikula@gmail.com>
 	* dodanie opcji pobierania większej liczby dni - opcja --days (#27)
 	* wersja 1.7.2
+
+2013-10-13 Damian Gołda <Damian.Golda@gmail.com>
+        * Refactoring struktur danych tak aby przechowywały wprost dane odczytane z
+          teleman.pl, a dopiero potem (na podstawie opcji) były wyliczane tytuły itp.
+        * Katalog cache nie w bieżącym katalogu ale w ~/.epguide/cache 
+        * Dodanie możliwości logowania do pliku - opcja: --logfile
+        * Pierwsza wersja tv_grab_pl_epguide 
+        * Wersja 1.8.0-Alpha1, dodanie zależności od ConfigObj i httplib2 
