@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from epguide import RunTvGrabPlEpguide
+from epguide.tv_grab_pl_epguide import RunTvGrabPlEpguide
 
 
 if __name__ == '__main__':
