@@ -58,7 +58,7 @@ class  XmltvOutputTestCase(unittest.TestCase):
 <!DOCTYPE tv SYSTEM "xmltv.dtd">
 <tv generator-info-name="epguide generator">
   <programme start="20121231000000 +0200" stop="20130101000000 +0200" channel="123">
-    <title>simple event (odc. 2/3) - subtitle for an event</title>
+    <title>simple event</title>
     <sub-title>subtitle for an event</sub-title>
     <desc><![CDATA[this is description for an event]]></desc>
     <category language="en">Movie/Drama</category>

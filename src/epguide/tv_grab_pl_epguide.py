@@ -115,7 +115,10 @@ class TvGrabPlEpguide(object):
                 print "No channels found in configuration file. Please run with --configure option first."
                 return -1
             else:
-                config.options.channel_list = channels
+                if isinstance(channels, basestring): #jeden kanal to String a nie List
+                    config.options.channel_list = [channels]
+                else:
+                    config.options.channel_list = channels
                 config.options.split_title = configFile['split-title']
                 config.options.add_original_title_to_title = configFile['add-original-title-to-title']
                 config.options.add_year_to_title = configFile['add-year-to-title']

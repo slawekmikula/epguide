@@ -43,36 +43,44 @@ class  MovieWithOriginalTitleTest(unittest.TestCase):
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"original title (2009) - Liberator 2 (Megahit) [od 16 lat]")
+        self.assertEqual(event.get_title(), u"original title (2009) - Liberator 2 [od 16 lat] [Megahit]")
+        self.assertEqual(event.get_filename(), u"original title (2009) - Liberator 2 [od 16 lat] [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "Liberator 2 (Megahit) [od 16 lat]")
+        self.assertEqual(event.get_title(), "Liberator 2 [od 16 lat] [Megahit]")
+        self.assertEqual(event.get_filename(), u"Liberator 2 [od 16 lat] [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"original title - Liberator 2 (Megahit) [od 16 lat]")
+        self.assertEqual(event.get_title(), u"original title - Liberator 2 [od 16 lat] [Megahit]")
+        self.assertEqual(event.get_filename(), u"original title - Liberator 2 [od 16 lat] [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "Liberator 2 (Megahit) [od 16 lat]")
+        self.assertEqual(event.get_title(), "Liberator 2 [od 16 lat] [Megahit]")
+        self.assertEqual(event.get_filename(), u"Liberator 2 [od 16 lat] [Megahit]")
 
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"original title (2009) - Liberator 2 (Megahit)")
+        self.assertEqual(event.get_title(), u"original title (2009) - Liberator 2 [Megahit]")
+        self.assertEqual(event.get_filename(), u"original title (2009) - Liberator 2 [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "Liberator 2 (Megahit)")
+        self.assertEqual(event.get_title(), "Liberator 2 [Megahit]")
+        self.assertEqual(event.get_filename(), u"Liberator 2 [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"original title - Liberator 2 (Megahit)")
+        self.assertEqual(event.get_title(), u"original title - Liberator 2 [Megahit]")
+        self.assertEqual(event.get_filename(), u"original title - Liberator 2 [Megahit]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "Liberator 2 (Megahit)")
+        self.assertEqual(event.get_title(), "Liberator 2 [Megahit]")
+        self.assertEqual(event.get_filename(), u"Liberator 2 [Megahit]")
 
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)

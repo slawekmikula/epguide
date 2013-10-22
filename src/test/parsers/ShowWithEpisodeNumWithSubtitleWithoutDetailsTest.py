@@ -29,56 +29,65 @@ class  ShowWithEpisodeNumWithSubtitleWithoutDetailsTest(unittest.TestCase):
         self.assertEqual(event.get_title(), u'Rodzinka.pl: Zachcianki (80)') 
         self.assertEqual(event.get_subtitle(), None)
         self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl: Zachcianki (80)') 
         
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=True, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with original title and year
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with original title and year
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
         
          
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=True, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with year 
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with year 
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
         
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=False, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with original title 
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with original title 
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=False, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # nothing
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # nothing
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=True, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with original title, year and age
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with original title, year and age
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=True, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with year and age
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with year and age
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=False, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with original title and age
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with original title and age
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=False, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
-        self.assertEqual(event.get_title(), u'Rodzinka.pl (odc. 80) - Zachcianki')  # with age
+        self.assertEqual(event.get_title(), u'Rodzinka.pl')  # with age
         self.assertEqual(event.get_subtitle(), "Zachcianki")
         self.assertEqual(event.get_episode_num(), "80")
+        self.assertEqual(event.get_filename(), u'Rodzinka.pl (80) Zachcianki') 
 
         self.assertEqual(event.get_description(), "One line summary.")
 

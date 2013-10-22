@@ -60,6 +60,14 @@ class TelemanEvent(Event):
     def get_episode_num(self):
         return self.calculated_episode_num
 
+    def get_filename(self):
+        result = self.get_title() 
+        if self.get_episode_num():
+            result = result + " (" + self.get_episode_num()+")"
+        if self.get_subtitle():
+            result = result + " " + self.get_subtitle()
+        return result
+
     def __hash__(self):
         return self.channel.channel_id + str(self.time_start)
 

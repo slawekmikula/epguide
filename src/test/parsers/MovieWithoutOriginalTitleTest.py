@@ -44,43 +44,53 @@ class  MovieWithoutOriginalTitleTest(unittest.TestCase):
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 99)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
         self.assertEqual(event.get_title(), u"Wakacyjny hit Jedynki: U Pana Boga za piecem")
+        self.assertEqual(event.get_filename(), u"Wakacyjny hit Jedynki: U Pana Boga za piecem")
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
         self.assertEqual(event.get_title(), u"Wakacyjny hit Jedynki: U Pana Boga za piecem (1998) [od 16 lat]")
+        self.assertEqual(event.get_filename(), u"Wakacyjny hit Jedynki: U Pana Boga za piecem (1998) [od 16 lat]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (Wakacyjny hit Jedynki) (1998) [od 16 lat]")
+        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (1998) [od 16 lat] [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem (1998) [od 16 lat] [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (Wakacyjny hit Jedynki) (1998) [od 16 lat]")
+        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (1998) [od 16 lat] [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem (1998) [od 16 lat] [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (Wakacyjny hit Jedynki) [od 16 lat]")
+        self.assertEqual(event.get_title(), u"U Pana Boga za piecem [od 16 lat] [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem [od 16 lat] [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 16)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "U Pana Boga za piecem (Wakacyjny hit Jedynki) [od 16 lat]")
+        self.assertEqual(event.get_title(), "U Pana Boga za piecem [od 16 lat] [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem [od 16 lat] [Wakacyjny hit Jedynki]")
 
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (Wakacyjny hit Jedynki) (1998)")
+        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (1998) [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem (1998) [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "U Pana Boga za piecem (Wakacyjny hit Jedynki) (1998)")
+        self.assertEqual(event.get_title(), "U Pana Boga za piecem (1998) [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem (1998) [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u"U Pana Boga za piecem (Wakacyjny hit Jedynki)")
+        self.assertEqual(event.get_title(), u"U Pana Boga za piecem [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem [Wakacyjny hit Jedynki]")
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), "U Pana Boga za piecem (Wakacyjny hit Jedynki)")
+        self.assertEqual(event.get_title(), "U Pana Boga za piecem [Wakacyjny hit Jedynki]")
+        self.assertEqual(event.get_filename(), u"U Pana Boga za piecem [Wakacyjny hit Jedynki]")
 
 
         parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)

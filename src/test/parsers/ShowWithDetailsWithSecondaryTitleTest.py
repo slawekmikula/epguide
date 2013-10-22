@@ -45,55 +45,64 @@ class  ShowWithDetailsWithSecondaryTitleTest(unittest.TestCase):
         self.assertEqual(event.get_title(), u'Na dobre i na złe: Pierwszy dzień (518)')  
         self.assertEqual(event.get_subtitle(), None)
         self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe: Pierwszy dzień (518)')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=True, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe (odc. 518) - Pierwszy dzień')  # with original title and year 
+        self.assertEqual(event.get_title(), u'Na dobre i na złe')  # with original title and year 
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=True, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe (odc. 518) - Pierwszy dzień')  # with year 
+        self.assertEqual(event.get_title(), u'Na dobre i na złe')  # with year 
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=False, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe (odc. 518) - Pierwszy dzień')  # with original title 
+        self.assertEqual(event.get_title(), u'Na dobre i na złe')  # with original title 
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=False, add_age_rating_to_title=18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe (odc. 518) - Pierwszy dzień')  # nothing
+        self.assertEqual(event.get_title(), u'Na dobre i na złe')  # nothing
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe (518) Pierwszy dzień')  
 
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=True, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat] (odc. 518) - Pierwszy dzień')  # with original title, year and age
+        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat]')  # with original title, year and age
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe [od 12 lat] (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=True, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat] (odc. 518) - Pierwszy dzień')  # with year and age
+        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat]')  # with year and age
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe [od 12 lat] (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=True, add_year_to_title=False, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat] (odc. 518) - Pierwszy dzień')  # with original title and age
+        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat]')  # with original title and age
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe [od 12 lat] (518) Pierwszy dzień')  
 
         parser_options = ParserOptions(split_title=True, add_original_title_to_title=False, add_year_to_title=False, add_age_rating_to_title=12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=details)
-        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat] (odc. 518) - Pierwszy dzień')  # with age
+        self.assertEqual(event.get_title(), u'Na dobre i na złe [od 12 lat]')  # with age
         self.assertEqual(event.get_subtitle(), u"Pierwszy dzień")
         self.assertEqual(event.get_episode_num(), "518")
+        self.assertEqual(event.get_filename(), u'Na dobre i na złe [od 12 lat] (518) Pierwszy dzień')  
 
         self.assertEqual(event.get_description(), u'One line summary.Long description')
 

@@ -27,37 +27,123 @@ class  ShowWithEpisodeNumWithoutSubtitleWithoutDetailsTest(unittest.TestCase):
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)') # with original title and year
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
         
          
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)') # with year 
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)') # with original title 
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)')# nothing
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)')# with original title, year and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)')# with year and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)') # with original title and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         parser_options = ParserOptions(split_title = False, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 12)
         event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
         self.assertEqual(event.get_title(), u'Barwy szczęścia (948)') # with age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), None)
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+
+
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 18)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia') # with original title and year
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+        
+         
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 18)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia') # with year 
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+        
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 18)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia') # with original title 
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 18)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia')# nothing
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = True, add_age_rating_to_title = 12)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia')# with original title, year and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = True, add_age_rating_to_title = 12)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia')# with year and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = True, add_year_to_title = False, add_age_rating_to_title = 12)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia') # with original title and age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
+
+        parser_options = ParserOptions(split_title = True, add_original_title_to_title = False, add_year_to_title = False, add_age_rating_to_title = 12)
+        event = TelemanEvent(parser_options, channel, title, main_category, category, desc, time_start, time_end, url, details=None)
+        self.assertEqual(event.get_title(), u'Barwy szczęścia') # with age
+        self.assertEqual(event.get_subtitle(), None)
+        self.assertEqual(event.get_episode_num(), "948")
+        self.assertEqual(event.get_filename(), u'Barwy szczęścia (948)')
 
         
         self.assertEqual(event.get_subtitle(), None)
