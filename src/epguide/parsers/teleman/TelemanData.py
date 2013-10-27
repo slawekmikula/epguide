@@ -99,6 +99,7 @@ class TelemanEvent(Event):
         if self.parser_options.split_title:
             if(self.details is None):
                 # brak szczegółów
+                self.log.debug("  #trying to split title in " + self._title)
                 episode_match = self.episode_regexp.match(self._title)
                 if episode_match is None:
                     # brak szczegółów i nie znaleziono numeru odcinka

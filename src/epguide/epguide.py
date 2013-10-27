@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
-import sys
+from abstract_epguide import AbstractEpGuide
 import logging
 
 licence = '''
@@ -27,14 +26,14 @@ Slawek Mikula <slawek.mikula@gmail.com>
 
 '''
 
-class EpGuide(object):
+class EpGuide(AbstractEpGuide):
     """
     glowna klasa aplikacji
     """
     def __init__(self, config):
+        AbstractEpGuide.__init__(self)
         
-        self.config = config
-        self.parser, self.output = self.config.ProvideExec()
+        self.setup(config)
 
         if self.config.options.logfile:
             logging.basicConfig(filename=self.config.options.logfile,level=logging.DEBUG)
@@ -59,61 +58,7 @@ class EpGuide(object):
         else:    
             self.PrintHelp()
 
-    def get_channels(self):
-        """
-        pobiera liste kanalow
-        """
-        self.log.info("Rozpoczęcie pobierania listy kanałów")
-        self.log.info("Parser init")
-        self.parser.Init()
-
-        self.log.info("Wyjście init")
-        self.output.Init()
-
-        self.log.info("Pobieram listę kanałów")
-        channel_list = self.parser.get_channels()
-        
-        self.log.info("Zapisuję liste kanałów")
-        self.output.SaveChannelList(channel_list)
-
-        self.log.info("Parser zamknięcie")
-        self.parser.Finish()
-
-        self.log.info("Wyjście zamknięcie")
-        self.output.Finish()        
     
-    def get_guide(self):
-        """
-        pobiera dane programu telewizyjnego
-        """        
-        if self.config.options.channel_list is None or len(self.config.options.channel_list) == 0:
-            print "Brak wybranej listy kanalow - opcja -c !"
-            sys.exit()
-
-        self.log.info("Parser init")
-        self.parser.Init()
-        self.log.info("Wyjście init")
-        self.output.Init()
-        
-        day = self.config.date_from
-        for d in range((self.config.date_to - self.config.date_from).days):
-            self.log.info("Pobieranie programu dla dnia: %s" % (day))
-            for channel in self.config.options.channel_list:
-                self.log.info("Pobieranie programu dla kanału numer: %s" % (channel))
-                guide = self.parser.get_guide(day, channel)
-                self.log.info("Zapisywanie programu")
-                self.output.SaveGuide(day, guide)
-                
-            day += datetime.timedelta(days=1)
-
-        self.log.info("Zapisywanie listy kanałów dla listy programów")
-        self.output.SaveGuideChannels()
-
-        self.log.info("Wyjście zamykanie")
-        self.output.Finish()
-
-        self.log.info("Parser zamykanie")
-        self.parser.Finish()
     
     def PrintHelp(self):
         """

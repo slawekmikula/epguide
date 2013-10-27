@@ -7,6 +7,7 @@ from copy import copy
 
 from parsers import TelemanParser 
 from formatters import TxtOutput, XmltvOutput, FileOutput
+from optparse import OptionParser, Option, OptionValueError, Values
 
 def CheckDate (dummy, opt, value):
     try:
@@ -59,6 +60,11 @@ class Config(object):
         self.cmdparser.add_option ("--add-age-rating-to-title", type="int", dest="add_age_rating_to_title", default=100, help="add info about age rating to title (if age rating greater or equal than given)")
         self.cmdparser.add_option ("--debug-http", dest="debug_http", action="store_true", default=False, help="enable logs for http connection")
 
+
+    def setDefaults(self):
+        self.options = Values(epguide_config.cmdparser.defaults)
+        self.parser = TelemanParser.TelemanParser(self.options, self.options.debug_http)
+        self.output = FileOutput.FileOutput(self.options.filename, TxtOutput.TxtOutput())
 
     def ParseCommandLine(self, argv):
         """

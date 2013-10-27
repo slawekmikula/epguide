@@ -9,6 +9,8 @@ from httplib2 import Http, FileCache
 import httplib2
 import os
 import logging
+import datetime
+import shutil
 
 class HttpHelper(object):
     '''
@@ -16,9 +18,25 @@ class HttpHelper(object):
     '''
 
     def __init__(self, enable_debug):
-        self.log = logging.getLogger("epguide")
-        cache_dir = os.path.normpath(os.path.expanduser("~/.epguide/cache"))
-        self.log.debug("Cache dir: " + cache_dir)
+        self.log = logging.getLogger(__name__)
+        today = datetime.date.today()
+        previousMonth =  today - datetime.timedelta(days=31)
+        prevoiusMonthSubDir = previousMonth.strftime("%Y-%m")
+        
+        cache_dir_to_remove = os.path.join(os.path.normpath(os.path.expanduser("~/.epguide/cache")), prevoiusMonthSubDir)
+        if os.path.exists(cache_dir_to_remove):
+            self.log.info("Removing previous month cache dir: " + cache_dir_to_remove)
+            try:
+                shutil.rmtree(cache_dir_to_remove)
+                self.log.info("Removed.")
+            except Exception:
+                self.log.exception("Exception while removing dir " + cache_dir_to_remove)
+        else:
+            self.log.info("Previous month cache dir not exists: " + cache_dir_to_remove)
+            
+        thisMonthSubDir = today.strftime("%Y-%m")
+        cache_dir = os.path.join(os.path.normpath(os.path.expanduser("~/.epguide/cache")), thisMonthSubDir)
+        self.log.info("Cache dir: " + cache_dir)
         self.cache = FileCache(cache_dir)
         self.http = Http(cache = self.cache)
         self.user_agent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0"
