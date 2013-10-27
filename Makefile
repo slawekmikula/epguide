@@ -1,4 +1,4 @@
-VERSION=1.8.0-Alpha1
+VERSION=1.8.0-Alpha2
 PKG_NAME=epguide
 
 egg:

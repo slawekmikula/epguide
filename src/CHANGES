@@ -93,3 +93,10 @@
         * Dodanie możliwości logowania do pliku - opcja: --logfile
         * Pierwsza wersja tv_grab_pl_epguide 
         * Wersja 1.8.0-Alpha1, dodanie zależności od ConfigObj i httplib2 
+
+2013-10-27 Damian Gołda <Damian.Golda@gmail.com>
+        * Katalog cache z podziałem na miesiące np. ~/.epguide/cache/2013-10 i automatycznym kasowaniem poprzedniego miesiąca 
+        * Domyślne logowanie dla tv_grab_pl_epguide w ~/.epguide/log i podkatalogu z miesiącem ~/.epguide/log/2013-10
+        * Wersja 1.8.0-Alpha2 
+
+        
