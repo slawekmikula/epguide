@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
-from epguide.data_formats import Event, Channel
-from sgmllib import SGMLParser
+from AbstractTelemanParser import AbstractTelemanParser, AbstractTelemanParser
+from epguide.data_formats import Event, Channel, Imdb, ParentalRating
+from epguide.parsers.teleman.TelemanData import TelemanEvent, TelemanEventDetails
+from lxml import etree
+import StringIO
 import datetime
+import logging
 import re
 import time
-import logging
-from epguide.parsers.teleman.TelemanData import TelemanEvent
-
-class TelemanProgrammeParser(SGMLParser):
+ 
+class TelemanProgrammeParser(AbstractTelemanParser):
     def __init__(self, parser_options):
-        SGMLParser.__init__ (self)
+        AbstractTelemanParser.__init__ (self, parser_options)
         self.parser_options = parser_options
-        self.event_dict = []
-        self.prev_event = None
-        self.current_event = None
-        self.bad_row = False
         self.category_classes_to_main_category = {'cat-roz':"Leisure hobbies", 'cat-ser':"Show/Game show", 'cat-fil':"Movie/Drama", 'cat-xxx':"News/Current affairs", 'cat-dzi':"Children's/Youth programmes", "cat-spo":"Sports"}
-        self.state = ['init']
         self.success = False
         self.log = logging.getLogger("TelemanProgrammeParser")
 
@@ -25,182 +22,87 @@ class TelemanProgrammeParser(SGMLParser):
         parsuje stronę, zwraca liste elementow
         klasy Event
         """
-        self.current_date = event_date
-        self.current_channel_id = channel_id
-        self.current_channel_name = ''  # wypelnione przy parsowaniu
-        self.current_channel_icon_url = ''  # wypelnione przy parsowaniu
-        self.feed(buf)
-        self.close()
-        self._update_previous_time_end()
 
-        events = []
+        parser = etree.HTMLParser()
+        tree = etree.parse(StringIO.StringIO(buf), parser)
+        channel_name = self.get_texts(tree, '//*[@class="stationTitle"]/h1')
+        channel_icon_url = self.get_attr(tree, '//*[@class="stationTitle"]/img', "src")
+        programmeElements = tree.xpath('//*[@id="stationItems"]/li')
 
-        if self.success:
-            events = [self.create_event(event_data) for event_data in self.event_dict]
+        channel = Channel(channel_id, channel_name, channel_icon_url)
 
-        return events
+        events = [self.create_event(event_element, channel, event_date) for event_element in programmeElements]
+
+        updated_events = []
+        prev_event = None
+        add_days = 0
+        for current_event in events:
+            if current_event:
+                if prev_event is not None:
+                    # jesli przekraczamy kolejna dobe, robimy poprawke w dacie
+                    if current_event.time_start < prev_event.time_start:
+                        add_days = 1
+                    current_event.time_start = current_event.time_start + datetime.timedelta(days=add_days)
+                    current_event.time_end = current_event.time_start
+                    prev_event.time_end = current_event.time_start
+        
+                updated_events.append(current_event)
+                prev_event = current_event
+
+        return updated_events
     
-    def create_event(self, event):
-        title = event['title']
-        self.log.debug("  title: '" + title + "'")
-        time_start = event['time_start']
-        time_end = event['time_end']
-        channel_id = event['channel_id']
-        main_category = event['main_category']
-        category = event['category']
-        url = event['url']
-        self.log.debug("event: " + channel_id + " " + str(time_start) 
-            + " " + str(time_end) + " " + title
-            + " " + " " + main_category + " " + category+ " " + url)
-        channel = Channel(channel_id,
-                           event['channel_name'],
-                           event['channel_icon_url'])
-        eventClass = TelemanEvent(
-                           self.parser_options,
-                           channel,
-                           title,
-                           main_category,
-                           category,
-                           event['desc'],
-                           time_start,
-                           time_end,
-                           url)
-        return eventClass
-
-    def close(self):
-        SGMLParser.close(self)
-
-    def getAttr(self, attrs, name):
-        for attr in attrs:
-            if attr[0] == name:
-                return attr[1]
-        return ""
-
-    def _format_event_datetime(self):
-        self.current_event['time_start'] = "%s %s" % (self.current_event['date'].strftime("%Y-%m-%d"), self.current_event['time'])
-        self.current_event['time_start'] = time.strptime(self.current_event['time_start'], '%Y-%m-%d %H:%M')
-        self.current_event['time_start'] = datetime.datetime.fromtimestamp(time.mktime(self.current_event['time_start']))
-
-        self._update_previous_time_end()
-
-    def _update_previous_time_end(self):
-
-        if self.prev_event is not None and self.current_event is not None:
-            self.prev_event['time_end'] = self.current_event['time_start']
-
-            # jesli przekraczamy kolejna dobe, robimy poprawke w dacie
-            if self.prev_event['time_end'] < self.prev_event['time_start']:
-                self.prev_event['time_end'] = self.prev_event['time_end'] + datetime.timedelta(days=1)
-                self.current_event['time_start'] = self.current_event['time_start'] + datetime.timedelta(days=1)
-
-        # przypadek, gdy jestesmy na koncu listy
-        if self.prev_event is not None and self.current_event is None:
-            self.prev_event['time_end'] = self.prev_event['time_start']
-
-    # -------------------------------------
-    def start_ul(self, attrs):
-        if self.state[-1] == "init" and self.getAttr(attrs, "id") == "station-listing":
-            self.state.append('start')
-
-    def end_ul (self):
-        if self.state[-1] == 'start':
-            self.state.pop()
-
-    def start_li(self, attrs):
-        if self.state[-1] == 'start':
-            self.state.append('program')
-            class_attrs = self.getAttr(attrs, "class").split()
+    def create_event(self, event_element, channel, event_date):
+#<li class="cat-ser with-photo" id="prog7532796">
+#  <a href="/tv/Faceci-Do-Wziecia-Szkola-Rodzenia-41-988883">
+#    <img width="100" height="63" class="photo" alt="zdjęcie" src="http://media.teleman.pl/photos/crop-100x63/Faceci-Do-Wziecia.jpeg">
+#  </a>
+#  <em>6:00</em>
+#  <div class="detail">
+#    <a href="/tv/Faceci-Do-Wziecia-Szkola-Rodzenia-41-988883">Faceci do wzięcia: Szkoła rodzenia (41)</a>
+#    <p class="genre">serial komediowy</p>
+#    <p>Dziennikarz Wiktor jest bałaganiarzem. Fotograf Roman to klasyczny pedant. Obaj, porzuceni przez żony, zamieszkują w jednym mieszkaniu.</p>
+#  </div>
+#</li>
+        prog_id = event_element.get("id")
+        if prog_id:
+            title = self.get_texts(event_element, 'div[@class="detail"]/a')
+            self.log.debug("  title: '" + title + "'")
+            url = self.get_attr(event_element, 'div[@class="detail"]/a', "href")
+    
+            time_start_string = self.get_texts(event_element, 'em')
+            datetime_start_string = "%s %s" % (event_date.strftime("%Y-%m-%d"), time_start_string)
+            time_start_struct = time.strptime(datetime_start_string, '%Y-%m-%d %H:%M')
+            time_start = datetime.datetime.fromtimestamp(time.mktime(time_start_struct))
+    
+            time_end = time_start #TODO
+            category = self.get_texts(event_element, 'div[@class="detail"]/p[@class="genre"]')
+            summary = self.get_texts(event_element, 'div[@class="detail"]/p[@class="genre"]')
+            photo_url = self.get_attr(event_element, 'a/img', "src")
+            class_attrs = event_element.get("class").split()
             main_category_class = next((c for c in class_attrs if c.startswith("cat-")), None)
             main_category = self.category_classes_to_main_category.get(main_category_class, "")
             self.log.debug("main_category_class:" + main_category_class + " main_category:" + main_category)
-            self.current_event = {'channel_id': self.current_channel_id, 'channel_name': "",
-                'date': self.current_date, 'time': "", 'title': "", 'desc': "", 'main_category': main_category, 'category': ""}
-
-    def end_li(self):
-        if self.state[-1] == 'program':
-            if self.current_event is not None:
-                self._format_event_datetime()
-                self.event_dict.append(self.current_event)
-                self.prev_event = self.current_event
-            self.state.pop()
-
-    def start_em(self, attrs):
-        if self.state[-1] == 'program' and not self.current_event.get('time'):
-            self.state.append('start_hour')
-
-    def end_em(self):
-        if self.state[-1] == 'start_hour':
-            self.state.pop()
-
-    def start_div(self, attrs):
-        if self.state[-1] == 'program' and self.getAttr(attrs, "class") == "detail":
-            self.state.append('description')
-        elif self.state[-1] == 'init' and (self.getAttr(attrs, "class") == "station-title" or self.getAttr(attrs, "class") == "stationTitle") :
-            self.state.append('channel_name_div')
-
-    def end_div(self):
-        if self.state[-1] in ('description', 'channel_name_div'):
-            self.state.pop()
-
-    def start_a(self, attrs):
-        if self.state[-1] == 'description':
-            self.state.append('title')
-            self.current_event["url"] = self.getAttr(attrs, "href") #data
-
-    def end_a(self):
-        if self.state[-1] == 'title':
-            self.state.pop()
-
-    def start_p(self, attrs):
-        if self.state[-1] == 'description':
-            if self.getAttr(attrs, "class") == "genre":
-                self.state.append('category')
-            else:
-                self.state.append('content')
-
-    def end_p(self):
-        if self.state[-1] in ('content', 'category'):
-            self.state.pop()
-
-    def start_h1(self, attrs):
-        if self.state[-1] == 'channel_name_div':
-            self.state.append('channel_name')
-
-    def end_h1(self):
-        if self.state[-1] == 'channel_name':
-            self.state.pop()
-
-    def start_img(self, attrs):
-        if self.state[-1] == 'channel_name_div':
-#            self.state.append('channel_name_img')
-            self.current_channel_icon_url = self.getAttr(attrs, u"src")
-
-#    def end_img(self):
-#        if self.state[-1] == 'channel_name_img':
-#            self.state.pop()
-
-    def handle_data (self, data):
-        # nazwa kanalu
-        if self.state[-1] == "channel_name_img" and self.state[-2] == 'channel_name':
-            self.current_channel_name = data.strip()
-        # dla kanalow bez obrazka logo kanalu
-        elif self.state[-1] == "channel_name" and data != "":
-            self.current_channel_name = data.strip()
-
-        if self.current_event is None:
-            return
-
-        data = data.strip()
-        if self.state[-1] == "start_hour":
-            self.current_event['time'] = data
-        elif self.state[-1] == "title":
-            self.current_event['title'] += data
-            self.current_event['channel_name'] = self.current_channel_name
-            self.current_event['channel_icon_url'] = self.current_channel_icon_url
-        elif self.state[-1] == "category":
-            self.current_event['category'] += data
-            self.success = True
-        elif self.state[-1] == 'content':
-            self.success = True
-            self.current_event['desc'] += data + "\n"
+    
+    #        time_end = event_element['time_end']
+            self.log.debug("event_element: " + str(channel) + " " + str(time_start) 
+                + " " + str(time_end) + " " + title
+                + " " + " " + main_category + " " + category + " " + url)
+            event = TelemanEvent(
+                               self.parser_options,
+                               channel,
+                               title,
+                               main_category,
+                               category,
+                               summary,
+                               time_start,
+                               time_end,
+                               url,
+                               None,
+                               photo_url,
+                               prog_id)
+    
+    
+            return event
+        else:
+            return None
 

@@ -5,31 +5,9 @@ import StringIO
 import re
 import logging
 from epguide.parsers.teleman.TelemanData import TelemanEventDetails
-
-class TelemanProgrammeDetailsParser(object):
-    def __init__(self, dummy):
-        self.build_text_list = etree.XPath("//text()")
-        self.log = logging.getLogger("TelemanProgrammeDetailsParser")
-    
-    def get_texts(self, tree, path):
-        description_elements = tree.xpath(path, smart_strings=False)
-        #print(description_elements)
-        if(not description_elements):
-            text = ""
-        else:
-            text = etree.tostring(description_elements[0], method="text", encoding=unicode)
-        #print(text)        
-        return text.strip()
-                    
-    def get_attr(self, tree, path, attr_name):
-        description_elements = tree.xpath(path, smart_strings=False)
-        #print(description_elements)
-        if(not description_elements):
-            text = ""
-        else:
-            text = description_elements[0].get(attr_name)
-        #print(text)        
-        return text.strip()
+from AbstractTelemanParser import AbstractTelemanParser
+ 
+class TelemanProgrammeDetailsParser(AbstractTelemanParser):
                     
     def get_details(self, buf):
         """

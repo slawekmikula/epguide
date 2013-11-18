@@ -8,12 +8,9 @@ class TelemanUrlProvider(object):
         return "http://www.teleman.pl/program-tv/stacje"
         
     def guide_url(self, eventDate, channel_id):
-        url = "http://www.teleman.pl/program-tv/stacje/%s?day=%s&hour=-1"
-        today = datetime.datetime.today()
-        eventMidnight = datetime.datetime(eventDate.year, eventDate.month, eventDate.day)
-        todayMidnight = datetime.datetime(today.year, today.month, today.day)
-        dateDiff = eventMidnight - todayMidnight
-        url = url % (channel_id, dateDiff.days)
+        url = "http://www.teleman.pl/program-tv/stacje/%s?date=%s&hour=-1"
+        date = eventDate.strftime("%Y-%m-%d") 
+        url = url % (channel_id, date)
         return url
     
     def details_url(self, relative_url):
