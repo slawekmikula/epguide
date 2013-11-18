@@ -77,7 +77,11 @@ class TelemanProgrammeParser(AbstractTelemanParser):
             time_end = time_start #TODO
             category = self.get_texts(event_element, 'div[@class="detail"]/p[@class="genre"]')
             summary = self.get_texts(event_element, 'div[@class="detail"]/p[@class="genre"]')
+            #http://media.teleman.pl/photos/crop-100x63/Barwy-Szczescia_1.jpeg
             photo_url = self.get_attr(event_element, 'a/img', "src")
+            #http://media.teleman.pl/photos/470x265/Barwy-Szczescia_1.jpeg
+            photo_url = photo_url.replace("crop-100x63", "470x265")
+            
             class_attrs = event_element.get("class").split()
             main_category_class = next((c for c in class_attrs if c.startswith("cat-")), None)
             main_category = self.category_classes_to_main_category.get(main_category_class, "")

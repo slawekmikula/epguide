@@ -45,6 +45,9 @@ class Event(object):
     def get_year(self):
         raise NotImplementedError( "Should have implemented this" )
 
+    def get_icon_url(self):
+        raise NotImplementedError( "Should have implemented this" )
+        
     def get_country(self):
         raise NotImplementedError( "Should have implemented this" )
 

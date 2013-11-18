@@ -18,7 +18,7 @@ class TelemanEvent(Event):
     wydarzenie (program w telewizji), zawiera dane zakodowane w unicode
     """
     def __init__(self, parser_options, channel, title, main_category, category,
-        desc, time_start, time_end=None, url=None, details=None, photo_url=None, prog_id=None):
+        desc, time_start, time_end=None, url=None, details=None, icon_url=None, prog_id=None):
 
         self.episode_regexp = re.compile(r'(?P<title>.+)\((?P<odc>.+)\)')
         self.subtitle_regexp = re.compile(r'(?P<title>.+):(?P<subtitle>.+)')
@@ -39,7 +39,7 @@ class TelemanEvent(Event):
         self.time_end = time_end
         self.url = url
         self.details = details
-        self.photo_url = photo_url
+        self.icon_url = icon_url
         self.prog_id = prog_id
         self._recalculate()
     
@@ -230,6 +230,9 @@ class TelemanEvent(Event):
         else:
             d = self.details.year
         return d
+
+    def get_icon_url(self):
+        return self.icon_url
 
     def get_country(self):
         if(self.details is None):

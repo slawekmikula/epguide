@@ -38,6 +38,7 @@ class XmltvOutput(object):
     year_format = """    <date>%s</date>\n"""
     main_category_format = """    <category language="en">%s</category>\n"""
     category_format = """    <category language="pl">%s</category>\n"""
+    programme_icon_format = """    <icon src="%s"/>\n"""
 #    <country>ES</country>
     country_format = """    <country>%s</country>\n"""
 #    <episode-num system="xmltv_ns">2 . 9 . 0/1</episode-num>
@@ -59,7 +60,7 @@ class XmltvOutput(object):
     
     channel_format = """  <channel id="%s"><display-name lang="pl">%s</display-name>%s</channel>\n"""
 
-    icon_format = """<icon src="%s"/>"""
+    channel_icon_format = """<icon src="%s"/>"""
     
     def __init__(self):
         self.file = None
@@ -106,7 +107,7 @@ class XmltvOutput(object):
 
 
     def _channel_element(self, channel):
-        return self.channel_format % (channel.id, self._format_string(channel.name), self._optional_element(self.icon_format, channel.icon_url))
+        return self.channel_format % (channel.id, self._format_string(channel.name), self._optional_element(self.channel_icon_format, channel.icon_url))
 
     def SaveChannelList(self, channel_list):
         """
@@ -144,6 +145,7 @@ class XmltvOutput(object):
             desc_element = self._optional_element_cdata(self.desc_format, item.get_description())
             main_category_element = self._optional_element(self.main_category_format, item.main_category)
             category_element = self._element(self.category_format, item.category)
+            icon_element = self._optional_element(self.programme_icon_format, item.get_icon_url())
             year_element = self._optional_element(self.year_format, item.get_year())
             country_element = self._optional_element(self.country_format, item.get_country())
             pg_element = self._optional_element(self.pg_format, item.get_pg())
@@ -165,6 +167,7 @@ class XmltvOutput(object):
                 year_element + \
                 main_category_element + \
                 category_element + \
+                icon_element +\
                 country_element + \
                 episode_num_element + \
                 pg_element + \
