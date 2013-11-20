@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup (
     name = 'epguide',
-    version = '1.8.0-Alpha2',
+    version = '1.8.0',
     packages = find_packages(exclude=['bin','test']),
     package_data = {'': ['AUTHORS', 'LICENSE',
     'CHANGES', 'README', 'epguide_run']},

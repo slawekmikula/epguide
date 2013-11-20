@@ -5,6 +5,7 @@ README
 setup.py
 bin/get_listing.sh
 epguide/__init__.py
+epguide/abstract_epguide.py
 epguide/common.py
 epguide/data_formats.py
 epguide/epg_runner.py
@@ -24,6 +25,7 @@ epguide/formatters/__init__.py
 epguide/parsers/TelemanParser.py
 epguide/parsers/__init__.py
 epguide/parsers/roman.py
+epguide/parsers/teleman/AbstractTelemanParser.py
 epguide/parsers/teleman/HttpHelper.py
 epguide/parsers/teleman/TelemanChannelListParser.py
 epguide/parsers/teleman/TelemanData.py

@@ -1,14 +1,14 @@
 Metadata-Version: 1.1
 Name: epguide
-Version: 1.8.0-Alpha2
-Summary: Python Electronic TV Guide Downloader and XMLTV exporter
+Version: 1.8.0
+Summary: Python Electronic TV Guide (EPG) Downloader and XMLTV exporter for Polish TV
 Home-page: http://code.google.com/p/epguide
 Author: Slawek Mikula
 Author-email: slawek.mikula@gmail.com
 License: UNKNOWN
 Download-URL: http://code.google.com/p/epguide
 Description: UNKNOWN
-Keywords: xmltv,channels,tv guide
+Keywords: xmltv,channels,tv guide,epg,tv,grabber
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Environment :: Console

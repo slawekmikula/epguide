@@ -99,4 +99,7 @@
         * Domyślne logowanie dla tv_grab_pl_epguide w ~/.epguide/log i podkatalogu z miesiącem ~/.epguide/log/2013-10
         * Wersja 1.8.0-Alpha2 
 
-        
+2013-11-20 Damian Gołda <Damian.Golda@gmail.com>
+        * Poprawa parsowania programu po zmianach na teleman.pl (#30)
+        * Dodanie obrazka dla programu (#31)
+        * Wersja 1.8.0 
