@@ -43,25 +43,25 @@ class HttpHelper(object):
         if(enable_debug):
             httplib2.debuglevel = 255
         
-    def get(self, url, force_cache = False):
+    def get(self, url, force_cache = False, charset = "UTF-8"):
         if(force_cache):
             cached_value = self.cache.get(url)
             if cached_value:
                 try:
                     info, content = cached_value.split('\r\n\r\n', 1)
                     if(content):
-                        return content.decode("UTF-8")
+                        return content.decode(charset)
                     else:
-                        return self.get(url, False)
+                        return self.get(url, False, charset)
                 except (IndexError, ValueError):
-                    return self.get(url, False)
+                    return self.get(url, False, charset)
             else:
-                return self.get(url, False)
+                return self.get(url, False, charset)
         else:
             resp, content = self.http.request(url, headers={'user-agent':self.user_agent})
             self.log.debug("result content: %s response: %s fromcache: %s status: %s)" % (content, resp, str(resp.fromcache), str(resp.status)))
 
-        c = content.decode("UTF-8")
+        c = content.decode(charset)
         return c
             
 

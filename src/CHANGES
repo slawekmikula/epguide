@@ -103,3 +103,7 @@
         * Poprawa parsowania programu po zmianach na teleman.pl (#30)
         * Dodanie obrazka dla programu (#31)
         * Wersja 1.8.0 
+        
+2013-11-24 Sławek Mikuła <slawek.mikula@gmail.com>
+        * Dodanie parsera z obsługą strony tv.gazeta.pl         
+        

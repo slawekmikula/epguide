@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
-from AbstractTelemanParser import AbstractTelemanParser, AbstractTelemanParser
-from epguide.data_formats import Event, Channel, Imdb, ParentalRating
-from epguide.parsers.teleman.TelemanData import TelemanEvent, TelemanEventDetails
+from epguide.parsers.AbstractParser import AbstractParser
+from epguide.data_formats import Channel
+from epguide.parsers.teleman.TelemanData import TelemanEvent
 from lxml import etree
 import StringIO
 import datetime
 import logging
-import re
 import time
  
-class TelemanProgrammeParser(AbstractTelemanParser):
+class TelemanProgrammeParser(AbstractParser):
     def __init__(self, parser_options):
-        AbstractTelemanParser.__init__ (self, parser_options)
+        AbstractParser.__init__ (self, parser_options)
         self.parser_options = parser_options
         self.category_classes_to_main_category = {'cat-roz':"Leisure hobbies", 'cat-ser':"Show/Game show", 'cat-fil':"Movie/Drama", 'cat-xxx':"News/Current affairs", 'cat-dzi':"Children's/Youth programmes", "cat-spo":"Sports"}
         self.success = False
-        self.log = logging.getLogger("TelemanProgrammeParser")
+        self.log = logging.getLogger(__name__)
 
     def get_events(self, event_date, channel_id, buf):
         """
@@ -87,7 +86,6 @@ class TelemanProgrammeParser(AbstractTelemanParser):
             main_category = self.category_classes_to_main_category.get(main_category_class, "")
             self.log.debug("main_category_class:" + main_category_class + " main_category:" + main_category)
     
-    #        time_end = event_element['time_end']
             self.log.debug("event_element: " + str(channel) + " " + str(time_start) 
                 + " " + str(time_end) + " " + title
                 + " " + " " + main_category + " " + category + " " + url)

@@ -2,10 +2,8 @@
 
 import time
 import datetime
-from optparse import OptionParser, Option, OptionValueError
 from copy import copy
-
-from parsers import TelemanParser 
+from parsers import TelemanParser, GazetaParser
 from formatters import TxtOutput, XmltvOutput, FileOutput
 from optparse import OptionParser, Option, OptionValueError, Values
 
@@ -46,7 +44,7 @@ class Config(object):
         self.cmdparser.add_option ("-d", type="date", dest="date", help="date you want the program from (format: YYYY-MM-DD)")
         self.cmdparser.add_option ("-f", dest="output", choices=["txt","xmltv"], default="txt", help="guide output format xmltv or txt")
         self.cmdparser.add_option ("-o", dest="filename",  help="store results to file (default to stdout)")
-        self.cmdparser.add_option ("-p", dest="parser", choices=["teleman"], default="teleman", help="channel parser source from: teleman")
+        self.cmdparser.add_option ("-p", dest="parser", choices=["teleman", "gazeta"], default="teleman", help="channel parser source from: teleman, gazeta.pl")
         self.cmdparser.add_option ("-t", dest="get_today", action="store_true", default=False, help="get guide for today")
         self.cmdparser.add_option ("-w", dest="get_week", action="store_true", default=False, help="get guide for whole week from today")
         self.cmdparser.add_option ("--days", dest="get_days", help="get guide for provided days from today")
@@ -79,6 +77,8 @@ class Config(object):
         # tworzenie parsera
         if self.options.parser == 'teleman':
             self.parser = TelemanParser.TelemanParser(self.options, self.options.debug_http)
+        elif self.options.parser == 'gazeta':
+            self.parser = GazetaParser.GazetaParser(self.options, self.options.debug_http)
 
         # tworzenie wyjscia
         if self.options.output == 'txt':

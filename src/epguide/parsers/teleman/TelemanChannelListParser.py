@@ -1,17 +1,7 @@
 # -*- coding: utf-8 -*-
 from sgmllib import SGMLParser
-import time
-import datetime
-import urllib
-import re
-from httplib2 import Http, FileCache
-import httplib2
-import os
+from epguide.data_formats import Channel
 
-from epguide.data_formats import Channel, Event
-
-
-    
 class TelemanChannelListParser(SGMLParser):
     def __init__(self):
         SGMLParser.__init__ (self)

@@ -3,11 +3,10 @@ from epguide.data_formats import Imdb, ParentalRating
 from lxml import etree
 import StringIO
 import re
-import logging
 from epguide.parsers.teleman.TelemanData import TelemanEventDetails
-from AbstractTelemanParser import AbstractTelemanParser
+from epguide.parsers.AbstractParser import AbstractParser
  
-class TelemanProgrammeDetailsParser(AbstractTelemanParser):
+class TelemanProgrammeDetailsParser(AbstractParser):
                     
     def get_details(self, buf):
         """
