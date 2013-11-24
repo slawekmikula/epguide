@@ -11,7 +11,6 @@ class GazetaUrlProvider(object):
         url = "http://tv.gazeta.pl/program_tv/0,110298,8700474,,,%s,3,%s,--,0.html"
         date = eventDate.strftime("%Y-%m-%d") 
         url = url % (date, channel_id)
-        print url
         return url
     
     def details_url(self, event_id):
