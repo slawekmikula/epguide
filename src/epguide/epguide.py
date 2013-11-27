@@ -4,7 +4,7 @@ import logging
 
 licence = '''
  EpGuide - Application, that can get You electronic TV guide in various formats
- Copyright (C) 2009 Slawek Mikula <slawek.mikula@gmail.com>
+ Copyright (C) 2009-2013 Slawek Mikula <slawek.mikula@gmail.com> and Authors
 
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License

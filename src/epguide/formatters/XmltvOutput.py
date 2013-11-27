@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
-import sys, string
+import string
 import logging
-from epguide.data_formats import Channel, Event
-
 
 class XmltvOutput(object):
     """

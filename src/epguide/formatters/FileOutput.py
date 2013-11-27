@@ -1,4 +1,4 @@
-import sys, textwrap
+import sys
 
 class FileOutput(object):
     """

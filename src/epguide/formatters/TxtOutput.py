@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, textwrap
+import textwrap
 
 class TxtOutput(object):
     """
