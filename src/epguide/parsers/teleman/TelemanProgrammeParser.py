@@ -65,7 +65,7 @@ class TelemanProgrammeParser(AbstractParser):
         prog_id = event_element.get("id")
         if prog_id:
             title = self.get_texts(event_element, 'div[@class="detail"]/a')
-            self.log.debug("  title: '" + title + "'")
+            self.log.debug("  title: '" + title.encode('utf8') + "'")
             url = self.get_attr(event_element, 'div[@class="detail"]/a', "href")
     
             time_start_string = self.get_texts(event_element, 'em')
@@ -86,9 +86,9 @@ class TelemanProgrammeParser(AbstractParser):
             main_category = self.category_classes_to_main_category.get(main_category_class, "")
             self.log.debug("main_category_class:" + main_category_class + " main_category:" + main_category)
     
-            self.log.debug("event_element: " + str(channel) + " " + str(time_start) 
-                + " " + str(time_end) + " " + title
-                + " " + " " + main_category + " " + category + " " + url)
+            self.log.debug("event_element: " + str(channel) + " " + str(time_start)
+                 + " " + str(time_end) + " " + title.encode('utf8')
+                 + " " + " " + main_category.encode('utf8') + " " + category.encode('utf8') + " " + url)
             event = TelemanEvent(
                                self.parser_options,
                                channel,

@@ -21,7 +21,7 @@ class Channel(object):
         return cmp(self.id, other.id)
     
     def __str__(self):
-        return "Channel(id:" + to_string(self.id) + ",name:" + to_string(self.name) +  ",icon_url:" + to_string(self.icon_url)+ ")"
+        return "Channel(id:" + to_string(self.id) + ",name:" + to_string(self.name).encode('utf-8') +  ",icon_url:" + to_string(self.icon_url)+ ")"
 
 class Event(object):
     """
