@@ -105,5 +105,10 @@
         * Wersja 1.8.0 
         
 2013-11-24 Sławek Mikuła <slawek.mikula@gmail.com>
-        * Dodanie parsera z obsługą strony tv.gazeta.pl         
+        * Dodanie parsera z obsługą strony tv.gazeta.pl
+        
+2014-03-09 Sławek Mikuła <slawek.mikula@gmail.com>
+		* Poprawki w parsowaniu strony teleman (zmiany w strukturze strony)
+		* Wersja 1.8.1
+		         
         
