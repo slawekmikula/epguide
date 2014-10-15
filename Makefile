@@ -19,5 +19,4 @@ clean:
 	find . -depth -name *.pyc -type f -delete
 	rm -rf ./src/build
 	rm -rf ./src/dist
-	rm -rf ./dist
 
