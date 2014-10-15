@@ -110,5 +110,8 @@
 2014-03-09 Sławek Mikuła <slawek.mikula@gmail.com>
 		* Poprawki w parsowaniu strony teleman (zmiany w strukturze strony)
 		* Wersja 1.8.1
-		         
+
+2014-10-15 Sławek Mikuła <slawek.mikula@gmail.com>
+		* Dodanie możliwości określenia wielu parserów dla kanałów poprzez parser|channel dla opcji -c (#6)  
+		* Wersja 1.9.0 
         

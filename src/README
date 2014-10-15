@@ -47,3 +47,12 @@ Przykladowe uzycie do sciagniecia calotygodniowego programu telewizyjnego
 dla stacji o odpowiednich indeksach (otrzymanych przez opcje -l):
 
 $ epguide -c TVP-1,TVP-2 -f xmltv -w -o tv.xml
+
+== Ściągnięcie listy programów od wielu dostawców ==
+W przypadku, gdy chcemy ściągnąć pojedynczą listę kanałów (plik) od wielu 
+dostawców z różnymi kanałami możemy użyć specjalnej opcji definicji listy
+kanałów. W przypadku podania listy kanałów jako lista określająca przez 
+[parser|kanał,]* aplikacja ściągnie poszczególne kanały z listy przez
+podany parser. Przykład:
+
+$ epguide -c gazeta|1,teleman|POLSAT -f xmltv -w -o tv.xml

@@ -21,7 +21,7 @@ class AbstractEpGuide(object):
 
     def setup(self, config):
         self.config = config
-        self.parser, self.output = self.config.ProvideExec()
+        self.parser, self.default_parser, self.output = self.config.ProvideExec()
 
     def get_channels(self):
         """
@@ -29,19 +29,19 @@ class AbstractEpGuide(object):
         """
         self.log.info("Rozpoczęcie pobierania listy kanałów")
         self.log.info("Parser init")
-        self.parser.Init()
+        self.parser[self.default_parser].Init()
 
         self.log.info("Wyjście init")
         self.output.Init()
 
         self.log.info("Pobieram listę kanałów")
-        channel_list = self.parser.get_channels()
+        channel_list = self.parser[self.default_parser].get_channels()
         
         self.log.info("Zapisuję liste kanałów")
         self.output.SaveChannelList(channel_list)
 
         self.log.info("Parser zamknięcie")
-        self.parser.Finish()
+        self.parser[self.default_parser].Finish()
 
         self.log.info("Wyjście zamknięcie")
         self.output.Finish()        
@@ -53,19 +53,29 @@ class AbstractEpGuide(object):
         if self.config.options.channel_list is None or len(self.config.options.channel_list) == 0:
             print "Brak wybranej listy kanalow - opcja -c !"
             sys.exit()
-
-        self.log.info(u"Parser init")
-        self.parser.Init()
+        
         self.log.info(u"Wyjście init")
         self.output.Init()
+        
+        self.log.info(u"Parsers init")
+        for parserItem in self.parser.values():
+            parserItem.Init()
         
         day = self.config.date_from
         self.log.info(u"Pobieranie programu od dnia: %s do dnia %s" % (self.config.date_from, self.config.date_to))
         for d in range((self.config.date_to - self.config.date_from).days):
             self.log.info(u"Pobieranie programu dla dnia: %s" % (day))
             for channel in self.config.options.channel_list:
-                self.log.info(u"Pobieranie programu na dzień %s dla kanału: %s " % (day, channel))
-                guide = self.parser.get_guide(day, channel)
+                if '|' in channel:
+                    parserName = channel.split('|')[0]
+                    channelName = channel.split('|')[1]                    
+                else:                    
+                    parserName = self.default_parser
+                    channelName = channel
+                    
+                prsr = self.parser[parserName]
+                self.log.info(u"Pobieranie programu na dzień %s dla kanału: %s. Parser: %s" % (day, channelName, parserName))
+                guide = prsr.get_guide(day, channelName)
 
                 if len(guide) == 0:
                     msg = u"Brak programu dla tego dnia"
@@ -90,4 +100,5 @@ class AbstractEpGuide(object):
         self.output.Finish()
 
         self.log.info(u"Parser zamykanie")
-        self.parser.Finish()
+        for parserItem in self.parser.values():
+            parserItem.Finish()

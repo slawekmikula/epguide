@@ -37,23 +37,19 @@ class TvGrabPlEpguide(AbstractEpGuide):
         
         self.cmdparser = OptionParser(usage=self.usage)
         #--help, --version, --capabilities, --description tv_grab_options for the grabber and it handles the --configure and --configure-api tv_grab_options by calling callbacks supplied by the grabber. Furthermore, it handles the --output option b
-
         
         self.cmdparser.add_option ("--description", dest="description", action="store_true", default=False, help="Print a description that identifies the grabber")
-#        self.cmdparser.add_option ("--help", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
-#        self.cmdparser.add_option ("--version", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
-
         self.cmdparser.add_option ("--capabilities", dest="capabilities", action="store_true", default=False, help="Print a list of all the capabilities supported by this grabber")
+        
         #baseline
         self.cmdparser.add_option ("--quiet", dest="capabilities", action="store_true", default=False, help="Suppress all progress information. Only error-messages are printed to stderr. ")
         self.cmdparser.add_option ("--output", dest="output", help="Redirect the xmltv output to the specified file. Otherwise output goes to stdout.")
         self.cmdparser.add_option ("--logfile", dest="logfile", help="Log to specified file.")
         self.cmdparser.add_option ("--days", dest="days", help="Supply data for X days. The default number of days is 'as many as possible' - it means 7 days.")
-        self.cmdparser.add_option ("--offset", dest="offset", default=0, help="Start with data for day today plus X days. The default is 0, today; 1 means start from tomorrow, etc.")
+        
         #manualconfig
         self.cmdparser.add_option ("--configure", dest="configure", action="store_true", default=False, help="Allow the user to answer questions regarding the operation of the grabber. This can allow the user to specify which channels he wants to download data for.")
         self.cmdparser.add_option ("--config-file", dest="config_file", default=normpath(expanduser("~/.epguide/tv_grab_pl_epguide.ini")), help="The grabber shall read all configuration data from the specified file. If this parameter is combined with --configure, the configuration is written to the specified file.")
-#        self.cmdparser.add_option ("--configure-api", dest="split_title", action="store_true", default=False, help="split title into title, subtitle and episode num (if possible)")
         self.cmdparser.add_option ("--log-level", dest="log_level", default=logging.INFO, help="Log level: ERROR = 40, WARN = 30, INFO = 20, DEBUG = 10")
 
     def print_description(self):
@@ -78,8 +74,6 @@ class TvGrabPlEpguide(AbstractEpGuide):
             channels = [channels]
         print "Currently configured channels: " + ",".join(channels)
 
-#        available_channels = self.get_channels()
-#        print "Available channels: " + ",".join(available_channels)
         channels = raw_input("Enter comma separated channels (for example: TVP-1,TVP-2,TVN,Polsat) or Enter to leave unchanged: ")
         if len(channels.strip()) > 0:
             tv_grab_config_obj['channels'] = channels.strip().split(',')
@@ -110,9 +104,6 @@ class TvGrabPlEpguide(AbstractEpGuide):
         if not tv_grab_config_obj.has_key('add-age-rating-to-title'):
             tv_grab_config_obj['add-age-rating-to-title'] = False
         
-#        if not tv_grab_config_obj.has_key('logfile'):
-#            tv_grab_config_obj['logfile'] = normpath(expanduser("~/.epguide/tv_grab_pl_epguide.log"))
-
         if not tv_grab_config_obj.has_key('log-level'):
             tv_grab_config_obj['log-level'] = logging.INFO
 
@@ -135,15 +126,11 @@ class TvGrabPlEpguide(AbstractEpGuide):
             previousMonthSubDir = previousMonth.strftime("%Y-%m")
             log_dir_to_remove = os.path.join(os.path.normpath(os.path.expanduser("~/.epguide/log")), previousMonthSubDir)
             if os.path.exists(log_dir_to_remove):
-                #self.log.info("Removing previous month log dir: " + log_dir_to_remove)
                 try:
                     shutil.rmtree(log_dir_to_remove)
-                    #self.log.info("Removed.")
                 except Exception, e:
-                    #self.log.exception("Exception while removing dir " + log_dir_to_remove)
                     print e
             else:
-                #self.log.info("Previous month log dir not exists: " + log_dir_to_remove)
                 pass
                 
             thisMonthSubDir = today.strftime("%Y-%m")
@@ -182,9 +169,7 @@ class TvGrabPlEpguide(AbstractEpGuide):
         if epguide_config.options.logfile:
             directory = os.path.dirname(epguide_config.options.logfile)
             if not os.path.exists(directory):
-                os.makedirs(directory)
-            #to avoid encoding problems - http://stackoverflow.com/questions/10706547/add-encoding-parameter-to-logging-basicconfig
-            #logging.basicConfig(filename=epguide_config.options.logfile,level=epguide_config.options.log_level)
+                os.makedirs(directory)            
             root_logger= logging.getLogger()
             root_logger.setLevel(epguide_config.options.log_level)
             handler = logging.FileHandler(epguide_config.options.logfile, 'w', 'utf-8')
