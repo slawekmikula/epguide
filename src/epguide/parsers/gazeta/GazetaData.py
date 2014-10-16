@@ -94,47 +94,48 @@ class GazetaEvent(Event):
 
     def _recalculate(self):
         additional_title = None
-        if self.parser_options.split_title:            
-            if self.details.secondary_title is None or len(self.details.secondary_title.strip()) == 0:
-                episode_match = self.episode_regexp.match(self.details.primary_title)
-                if episode_match is None:
-                    # brak szczegółów i nie znaleziono numeru odcinka
-                    self.log.debug("  #episode not found")
-                    self.calculated_title = self.details.primary_title
-                    self.calculated_episode_num = None
-                    self.calculated_subtitle = None
-                else:
-                    # brak szczegółów i znaleziono numer odcinka
-                    self.log.debug("  #title: '" + episode_match.group('title') + "'")
-                    self.log.debug("  #episode: '" + episode_match.group('odc') + "'")
-                    self.calculated_title = episode_match.group('title').strip()
-                    self.calculated_episode_num = episode_match.group('odc').strip()
-        
-                    subtitle_match = self.subtitle_regexp.match(self.calculated_title)
-                    if subtitle_match is None:
-                        self.log.debug("  #subtitle not found")
+        if self.parser_options.split_title: 
+            if self.details is not None:
+                if self.details.secondary_title is None or len(self.details.secondary_title.strip()) == 0:
+                    episode_match = self.episode_regexp.match(self.details.primary_title)
+                    if episode_match is None:
+                        # brak szczegółów i nie znaleziono numeru odcinka
+                        self.log.debug("  #episode not found")
+                        self.calculated_title = self.details.primary_title
+                        self.calculated_episode_num = None
                         self.calculated_subtitle = None
                     else:
-                        self.log.debug("  #title: '" + subtitle_match.group('title') + "'")
-                        self.log.debug("  #subtitle: '" + subtitle_match.group('subtitle') + "'")
-                        self.calculated_title = subtitle_match.group('title').strip()
-                        self.calculated_subtitle = subtitle_match.group('subtitle').strip()
-            else:
-                episode_match = self.secondary_title_regexp.match(self.details.secondary_title)
-                if episode_match is None:
-                    self.log.debug("  #episode not found")
-                    self.calculated_title = self.details.primary_title
-                    self.calculated_episode_num = None
-                    self.calculated_subtitle = self.details.secondary_title
+                        # brak szczegółów i znaleziono numer odcinka
+                        self.log.debug("  #title: '" + episode_match.group('title') + "'")
+                        self.log.debug("  #episode: '" + episode_match.group('odc') + "'")
+                        self.calculated_title = episode_match.group('title').strip()
+                        self.calculated_episode_num = episode_match.group('odc').strip()
+            
+                        subtitle_match = self.subtitle_regexp.match(self.calculated_title)
+                        if subtitle_match is None:
+                            self.log.debug("  #subtitle not found")
+                            self.calculated_subtitle = None
+                        else:
+                            self.log.debug("  #title: '" + subtitle_match.group('title') + "'")
+                            self.log.debug("  #subtitle: '" + subtitle_match.group('subtitle') + "'")
+                            self.calculated_title = subtitle_match.group('title').strip()
+                            self.calculated_subtitle = subtitle_match.group('subtitle').strip()
                 else:
-                    self.calculated_title = self.details.primary_title
-                    self.calculated_subtitle = episode_match.group('subtitle').strip()
-                    self.calculated_episode_num = episode_match.group('odc').strip()
+                    episode_match = self.secondary_title_regexp.match(self.details.secondary_title)
+                    if episode_match is None:
+                        self.log.debug("  #episode not found")
+                        self.calculated_title = self.details.primary_title
+                        self.calculated_episode_num = None
+                        self.calculated_subtitle = self.details.secondary_title
+                    else:
+                        self.calculated_title = self.details.primary_title
+                        self.calculated_subtitle = episode_match.group('subtitle').strip()
+                        self.calculated_episode_num = episode_match.group('odc').strip()
                         
-            pos = self._title.find(self.details.primary_title)
-            if pos > 0:
-                serie =  self._title[:pos].strip(" :")
-                additional_title = serie
+                pos = self._title.find(self.details.primary_title)
+                if pos > 0:
+                    serie =  self._title[:pos].strip(" :")
+                    additional_title = serie
         else:
                 self.calculated_title = self._title
                 self.calculated_subtitle = None
@@ -208,6 +209,7 @@ class GazetaEventDetails(object):
     def __init__(self, primary_title, description, year, country, genre, duration, photo_url, pg, crew):
         
         self.primary_title = primary_title
+        self.secondary_title = primary_title
         self.description = description
         self.year = year
         self.country = country

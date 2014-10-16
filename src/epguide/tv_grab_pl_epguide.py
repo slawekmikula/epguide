@@ -8,7 +8,7 @@ from epguide import EpGuide
 from formatters import XmltvOutput, FileOutput
 from optparse import OptionParser, Option, OptionValueError, Values
 from os.path import expanduser, normpath
-from parsers import TelemanParser
+from parsers import TelemanParser, GazetaParser
 import datetime
 import logging
 import logging.config
@@ -53,7 +53,7 @@ class TvGrabPlEpguide(AbstractEpGuide):
         self.cmdparser.add_option ("--log-level", dest="log_level", default=logging.INFO, help="Log level: ERROR = 40, WARN = 30, INFO = 20, DEBUG = 10")
 
     def print_description(self):
-        print "Poland (epguide using teleman.pl)"
+        print "Poland (epguide using teleman.pl or gazeta.pl)"
         return 0
 
     def print_capabilities(self):
@@ -207,7 +207,11 @@ class TvGrabPlEpguide(AbstractEpGuide):
             epguide_config.options.add_age_rating_to_title = self.tv_grab_config_obj['add-age-rating-to-title']
             self.log.info("add_age_rating_to_title:" + epguide_config.options.add_age_rating_to_title)
             
-            epguide_config.parser = TelemanParser.TelemanParser(epguide_config.options, False)
+            epguide_config.default_parser = 'teleman'
+            
+            epguide_config.parser = {}
+            epguide_config.parser['teleman'] = TelemanParser.TelemanParser(epguide_config.options, False)
+            epguide_config.parser['gazeta'] = GazetaParser.GazetaParser(epguide_config.options, False)
 
             epguide_config.output = FileOutput.FileOutput(epguide_config.options.filename, XmltvOutput.XmltvOutput())
             
