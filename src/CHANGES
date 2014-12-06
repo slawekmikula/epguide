@@ -118,3 +118,7 @@
 2014-10-18 Sławek Mikuła <slawek.mikula@gmail.com>
 		* Poprawki w interfejsie tv_grab_pl_epguide (określenie wielu parserów dla kanałów (#35)
 		* Wersja 1.9.1
+
+2014-12-06 Sławek Mikułą <slawek.mikula@gmail.com>
+        * Poprawienie parsowania opcji "quiet" w tv_grab_pl_epguide
+        * Wersja 1.9.2

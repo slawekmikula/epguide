@@ -42,7 +42,7 @@ class TvGrabPlEpguide(AbstractEpGuide):
         self.cmdparser.add_option ("--capabilities", dest="capabilities", action="store_true", default=False, help="Print a list of all the capabilities supported by this grabber")
         
         #baseline
-        self.cmdparser.add_option ("--quiet", dest="capabilities", action="store_true", default=False, help="Suppress all progress information. Only error-messages are printed to stderr. ")
+        self.cmdparser.add_option ("--quiet", dest="quiet", action="store_true", default=False, help="Suppress all progress information. Only error-messages are printed to stderr. ")
         self.cmdparser.add_option ("--output", dest="output", help="Redirect the xmltv output to the specified file. Otherwise output goes to stdout.")
         self.cmdparser.add_option ("--logfile", dest="logfile", help="Log to specified file.")
         self.cmdparser.add_option ("--days", dest="days", help="Supply data for X days. The default number of days is 'as many as possible' - it means 7 days.")
