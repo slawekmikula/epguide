@@ -36,7 +36,7 @@ class TelemanChannelListParser(SGMLParser):
     def start_div(self, attrs):
         if self.state[-1] == 'init':
             for name, value in attrs:
-                if name == "id" and value == 'stationsIndex':
+                if name == "id" and value == 'stations-index':
                     self.state.append("div")
 
     def end_div(self):
@@ -68,5 +68,4 @@ class TelemanChannelListParser(SGMLParser):
     def handle_data(self, data):
         data = data.strip()
         if self.state[-1] == 'a':
-            print data
             self.channels_data.append({'name': data, 'id': self.current_href})

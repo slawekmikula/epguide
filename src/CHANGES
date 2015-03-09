@@ -122,3 +122,7 @@
 2014-12-06 Sławek Mikułą <slawek.mikula@gmail.com>
         * Poprawienie parsowania opcji "quiet" w tv_grab_pl_epguide
         * Wersja 1.9.2
+
+2015-03-09 Sławek Mikułą <slawek.mikula@gmail.com>
+        * poprawienie kodowania wyjścia txt do utf8
+        * poprawienie listowania kanałów teleman (dzięki Łukasz!)
