@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf- 8 -*-
 from epguide.data_formats import Imdb, ParentalRating
 from lxml import etree
 import StringIO
@@ -16,9 +16,11 @@ class TelemanProgrammeDetailsParser(AbstractParser):
 
         parser = etree.HTMLParser()
         tree = etree.parse(StringIO.StringIO(buf), parser)
-        primary_title = self.get_texts(tree, "id('showOverview')/h1")
-        secondary_title = self.get_texts(tree, "id('showOverview')/h2[@class='title']")
-# Opis
+        primary_title = self.get_texts(tree, "id('showOverview')/div/h1[@class='title primary-title']/a")
+        if len(primary_title.strip()) == 0:
+            primary_title = self.get_texts(tree, "id('showOverview')/div/h1[@class='title']")
+        secondary_title = self.get_texts(tree, "id('showOverview')/div/h2[@class='title']")        
+# Opis 
 #----
 # /html/body/div/div[5]/div[3]/h2
 # html body.show div#wrapper.container div#content div.section h2
